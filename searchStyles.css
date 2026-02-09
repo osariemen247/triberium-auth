@@ -1,0 +1,83 @@
+/* ============================= */
+/* TRIBERIUM MVP — Search Page Styles */
+/* ============================= */
+
+.search-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: 'Orbitron', sans-serif;
+  color: #f0f0f5;
+  background-color: #0f0f1f;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Search input */
+.search-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #4a90e2;
+  background-color: #121224;
+  color: #f0f0f5;
+  font-size: 1rem;
+}
+
+.search-bar button {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background-color: #4a90e2;
+  color: #fff;
+  font-weight: 600;
+}
+
+.search-bar button:hover {
+  background-color: #357ab8;
+}
+
+/* Search results */
+.search-results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-result-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: linear-gradient(145deg, #1a1a2e, #121224);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.search-result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(74, 144, 226, 0.6);
+}
+
+.search-result-card img.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #4a90e2;
+}
+
+.search-result-card .username {
+  font-weight: 700;
+  color: #4a90e2;
+}
+
+.search-result-card .bio {
+  font-size: 0.85rem;
+  color: #e0e0f0;
+  }
