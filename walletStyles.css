@@ -1,0 +1,83 @@
+/* ============================= */
+/* TRIBERIUM MVP — Wallet Styles */
+/* ============================= */
+
+.wallet-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: 'Orbitron', sans-serif;
+  color: #f0f0f5;
+  background-color: #0f0f1f;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Wallet summary */
+.wallet-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(145deg, #1a1a2e, #121224);
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+}
+
+.wallet-summary span.label {
+  font-size: 0.95rem;
+  color: #8888aa;
+}
+
+.wallet-summary span.amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4a90e2;
+}
+
+/* Transaction list */
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.transaction-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #1a1a2e, #121224);
+  box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+}
+
+.transaction-card .desc {
+  font-size: 0.9rem;
+  color: #e0e0f0;
+}
+
+.transaction-card .amount {
+  font-weight: 700;
+  color: #4a90e2;
+}
+
+/* Buttons for top-up or send */
+.wallet-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.wallet-actions button {
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: #4a90e2;
+  color: #fff;
+}
+
+.wallet-actions button:hover {
+  background-color: #357ab8;
+  }
