@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Admin Dashboard</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="css/adminStyles.css">
+  <link rel="stylesheet" href="css/feedStyles.css">
+  <link rel="stylesheet" href="css/profileStyles.css">
+
+  <!-- Optional CSS Modules -->
+  <link rel="stylesheet" href="css/searchStyles.css">
+  <link rel="stylesheet" href="css/walletStyles.css">
+  <link rel="stylesheet" href="css/notificationsStyles.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="flex center" style="padding:16px; background:#121224; color:#4a90e2;">
+    <h1>TRIBERIUM — Admin</h1>
+    <nav>
+      <button onclick="navigateTo('home')">Home</button>
+      <button onclick="navigateTo('profile')">Profile</button>
+      <button onclick="navigateTo('admin')">Admin</button>
+      <button onclick="navigateTo('wallet')">Wallet</button>
+    </nav>
+  </header>
+
+  <!-- Admin Dashboard Section -->
+  <section class="admin-dashboard-container" id="adminDashboard">
+
+    <!-- User Management -->
+    <div class="user-management">
+      <h2>User Management</h2>
+      <div id="userList">
+        <!-- List of users loaded dynamically -->
+      </div>
+    </div>
+
+    <!-- Post Moderation -->
+    <div class="post-moderation">
+      <h2>Post Moderation</h2>
+      <div id="postList">
+        <!-- List of flagged posts dynamically loaded -->
+      </div>
+    </div>
+
+    <!-- Analytics -->
+    <div class="analytics-section">
+      <h2>Analytics & Metrics</h2>
+      <div class="analytics-cards flex">
+        <div class="analytics-card">
+          <span class="label">Active Users</span>
+          <span class="value" id="activeUsers">0</span>
+        </div>
+        <div class="analytics-card">
+          <span class="label">Total Posts</span>
+          <span class="value" id="totalPosts">0</span>
+        </div>
+        <div class="analytics-card">
+          <span class="label">Total TBM</span>
+          <span class="value" id="totalTBM">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="reports-section">
+      <h2>Reports</h2>
+      <div id="reportsContainer">
+        <!-- Dynamic reports will appear here -->
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Notifications -->
+  <div class="notification-container" id="notificationContainer"></div>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="js/firebaseModule.js"></script>
+
+  <!-- Core JS Modules -->
+  <script type="module" src="js/adminModule.js"></script>
+  <script type="module" src="js/feedModule.js"></script>
+  <script type="module" src="js/profileModule.js"></script>
+  <script type="module" src="js/followModule.js"></script>
+  <script type="module" src="js/searchModule.js"></script>
+  <script type="module" src="js/walletModule.js"></script>
+  <script type="module" src="js/notificationsModule.js"></script>
+  <script type="module" src="js/uiUtilitiesModule.js"></script>
+
+</body>
+  </html>
