@@ -1,16 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TRIBERIUM</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Welcome</title>
 
-  <!-- Redirect to main app -->
-  <meta http-equiv="refresh" content="0; url=home.html" />
+  <!-- Favicon -->
+  <link rel="icon" href="./pwa/icons/icon-192x192.png">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="./manifest.json">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="./css/authStyles.css">
+  <link rel="stylesheet" href="./css/feedStyles.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <noscript>
-    <p>JavaScript is required to run TRIBERIUM.</p>
-  </noscript>
+
+  <main class="auth-page" style="background:linear-gradient(135deg, #121224, #1b1d3b); color:#4a90e2; font-family:'Orbitron', sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh;">
+
+    <!-- Logo / Title -->
+    <h1 style="font-size:3rem; margin-bottom:24px;">TRIBERIUM</h1>
+    <p style="margin-bottom:32px; color:#9ca3af;">The crypto-social community platform</p>
+
+    <!-- Auth Container -->
+    <section class="auth-container" id="authContainer" style="display:flex; flex-direction:column; gap:12px; width:280px;">
+      
+      <!-- Email / Password -->
+      <input type="email" id="emailInput" placeholder="Email" style="padding:12px; border-radius:8px; border:none; outline:none;">
+      <input type="password" id="passwordInput" placeholder="Password" style="padding:12px; border-radius:8px; border:none; outline:none;">
+      
+      <button id="signupBtn" style="padding:12px; border:none; border-radius:8px; background:#4a90e2; color:white; cursor:pointer;">Sign Up</button>
+      <button id="loginBtn" style="padding:12px; border:none; border-radius:8px; background:#10b981; color:white; cursor:pointer;">Login</button>
+
+      <!-- Google Sign-In -->
+      <button id="googleLoginBtn" style="padding:12px; border:none; border-radius:8px; background:#fbbc05; color:black; cursor:pointer;">Login with Google</button>
+
+      <div id="authMessage" style="color:#ff5555; margin-top:8px;"></div>
+    </section>
+
+  </main>
+
+  <!-- Firebase -->
+  <script type="module" src="./js/firebaseModule.js"></script>
+  <script type="module" src="./js/authModule.js"></script>
+
 </body>
-</html>
+        </html>
