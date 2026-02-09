@@ -1,0 +1,156 @@
+/* ============================= */
+/* TRIBERIUM MVP — Feed / Home Styles */
+/* ============================= */
+
+/* General feed container */
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Orbitron', sans-serif;
+  color: #f0f0f5;
+  background-color: #0f0f1f;
+}
+
+/* Individual post card */
+.post-card {
+  background: linear-gradient(145deg, #1a1a2e, #121224);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 30px rgba(74, 144, 226, 0.6);
+}
+
+/* User info section */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.post-header img.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #4a90e2;
+}
+
+.post-header .username {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #4a90e2;
+}
+
+.post-header .timestamp {
+  font-size: 0.75rem;
+  color: #8888aa;
+  margin-left: auto;
+}
+
+/* Post content */
+.post-content {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #e0e0f0;
+  margin-bottom: 12px;
+  word-wrap: break-word;
+}
+
+.post-media img,
+.post-media video {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+/* Engagement buttons */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.post-actions button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: #f0f0f5;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.post-actions button:hover {
+  color: #4a90e2;
+}
+
+/* Likes counter */
+.likes-counter {
+  font-size: 0.85rem;
+  color: #8888aa;
+}
+
+/* Comments section */
+.comments-section {
+  margin-top: 12px;
+  border-top: 1px solid #2a2a44;
+  padding-top: 12px;
+}
+
+.comment {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.comment img.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #4a90e2;
+}
+
+.comment-content {
+  background-color: #1a1a2e;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: #e0e0f0;
+}
+
+/* Add comment input */
+.comment-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #4a90e2;
+  background-color: #121224;
+  color: #f0f0f5;
+}
+
+.comment-input button {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background-color: #4a90e2;
+  color: #fff;
+  font-weight: 600;
+}
+
+.comment-input button:hover
