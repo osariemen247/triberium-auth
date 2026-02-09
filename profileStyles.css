@@ -1,0 +1,188 @@
+/* ============================= */
+/* TRIBERIUM MVP — Profile Page Styles */
+/* ============================= */
+
+/* Profile page container */
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: 'Orbitron', sans-serif;
+  color: #f0f0f5;
+  background-color: #0f0f1f;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Profile header: avatar + user info */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-header img.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 3px solid #4a90e2;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-info .username {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4a90e2;
+}
+
+.profile-info .bio {
+  font-size: 1rem;
+  color: #e0e0f0;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+}
+
+.profile-stats div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #f0f0f5;
+}
+
+.profile-stats div span.value {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #4a90e2;
+}
+
+.profile-stats div span.label {
+  font-size: 0.85rem;
+  color: #8888aa;
+}
+
+/* Edit profile section */
+.edit-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-profile input,
+.edit-profile textarea {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #4a90e2;
+  background-color: #121224;
+  color: #f0f0f5;
+  font-size: 1rem;
+}
+
+.edit-profile button {
+  align-self: flex-start;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background-color: #4a90e2;
+  color: #fff;
+  font-weight: 600;
+}
+
+.edit-profile button:hover {
+  background-color: #357ab8;
+}
+
+/* TBM Wallet display */
+.tbm-wallet {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 1rem;
+  color: #f0f0f5;
+}
+
+.tbm-wallet span.amount {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #4a90e2;
+}
+
+/* Followers / Following buttons */
+.follow-btns {
+  display: flex;
+  gap: 12px;
+}
+
+.follow-btns button {
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.follow-btns .follow {
+  background-color: #4a90e2;
+  color: #fff;
+}
+
+.follow-btns .follow:hover {
+  background-color: #357ab8;
+}
+
+.follow-btns .unfollow {
+  background-color: #8888aa;
+  color: #fff;
+}
+
+.follow-btns .unfollow:hover {
+  background-color: #666688;
+}
+
+/* User posts section */
+.user-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-posts .post-card {
+  background: linear-gradient(145deg, #1a1a2e, #121224);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-header img.avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-stats {
+    gap: 12px;
+  }
+
+  .edit-profile input,
+  .edit-profile textarea {
+    font-size: 0.95rem;
+  }
+
+  .tbm-wallet span.amount {
+    font-size: 1rem;
+  }
+}
