@@ -1,37 +1,67 @@
-function setStatus(message) {
-  document.getElementById("status").innerText = message;
-}
+// --- Get DOM elements ---
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const signupBtn = document.getElementById('signup');
+const loginBtn = document.getElementById('login');
+const googleBtn = document.getElementById('googleLogin');
 
-// Email Sign Up
-function emailSignUp() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+// --- Email/Password Signup ---
+signupBtn.addEventListener('click', () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => setStatus("Account created successfully"))
-    .catch(error => setStatus(error.message));
-}
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      
+      // Send verification email
+      user.sendEmailVerification()
+        .then(() => {
+          alert("Verification email sent! Check your inbox.");
+        })
+        .catch((error) => {
+          console.error("Error sending email verification:", error);
+        });
 
-// Email Login
-function emailLogin() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+      console.log("User signed up:", user.email);
+    })
+    .catch((error) => {
+      console.error(error.code, error.message);
+    });
+});
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => setStatus("Logged in successfully"))
-    .catch(error => setStatus(error.message));
-}
+// --- Email/Password Login ---
+loginBtn.addEventListener('click', () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
 
-// Google Login
-function googleLogin() {
-  auth.signInWithPopup(googleProvider)
-    .then(() => setStatus("Google login successful"))
-    .catch(error => setStatus(error.message));
-}
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
 
-// Auth State Listener
-auth.onAuthStateChanged(user => {
-  if (user) {
-    console.log("User logged in:", user.email);
-  }
+      if (!user.emailVerified) {
+        alert("Please verify your email first!");
+        firebase.auth().signOut();
+        return;
+      }
+
+      console.log("User logged in:", user.email);
+    })
+    .catch((error) => {
+      console.error(error.code, error.message);
+    });
+});
+
+// --- Google Login ---
+googleBtn.addEventListener('click', () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      console.log("Google login success:", user.email);
+    })
+    .catch((error) => {
+      console.error(error.code, error.message);
+    });
 });
