@@ -1,17 +1,14 @@
 // pwaModule.js
-// Handles PWA registration for TRIBERIUM MVP
+// Register service worker for TRIBERIUM PWA
 
-export function registerPWA() {
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("/service-worker.js")
-        .then(() => {
-          console.log("TRIBERIUM PWA registered");
-        })
-        .catch(err => {
-          console.error("PWA registration failed", err);
-        });
-    });
-  }
-                            }
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./pwa/service-worker.js')
+      .then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      })
+      .catch(err => {
+        console.error('Service Worker registration failed:', err);
+      });
+  });
+}
