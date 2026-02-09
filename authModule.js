@@ -1,96 +1,66 @@
 // authModule.js
-// Handles Email + Google signup/login and username storage for TRIBERIUM MVP
+// Handles Sign Up, Login, and Google Login for TRIBERIUM MVP
 
-import { auth, db } from "./firebaseSetup.js";
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  updateProfile 
+import { auth } from "./firebaseModule.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 
-// Google provider
-const googleProvider = new GoogleAuthProvider();
+// Get elements from DOM
+const signupBtn = document.getElementById("signupBtn");
+const loginBtn = document.getElementById("loginBtn");
+const googleLoginBtn = document.getElementById("googleLoginBtn");
+const emailInput = document.getElementById("emailInput");
+const passwordInput = document.getElementById("passwordInput");
+const authMessage = document.getElementById("authMessage");
+const authContainer = document.getElementById("authContainer");
 
-// -------------------------------
-// Email Signup
-// -------------------------------
-export async function signupWithEmail(email, password, username) {
+// Email / Password Sign Up
+signupBtn.addEventListener("click", async () => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    // Update display name
-    await updateProfile(user, { displayName: username });
-
-    // Store user data in Firestore
-    await setDoc(doc(db, "users", user.uid), {
-      uid: user.uid,
-      email: user.email,
-      username: username,
-      createdAt: new Date()
-    });
-
-    console.log("User signed up:", username);
-    return user;
-
+    const userCredential = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+    authMessage.style.color = "#4a90e2";
+    authMessage.textContent = `Signed up as ${userCredential.user.email}`;
   } catch (error) {
-    console.error("Signup error:", error.message);
-    throw error;
+    authMessage.style.color = "#ff5555";
+    authMessage.textContent = error.message;
   }
-}
+});
 
-// -------------------------------
-// Email Login
-// -------------------------------
-export async function loginWithEmail(email, password) {
+// Email / Password Login
+loginBtn.addEventListener("click", async () => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("User logged in:", userCredential.user.displayName);
-    return userCredential.user;
+    const userCredential = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+    authMessage.style.color = "#4a90e2";
+    authMessage.textContent = `Logged in as ${userCredential.user.email}`;
   } catch (error) {
-    console.error("Login error:", error.message);
-    throw error;
+    authMessage.style.color = "#ff5555";
+    authMessage.textContent = error.message;
   }
-}
+});
 
-// -------------------------------
-// Google Login/Signup
-// -------------------------------
-export async function loginWithGoogle() {
+// Google Login
+googleLoginBtn.addEventListener("click", async () => {
+  const provider = new GoogleAuthProvider();
   try {
-    const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
-
-    // Ensure user exists in Firestore
-    const userRef = doc(db, "users", user.uid);
-    await setDoc(userRef, {
-      uid: user.uid,
-      email: user.email,
-      username: user.displayName || "Anonymous",
-      createdAt: new Date()
-    }, { merge: true });
-
-    console.log("Google login successful:", user.displayName);
-    return user;
-
+    const result = await signInWithPopup(auth, provider);
+    authMessage.style.color = "#4a90e2";
+    authMessage.textContent = `Logged in as ${result.user.displayName}`;
   } catch (error) {
-    console.error("Google login error:", error.message);
-    throw error;
+    authMessage.style.color = "#ff5555";
+    authMessage.textContent = error.message;
   }
-}
+});
 
-// -------------------------------
-// Logout
-// -------------------------------
-export async function logoutUser() {
-  try {
-    await signOut(auth);
-    console.log("User logged out");
-  } catch (error) {
-    console.error("Logout error:", error.message);
+// Detect Auth State to show/hide auth container
+onAuthStateChanged(auth, user => {
+  if (user) {
+    authContainer.style.display = "none"; // hide login/signup
+  } else {
+    authContainer.style.display = "block"; // show login/signup
   }
-      }
+});
