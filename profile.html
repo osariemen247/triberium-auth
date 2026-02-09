@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Profile</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="css/profileStyles.css">
+  <link rel="stylesheet" href="css/feedStyles.css">
+  <link rel="stylesheet" href="css/adminStyles.css">
+
+  <!-- Optional CSS Modules -->
+  <link rel="stylesheet" href="css/searchStyles.css">
+  <link rel="stylesheet" href="css/walletStyles.css">
+  <link rel="stylesheet" href="css/notificationsStyles.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="flex center" style="padding:16px; background:#121224; color:#4a90e2;">
+    <h1>TRIBERIUM</h1>
+    <nav>
+      <button onclick="navigateTo('home')">Home</button>
+      <button onclick="navigateTo('profile')">Profile</button>
+      <button onclick="navigateTo('admin')">Admin</button>
+      <button onclick="navigateTo('wallet')">Wallet</button>
+    </nav>
+  </header>
+
+  <!-- Profile Section -->
+  <section class="profile-container" id="profileContainer">
+    <div class="profile-header flex">
+      <img id="avatarImg" class="avatar" src="assets/default-avatar.png" alt="User Avatar">
+      <div class="profile-info">
+        <h2 id="username">Username</h2>
+        <p id="bio">User bio goes here...</p>
+        <div class="follow-stats flex">
+          <span id="followersCount">0 Followers</span>
+          <span id="followingCount">0 Following</span>
+        </div>
+      </div>
+      <button onclick="editProfile()" id="editProfileBtn">Edit Profile</button>
+    </div>
+
+    <!-- Followers & Following List -->
+    <section class="followers-container" id="followersContainer">
+      <!-- Followers/Following will be dynamically loaded -->
+    </section>
+
+    <!-- User Posts -->
+    <section class="feed-container" id="userFeedContainer">
+      <!-- User posts will be dynamically inserted here -->
+    </section>
+
+    <!-- TBM Wallet -->
+    <section class="wallet-container" id="walletContainer">
+      <div class="wallet-summary">
+        <span class="label">TBM Balance</span>
+        <span class="amount" id="tbmBalance">0 TBM</span>
+      </div>
+      <div class="wallet-actions">
+        <button onclick="topUpWallet()">Top Up</button>
+        <button onclick="sendTBM()">Send</button>
+      </div>
+      <div class="transaction-list" id="transactionList">
+        <!-- Transactions will be dynamically inserted -->
+      </div>
+    </section>
+  </section>
+
+  <!-- Notifications -->
+  <div class="notification-container" id="notificationContainer"></div>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="js/firebaseModule.js"></script>
+
+  <!-- Core JS Modules -->
+  <script type="module" src="js/profileModule.js"></script>
+  <script type="module" src="js/followModule.js"></script>
+  <script type="module" src="js/feedModule.js"></script>
+  <script type="module" src="js/searchModule.js"></script>
+  <script type="module" src="js/walletModule.js"></script>
+  <script type="module" src="js/notificationsModule.js"></script>
+  <script type="module" src="js/uiUtilitiesModule.js"></script>
+
+</body>
+  </html>
