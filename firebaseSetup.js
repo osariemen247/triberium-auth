@@ -1,13 +1,10 @@
-// firebaseSetup.js
-// Firebase configuration and initialization for TRIBERIUM MVP
-// Ready for GitHub deployment, supporting posts, DMs, metrics, TBM, ads
+// firebaseModule.js (GitHub SAFE)
 
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-// Firebase config — safe for GitHub deployment
 const firebaseConfig = {
   apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
   authDomain: "triberium-mvp.firebaseapp.com",
@@ -17,10 +14,8 @@ const firebaseConfig = {
   appId: "1:519861052514:web:56348e80320066cd311d3b"
 };
 
-// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 
-// Services exported for all modules
-export const auth = getAuth(app);       // For Email + Google login
-export const db = getFirestore(app);    // Firestore DB for posts, comments, likes, DMs, metrics
-export const storage = getStorage(app); // Storage for images & videos
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
