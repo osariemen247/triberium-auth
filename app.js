@@ -4,6 +4,7 @@ const passwordInput = document.getElementById('password');
 const signupBtn = document.getElementById('signup');
 const loginBtn = document.getElementById('login');
 const googleBtn = document.getElementById('googleLogin');
+const messageDiv = document.getElementById('message');
 
 // --- Email/Password Signup ---
 signupBtn.addEventListener('click', () => {
@@ -56,7 +57,7 @@ loginBtn.addEventListener('click', () => {
         return;
       }
 
-      alert("Login successful! Welcome " + user.email);
+      messageDiv.textContent = "Login successful! Welcome " + user.email;
       console.log("User logged in:", user.email);
     })
     .catch((error) => {
@@ -72,8 +73,8 @@ googleBtn.addEventListener('click', () => {
   firebase.auth().signInWithPopup(provider)
     .then((result) => {
       const user = result.user;
-      alert("Google login successful! Welcome " + user.email);
+      messageDiv.textContent = "Google login successful! Welcome " + user.email;
       console.log("Google login success:", user.email);
     })
     .catch((error) => {
-      console.error(error.code,
+      console.error
