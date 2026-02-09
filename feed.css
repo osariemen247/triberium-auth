@@ -1,0 +1,155 @@
+/* ============================= */
+/* TRIBERIUM MVP — Feed & Posts  */
+/* ============================= */
+
+/* Feed container */
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Individual post card */
+.post-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Post header: user info */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post-header img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-header .username {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Post content */
+.post-content {
+  font-size: 15px;
+  color: #222;
+}
+
+/* Post media (image/video) */
+.post-media img,
+.post-media video {
+  border-radius: 12px;
+  max-height: 400px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Post actions: likes, comments, DM, follow */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.post-actions button {
+  background-color: #f1f1f1;
+  color: #111;
+  font-weight: 500;
+  padding: 6px 12px;
+}
+
+.post-actions button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Ads container */
+.ads-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.ad-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.ad-card img {
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Search bar inside feed */
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.search-bar button {
+  padding: 10px 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .post-header img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .post-header .username {
+    font-size: 14px;
+  }
+
+  .post-content {
+    font-size: 14px;
+  }
+
+  .post-media img,
+  .post-media video {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-header img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .post-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ad-card img {
+    max-height: 150px;
+  }
+}

@@ -1,0 +1,189 @@
+/* ============================= */
+/* TRIBERIUM MVP — Global Styles */
+/* ============================= */
+
+/* Reset & Box Sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  color: #111;
+  min-height: 100vh;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background-color: #4a90e2;
+  color: #fff;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #357ab8;
+  transform: translateY(-1px);
+}
+
+input, textarea {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+img, video {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.container {
+  padding: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+p, span, li {
+  line-height: 1.5;
+}
+
+/* Lists */
+ul {
+  list-style: none;
+}
+
+/* Cards / Containers */
+.card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* Forms */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Links inside buttons */
+button a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Search bar */
+.search-bar input {
+  flex: 1;
+  margin-right: 8px;
+}
+
+/* Feed container */
+.feed-container, .ads-container {
+  margin-bottom: 24px;
+}
+
+/* Follow lists */
+.follow-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Metrics section */
+#metricsSection ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+#metricsSection ul li {
+  background-color: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+/* Responsive Layouts */
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  .flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  button {
+    padding: 8px 14px;
+  }
+
+  .search-bar input {
+    margin-bottom: 8px;
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  button {
+    padding: 6px 12px;
+  }
+}

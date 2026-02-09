@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Feed</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/feed.css">
+  <link rel="manifest" href="pwa/manifest.json">
+</head>
+<body>
+
+  <!-- ======================== -->
+  <!-- HEADER / NAV -->
+  <!-- ======================== -->
+  <header class="flex container">
+    <h1>TRIBERIUM</h1>
+    <a href="profile.html">Profile</a>
+  </header>
+
+  <!-- ======================== -->
+  <!-- SEARCH BAR -->
+  <!-- ======================== -->
+  <div class="search-bar container">
+    <input type="text" id="searchInput" placeholder="Search users or posts..." />
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <!-- ======================== -->
+  <!-- FEED + ADS -->
+  <!-- ======================== -->
+  <div class="feed-container container" id="feedContainer">
+    <!-- Posts will be injected here by posts.js -->
+  </div>
+
+  <div class="ads-container container" id="adsContainer">
+    <!-- Ads will be injected here by ads.js -->
+  </div>
+
+  <!-- ======================== -->
+  <!-- FOLLOWING / FOLLOWERS -->
+  <!-- ======================== -->
+  <section class="container">
+    <h3>Following</h3>
+    <div class="follow-list" id="followingList">
+      <!-- Following users injected here -->
+    </div>
+
+    <h3>Followers</h3>
+    <div class="follow-list" id="followersList">
+      <!-- Followers injected here -->
+    </div>
+  </section>
+
+  <!-- ======================== -->
+  <!-- METRICS PLACEHOLDERS -->
+  <!-- ======================== -->
+  <section class="container">
+    <h3>Metrics & Analytics</h3>
+    <ul>
+      <li>Total Posts: <span id="metricPosts">0</span></li>
+      <li>Total Likes: <span id="metricLikes">0</span></li>
+      <li>Total Comments: <span id="metricComments">0</span></li>
+      <li>Total Users: <span id="metricUsers">0</span></li>
+    </ul>
+  </section>
+
+  <!-- ======================== -->
+  <!-- SCRIPTS -->
+  <!-- ======================== -->
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/posts.js"></script>
+  <script type="module" src="js/likes.js"></script>
+  <script type="module" src="js/comments.js"></script>
+  <script type="module" src="js/tbm.js"></script>
+  <script type="module" src="js/ads.js"></script>
+  <script type="module" src="js/follow.js"></script>
+  <script type="module">
+    import { renderAds } from './js/ads.js';
+    import { loadFeed } from './js/posts.js';
+    import { loadMetrics } from './js/analytics.js';
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loadFeed('feedContainer');
+      await renderAds(document.getElementById('adsContainer'));
+      await loadMetrics();
+    });
+  </script>
+
+</body>
+</html>

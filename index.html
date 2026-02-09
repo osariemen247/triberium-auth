@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Login / Signup</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="pwa/manifest.json">
+</head>
+<body>
+
+  <!-- ======================== -->
+  <!-- HEADER -->
+  <!-- ======================== -->
+  <header class="flex container">
+    <h1>TRIBERIUM</h1>
+  </header>
+
+  <!-- ======================== -->
+  <!-- LOGIN / SIGNUP FORMS -->
+  <!-- ======================== -->
+  <section class="container center" id="authSection">
+    <h2>Welcome! Sign in or create an account</h2>
+
+    <!-- Email Signup / Login -->
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <input type="text" id="username" placeholder="Username (Signup only)">
+    <button id="signupBtn">Sign Up</button>
+    <button id="loginBtn">Login</button>
+
+    <hr>
+
+    <!-- Google Sign In -->
+    <button id="googleLoginBtn">Sign in with Google</button>
+  </section>
+
+  <!-- ======================== -->
+  <!-- METRICS PLACEHOLDER (OPTIONAL) -->
+  <!-- ======================== -->
+  <section class="container center" id="authMetrics">
+    <h3>TRIBERIUM Metrics</h3>
+    <ul>
+      <li>Total Users: <span id="metricUsers">0</span></li>
+    </ul>
+  </section>
+
+  <!-- ======================== -->
+  <!-- SCRIPTS -->
+  <!-- ======================== -->
+  <script type="module" src="js/firebase.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module" src="js/analytics.js"></script>
+  <script type="module">
+    import { updateUserCount } from './js/analytics.js';
+    document.addEventListener("DOMContentLoaded", async () => {
+      await updateUserCount();
+    });
+  </script>
+
+</body>
+</html>
