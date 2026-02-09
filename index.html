@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TRIBERIUM MVP</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
-  <script src="firebase.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
+
   <div class="container">
-    <h1>TRIBERIUM MVP</h1>
+    <h1>TRIBERIUM</h1>
+    <p class="subtitle">Decentralized Identity MVP</p>
 
-    <div class="auth-card">
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
 
-      <button id="signup">Sign Up</button>
-      <button id="login">Login</button>
-      <button id="googleLogin">Continue with Google</button>
-    </div>
+    <button onclick="emailSignUp()">Sign Up</button>
+    <button onclick="emailLogin()">Login</button>
 
-    <div id="message"></div>
+    <div class="divider">OR</div>
+
+    <button class="google-btn" onclick="googleLogin()">Continue with Google</button>
+
+    <p id="status"></p>
   </div>
 
+  <!-- App Logic -->
+  <script src="firebase.js"></script>
   <script src="app.js"></script>
+
 </body>
 </html>
