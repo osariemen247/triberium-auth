@@ -6,47 +6,86 @@
   <title>TRIBERIUM — Welcome</title>
 
   <!-- Favicon -->
-  <link rel="icon" href="./pwa/icons/icon-192x192.png">
-
-  <!-- Manifest -->
-  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
 
   <!-- Core CSS -->
-  <link rel="stylesheet" href="./css/authStyles.css">
-  <link rel="stylesheet" href="./css/feedStyles.css">
+  <link rel="stylesheet" href="css/feedStyles.css">
+  <link rel="stylesheet" href="css/profileStyles.css">
+  <link rel="stylesheet" href="css/adminStyles.css">
+  <link rel="stylesheet" href="css/searchStyles.css">
+  <link rel="stylesheet" href="css/walletStyles.css">
+  <link rel="stylesheet" href="css/notificationsStyles.css">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .auth-container {
+      max-width: 400px;
+      margin: 10vh auto;
+      padding: 30px;
+      background: rgba(18, 18, 36, 0.85);
+      border-radius: 16px;
+      box-shadow: 0 0 40px #4a90e2;
+      text-align: center;
+    }
+    .auth-container h2 {
+      margin-bottom: 20px;
+      color: #4a90e2;
+    }
+    .auth-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+    .auth-container button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 8px;
+      background: #4a90e2;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .auth-container button:hover {
+      background: #67aaff;
+    }
+    #authMessage {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
 
-  <main class="auth-page" style="background:linear-gradient(135deg, #121224, #1b1d3b); color:#4a90e2; font-family:'Orbitron', sans-serif; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh;">
+  <!-- Authentication Section -->
+  <section class="auth-container" id="authContainer">
+    <h2>Welcome to TRIBERIUM</h2>
+    <input type="email" id="emailInput" placeholder="Email">
+    <input type="password" id="passwordInput" placeholder="Password">
+    <button id="signupBtn">Sign Up</button>
+    <button id="loginBtn">Login</button>
+    <button id="googleLoginBtn">Login with Google</button>
+    <div id="authMessage"></div>
+  </section>
 
-    <!-- Logo / Title -->
-    <h1 style="font-size:3rem; margin-bottom:24px;">TRIBERIUM</h1>
-    <p style="margin-bottom:32px; color:#9ca3af;">The crypto-social community platform</p>
-
-    <!-- Auth Container -->
-    <section class="auth-container" id="authContainer" style="display:flex; flex-direction:column; gap:12px; width:280px;">
-      
-      <!-- Email / Password -->
-      <input type="email" id="emailInput" placeholder="Email" style="padding:12px; border-radius:8px; border:none; outline:none;">
-      <input type="password" id="passwordInput" placeholder="Password" style="padding:12px; border-radius:8px; border:none; outline:none;">
-      
-      <button id="signupBtn" style="padding:12px; border:none; border-radius:8px; background:#4a90e2; color:white; cursor:pointer;">Sign Up</button>
-      <button id="loginBtn" style="padding:12px; border:none; border-radius:8px; background:#10b981; color:white; cursor:pointer;">Login</button>
-
-      <!-- Google Sign-In -->
-      <button id="googleLoginBtn" style="padding:12px; border:none; border-radius:8px; background:#fbbc05; color:black; cursor:pointer;">Login with Google</button>
-
-      <div id="authMessage" style="color:#ff5555; margin-top:8px;"></div>
-    </section>
-
-  </main>
-
-  <!-- Firebase -->
+  <!-- Firebase + Auth JS -->
   <script type="module" src="./js/firebaseModule.js"></script>
   <script type="module" src="./js/authModule.js"></script>
 
 </body>
-        </html>
+      </html>
