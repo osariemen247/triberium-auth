@@ -1,0 +1,53 @@
+document.addEventListener("DOMContentLoaded", () => {
+  // DOM is ready
+  const signupBtn = document.getElementById("signupBtn");
+  const loginBtn = document.getElementById("loginBtn");
+  const googleLoginBtn = document.getElementById("googleLoginBtn");
+  const emailInput = document.getElementById("emailInput");
+  const passwordInput = document.getElementById("passwordInput");
+  const authMessage = document.getElementById("authMessage");
+  const authContainer = document.getElementById("authContainer");
+
+  // Email Sign Up
+  signupBtn.addEventListener("click", async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+      authMessage.style.color = "#4a90e2";
+      authMessage.textContent = `Signed up as ${userCredential.user.email}`;
+    } catch (error) {
+      authMessage.style.color = "#ff5555";
+      authMessage.textContent = error.message;
+    }
+  });
+
+  // Email Login
+  loginBtn.addEventListener("click", async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+      authMessage.style.color = "#4a90e2";
+      authMessage.textContent = `Logged in as ${userCredential.user.email}`;
+    } catch (error) {
+      authMessage.style.color = "#ff5555";
+      authMessage.textContent = error.message;
+    }
+  });
+
+  // Google Login
+  googleLoginBtn.addEventListener("click", async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      authMessage.style.color = "#4a90e2";
+      authMessage.textContent = `Logged in as ${result.user.displayName}`;
+    } catch (error) {
+      authMessage.style.color = "#ff5555";
+      authMessage.textContent = error.message;
+    }
+  });
+
+  // Detect Auth State
+  onAuthStateChanged(auth, user => {
+    if (user) authContainer.style.display = "none";
+    else authContainer.style.display = "block";
+  });
+});
