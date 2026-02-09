@@ -3,61 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRIBERIUM — Home</title>
+  <title>TRIBERIUM — Home Feed</title>
 
   <!-- Favicon -->
-  <link rel="icon" href="./pwa/icons/icon-192x192.png">
-
-  <!-- Manifest -->
-  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
 
   <!-- Core CSS -->
-  <link rel="stylesheet" href="./css/feedStyles.css">
-  <link rel="stylesheet" href="./css/profileStyles.css">
-  <link rel="stylesheet" href="./css/adminStyles.css">
-
-  <!-- Optional Modules -->
-  <link rel="stylesheet" href="./css/searchStyles.css">
-  <link rel="stylesheet" href="./css/walletStyles.css">
-  <link rel="stylesheet" href="./css/notificationsStyles.css">
+  <link rel="stylesheet" href="css/feedStyles.css">
+  <link rel="stylesheet" href="css/profileStyles.css">
+  <link rel="stylesheet" href="css/adminStyles.css">
+  <link rel="stylesheet" href="css/searchStyles.css">
+  <link rel="stylesheet" href="css/walletStyles.css">
+  <link rel="stylesheet" href="css/notificationsStyles.css">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #121224;
+      color: #4a90e2;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    header nav button {
+      margin-left: 12px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: #4a90e2;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    header nav button:hover { background:#67aaff; }
+
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    .search-bar {
+      display: flex;
+      width: 100%;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px 0 0 8px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+    .search-bar button {
+      padding: 12px;
+      border: none;
+      border-radius: 0 8px 8px 0;
+      background: #4a90e2;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .search-results { margin-top: 12px; }
+
+    .feed-container {
+      max-width: 600px;
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .notification-container {
+      position: fixed;
+      top: 80px;
+      right: 16px;
+      width: 280px;
+      background: rgba(18,18,36,0.9);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 0 20px #4a90e2;
+    }
+  </style>
 </head>
-<body style="font-family:'Orbitron', sans-serif; background:#121224; color:#ffffff;">
+<body>
 
   <!-- Header -->
-  <header class="flex center" style="padding:16px; background:#1b1d3b; color:#4a90e2; display:flex; justify-content:space-between; align-items:center;">
+  <header>
     <h1>TRIBERIUM</h1>
-    <nav style="display:flex; gap:12px;">
+    <nav>
       <button onclick="navigateTo('home')">Home</button>
       <button onclick="navigateTo('profile')">Profile</button>
-      <button onclick="navigateTo('wallet')">Wallet</button>
       <button onclick="navigateTo('admin')">Admin</button>
-      <button id="logoutBtn">Logout</button>
+      <button onclick="navigateTo('wallet')">Wallet</button>
     </nav>
   </header>
 
   <!-- Search Bar -->
-  <section class="search-container" style="padding:12px; background:#1b1d3b; display:flex; flex-direction:column; gap:8px;">
-    <div class="search-bar" style="display:flex; gap:8px;">
-      <input type="text" id="searchInput" placeholder="Search users or posts..." style="flex:1; padding:8px; border-radius:6px; border:none; outline:none;">
-      <button onclick="handleSearch()" style="padding:8px; border-radius:6px; background:#4a90e2; color:white;">Search</button>
+  <section class="search-container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search users or posts..." oninput="handleSearch()">
+      <button onclick="handleSearch()">Search</button>
     </div>
     <div class="search-results" id="searchResults"></div>
   </section>
 
   <!-- Feed Section -->
-  <section class="feed-container" id="feedContainer" style="padding:12px;">
-    <!-- Posts dynamically inserted by feedModule.js -->
+  <section class="feed-container" id="feedContainer">
+    <!-- Posts will be dynamically loaded by feedModule.js -->
   </section>
 
   <!-- Notifications -->
   <div class="notification-container" id="notificationContainer"></div>
 
-  <!-- Firebase & Modules -->
+  <!-- Firebase + Core JS Modules -->
   <script type="module" src="./js/firebaseModule.js"></script>
-  <script type="module" src="./js/navigationModule.js"></script>
+  <script type="module" src="./js/authModule.js"></script>
   <script type="module" src="./js/feedModule.js"></script>
   <script type="module" src="./js/profileModule.js"></script>
   <script type="module" src="./js/adminModule.js"></script>
@@ -66,7 +138,6 @@
   <script type="module" src="./js/walletModule.js"></script>
   <script type="module" src="./js/notificationsModule.js"></script>
   <script type="module" src="./js/uiUtilitiesModule.js"></script>
-  <script type="module" src="./js/pwaModule.js"></script>
 
 </body>
-    </html>
+</html>
