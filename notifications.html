@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Notifications</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="css/notificationsStyles.css">
+  <link rel="stylesheet" href="css/feedStyles.css">
+  <link rel="stylesheet" href="css/profileStyles.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="flex center" style="padding:16px; background:#121224; color:#4a90e2;">
+    <h1>TRIBERIUM</h1>
+    <nav>
+      <button onclick="navigateTo('home')">Home</button>
+      <button onclick="navigateTo('profile')">Profile</button>
+      <button onclick="navigateTo('admin')">Admin</button>
+      <button onclick="navigateTo('wallet')">Wallet</button>
+    </nav>
+  </header>
+
+  <!-- Notifications Center -->
+  <section class="notifications-center" id="notificationsCenter">
+    <h2>Your Notifications</h2>
+    <div id="notificationList">
+      <!-- Notifications dynamically loaded via notificationsModule.js -->
+    </div>
+  </section>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="js/firebaseModule.js"></script>
+
+  <!-- JS Modules -->
+  <script type="module" src="js/notificationsModule.js"></script>
+  <script type="module" src="js/uiUtilitiesModule.js"></script>
+  <script type="module" src="js/profileModule.js"></script>
+
+</body>
+  </html>
