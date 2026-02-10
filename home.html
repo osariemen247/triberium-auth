@@ -1,220 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TRIBERIUM — Home</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg: #0f1419;
-  --panel: #161b22;
-  --border: #2f3336;
-  --text: #e7e9ea;
-  --muted: #71767b;
-  --accent: #1da1f2;
-}
+  /* ===== RESET ===== */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Orbitron', sans-serif; }
+  body { background:#0f1015; color:#e0e0e0; min-height:100vh; overflow-x:hidden; padding-bottom:70px; }
 
-* { box-sizing: border-box; }
+  /* ===== TOP BAR ===== */
+  .top-bar {
+    position: sticky;
+    top:0;
+    z-index:100;
+    background: rgba(15,16,21,0.95);
+    backdrop-filter: blur(12px);
+    padding:12px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #1f1f2b;
+  }
+  .logo { font-weight:700; font-size:1.2rem; letter-spacing:1px; }
+  .logo span { color:#00ffc3; }
+  .top-right { display:flex; align-items:center; gap:14px; }
+  .wallet { font-size:0.85rem; background:rgba(0,255,195,0.1); padding:4px 8px; border-radius:12px; }
 
-body {
-  margin: 0;
-  font-family: Inter, system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
+  /* ===== SEARCH BAR ===== */
+  .search-container {
+    padding:8px 16px;
+    background: rgba(25,25,35,0.85);
+    display:flex; gap:8px; align-items:center;
+    backdrop-filter: blur(8px);
+    border-radius:12px;
+    margin:12px 16px;
+  }
+  .search-container input {
+    flex:1;
+    padding:8px 12px;
+    border:none;
+    border-radius:12px;
+    background:#1a1b27;
+    color:#e0e0e0;
+  }
+  .search-container button {
+    padding:8px 12px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00ffc3,#007aff);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+  }
 
-.app {
-  display: grid;
-  grid-template-columns: 240px minmax(0, 600px) 320px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+  /* ===== FEED ===== */
+  .feed { display:flex; flex-direction:column; gap:12px; padding:12px 16px 80px 16px; overflow-y:auto; }
+  .post {
+    background: rgba(25,25,35,0.85);
+    border:1px solid #2a2a3c;
+    border-radius:16px;
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    box-shadow: 0 4px 15px rgba(0,255,195,0.2);
+    backdrop-filter: blur(6px);
+    transition: transform 0.15s;
+  }
+  .post:hover { transform: translateY(-2px); }
 
-/* LEFT NAV */
-nav {
-  padding: 20px;
-}
+  .post-header { display:flex; align-items:center; gap:10px; }
+  .avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#00ffc3,#007aff); display:flex; align-items:center; justify-content:center; font-weight:bold; color:#fff; }
+  .username { font-weight:700; font-size:0.95rem; }
+  .handle { color:#8b98a5; font-size:0.8rem; }
+  .post-content { font-size:0.95rem; line-height:1.4; }
+  .post-actions { display:flex; justify-content:space-between; padding-top:6px; border-top:1px solid #2a2a3c; font-size:0.85rem; color:#8b98a5; }
+  .post-actions span { cursor:pointer; transition:0.2s; }
+  .post-actions span:hover { color:#00ffc3; transform:scale(1.2); }
 
-nav h1 {
-  font-size: 22px;
-  margin-bottom: 24px;
-}
+  /* ===== FOLLOW BUTTONS ===== */
+  .follow-buttons { display:flex; gap:8px; margin:8px 0; }
+  .follow-buttons button { flex:1; padding:6px; border:none; border-radius:12px; background:linear-gradient(135deg,#007aff,#00ffc3); color:#fff; font-weight:600; cursor:pointer; transition:0.2s; }
+  .follow-buttons button:hover { transform:scale(1.05); }
 
-.nav-btn {
-  display: block;
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  border-radius: 999px;
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 500;
-}
+  /* ===== TIP BUTTON ===== */
+  .tip-btn { padding:4px 8px; background:linear-gradient(135deg,#ff00ff,#00ffc3); border:none; border-radius:8px; color:#fff; font-weight:600; cursor:pointer; font-size:0.85rem; transition:0.2s; }
+  .tip-btn:hover { transform:scale(1.1); }
 
-.nav-btn:hover {
-  background: var(--panel);
-}
+  /* ===== BOTTOM NAV ===== */
+  .bottom-nav {
+    position: fixed;
+    bottom:0; left:0; width:100%;
+    background: rgba(15,16,21,0.95);
+    backdrop-filter: blur(12px);
+    display:flex; justify-content:space-around; align-items:center;
+    padding:10px 0;
+    border-top:1px solid #1f1f2b;
+    z-index:100;
+  }
+  .bottom-nav button {
+    flex:1;
+    border:none;
+    background:none;
+    color:#8b98a5;
+    font-weight:700;
+    font-size:0.85rem;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    transition:0.2s;
+  }
+  .bottom-nav button.active { color:#00ffc3; }
+  .bottom-nav button:hover { color:#00ffc3; }
 
-.logout {
-  margin-top: 24px;
-  color: #f4212e;
-  cursor: pointer;
-}
-
-/* FEED */
-.feed {
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  min-height: 100vh;
-}
-
-.feed-header {
-  padding: 16px;
-  font-weight: 600;
-  border-bottom: 1px solid var(--border);
-}
-
-.composer {
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.composer textarea {
-  width: 100%;
-  background: transparent;
-  border: none;
-  resize: none;
-  color: var(--text);
-  font-size: 16px;
-}
-
-.composer textarea:focus {
-  outline: none;
-}
-
-.post-btn {
-  margin-top: 12px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* POSTS */
-.post {
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.post-author {
-  font-weight: 600;
-}
-
-.post-content {
-  margin-top: 6px;
-}
-
-/* RIGHT PANEL */
-.side {
-  padding: 20px;
-}
-
-.card {
-  background: var(--panel);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.card h3 {
-  margin: 0 0 8px;
-  font-size: 16px;
-}
 </style>
 </head>
 
 <body>
 
-<div class="app">
-
-  <!-- LEFT -->
-  <nav>
-    <h1>TRIBERIUM</h1>
-    <a class="nav-btn">Home</a>
-    <a class="nav-btn">Profile</a>
-    <a class="nav-btn">Wallet</a>
-    <a class="nav-btn">Governance</a>
-
-    <div class="logout" id="logoutBtn">Log out</div>
-  </nav>
-
-  <!-- CENTER -->
-  <main class="feed">
-    <div class="feed-header">Home</div>
-
-    <div class="composer">
-      <textarea rows="3" placeholder="What’s happening in the network?"></textarea>
-      <button class="post-btn">Post</button>
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="logo">TRIBE<span>RIUM</span></div>
+    <div class="top-right">
+      <div class="wallet" id="walletBalance">Wallet: 0.00 TRB</div>
+      <div class="notification-btn" title="Notifications">🔔</div>
     </div>
+  </header>
 
-    <!-- SAMPLE POSTS -->
-    <div class="post">
-      <div class="post-author">TRIBERIUM</div>
-      <div class="post-content">
-        Welcome to a mature SocialFi network.
-      </div>
-    </div>
+  <!-- SEARCH -->
+  <div class="search-container">
+    <input type="text" placeholder="Search users or posts..." id="searchInput">
+    <button onclick="alert('Search clicked')">Search</button>
+  </div>
 
-    <div class="post">
-      <div class="post-author">Community</div>
-      <div class="post-content">
-        Reputation, value, and discourse — aligned.
-      </div>
-    </div>
+  <!-- FEED -->
+  <main class="feed" id="feedContainer">
+    <!-- Dynamic posts from Firebase will populate here -->
   </main>
 
-  <!-- RIGHT -->
-  <aside class="side">
-    <div class="card">
-      <h3>SocialFi Score</h3>
-      <p>Coming soon</p>
-    </div>
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="active" onclick="navigateBottom('home')">🏠<br>Home</button>
+    <button onclick="navigateBottom('wallet')">💰<br>Wallet</button>
+    <button onclick="navigateBottom('notifications')">🔔<br>Notifs</button>
+    <button onclick="navigateBottom('profile')">👤<br>Profile</button>
+  </nav>
 
-    <div class="card">
-      <h3>Wallet</h3>
-      <p>Connect & earn reputation</p>
-    </div>
-  </aside>
+  <!-- FLOATING POST BUTTON -->
+  <div class="fab" title="Create Post" onclick="alert('Create Post clicked')">+</div>
 
-</div>
-
-<!-- 🔐 AUTH GUARD -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-  const app = initializeApp({
-    apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
-    authDomain: "triberium-mvp.firebaseapp.com",
-    projectId: "triberium-mvp"
-  });
-
-  const auth = getAuth(app);
-
-  onAuthStateChanged(auth, user => {
-    if (!user) location.href = "index.html";
-  });
-
-  logoutBtn.onclick = async () => {
-    await signOut(auth);
-    location.href = "index.html";
-  };
-</script>
-
+  <!-- Firebase & Modules -->
+  <script type="module" src="js/firebaseModule.js"></script>
+  <script type="module" src="js/feedModule.js"></script>
+  <script type="module" src="js/profileModule.js"></script>
+  <script type="module" src="js/adminModule.js"></script>
+  <script type="module" src="js/followModule.js"></script>
+  <script type="module" src="js/searchModule.js"></script>
+  <script type="module" src="js/walletModule.js"></script>
+  <script type="module" src="js/notificationsModule.js"></script>
+  <script type="module" src="js/uiUtilitiesModule.js"></script>
 </body>
   </html>
