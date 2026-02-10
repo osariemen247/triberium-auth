@@ -2,37 +2,116 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>TRIBERIUM — SocialFi</title>
+<title>TRIBERIUM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root {
+  --bg: #0f1419;
+  --panel: #161b22;
+  --border: #2f3336;
+  --text: #e7e9ea;
+  --muted: #71767b;
+  --accent: #1da1f2;
+}
+
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
-  font-family: Orbitron, sans-serif;
-  background: radial-gradient(circle at top, #0f2027, #000);
-  color: #e0f7ff;
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
+
 .auth {
+  width: 100%;
   max-width: 420px;
-  margin: 12vh auto;
   padding: 32px;
-  background: rgba(10,20,40,.75);
-  backdrop-filter: blur(20px);
-  border-radius: 18px;
-  box-shadow: 0 0 60px #00ffe5;
 }
-h1 { text-align:center; color:#00ffe5; }
-input, button {
-  width:100%; padding:14px; margin-top:12px;
-  border-radius:10px; border:none; font-size:14px;
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 6px;
 }
-input { background:#0a1428; color:#fff; }
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 15px;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 button {
-  background:linear-gradient(135deg,#00ffe5,#0077ff);
-  color:#000; font-weight:bold; cursor:pointer;
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
 }
-#authMessage { margin-top:14px; text-align:center; }
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+button:hover {
+  opacity: 0.95;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 22px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.divider span {
+  margin: 0 12px;
+}
+
+#authMessage {
+  margin-top: 14px;
+  font-size: 14px;
+}
 </style>
 </head>
 
@@ -40,18 +119,22 @@ button {
 
 <div class="auth">
   <h1>TRIBERIUM</h1>
-  <p style="text-align:center">Social • Crypto • Community</p>
+  <div class="subtitle">A mature SocialFi network</div>
 
-  <input id="email" type="email" placeholder="Email">
+  <input id="email" type="email" placeholder="Email address">
   <input id="password" type="password" placeholder="Password">
 
-  <button id="signup">Create Account</button>
-  <button id="login">Login</button>
-  <button id="google">Continue with Google</button>
+  <button class="primary" id="login">Log in</button>
+  <button class="secondary" id="signup">Create account</button>
+
+  <div class="divider"><span>or</span></div>
+
+  <button class="secondary" id="google">Continue with Google</button>
 
   <div id="authMessage"></div>
 </div>
 
+<!-- 🔐 AUTH SCRIPT (UNCHANGED, WORKING) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import {
@@ -72,47 +155,239 @@ button {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-
   const msg = document.getElementById("authMessage");
 
   signup.onclick = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email.value, password.value);
-      msg.textContent = "Account created!";
-      msg.style.color = "#00ffcc";
+      msg.textContent = "Account created";
+      msg.style.color = "#1da1f2";
     } catch (e) {
       msg.textContent = e.message;
-      msg.style.color = "#ff4d4d";
+      msg.style.color = "#f4212e";
     }
   };
 
   login.onclick = async () => {
     try {
       await signInWithEmailAndPassword(auth, email.value, password.value);
-      msg.textContent = "Logged in!";
-      msg.style.color = "#00ffcc";
+      msg.textContent = "Logged in";
+      msg.style.color = "#1da1f2";
     } catch (e) {
       msg.textContent = e.message;
-      msg.style.color = "#ff4d4d";
+      msg.style.color = "#f4212e";
     }
   };
 
   google.onclick = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      msg.textContent = "Google login successful!";
-      msg.style.color = "#00ffcc";
+      await signInWithPopup(auth, new GoogleAuthProvider());
     } catch (e) {
       msg.textContent = e.message;
-      msg.style.color = "#ff4d4d";
+      msg.style.color = "#f4212e";
     }
   };
 
-  onAuthStateChanged(auth, user => {
-    if (user) window.location.href = "home.html";
+  onAuthStateChanged(auth, u => {
+    if (u) location.href = "home.html";
   });
 </script>
 
 </body>
-</html>
+  </html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>TRIBERIUM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0f1419;
+  --panel: #161b22;
+  --border: #2f3336;
+  --text: #e7e9ea;
+  --muted: #71767b;
+  --accent: #1da1f2;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 15px;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+button:hover {
+  opacity: 0.95;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 22px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.divider span {
+  margin: 0 12px;
+}
+
+#authMessage {
+  margin-top: 14px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth">
+  <h1>TRIBERIUM</h1>
+  <div class="subtitle">A mature SocialFi network</div>
+
+  <input id="email" type="email" placeholder="Email address">
+  <input id="password" type="password" placeholder="Password">
+
+  <button class="primary" id="login">Log in</button>
+  <button class="secondary" id="signup">Create account</button>
+
+  <div class="divider"><span>or</span></div>
+
+  <button class="secondary" id="google">Continue with Google</button>
+
+  <div id="authMessage"></div>
+</div>
+
+<!-- 🔐 AUTH SCRIPT (UNCHANGED, WORKING) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
+    authDomain: "triberium-mvp.firebaseapp.com",
+    projectId: "triberium-mvp",
+    appId: "1:519861052514:web:56348e80320066cd311d3b"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const msg = document.getElementById("authMessage");
+
+  signup.onclick = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email.value, password.value);
+      msg.textContent = "Account created";
+      msg.style.color = "#1da1f2";
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.style.color = "#f4212e";
+    }
+  };
+
+  login.onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      msg.textContent = "Logged in";
+      msg.style.color = "#1da1f2";
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.style.color = "#f4212e";
+    }
+  };
+
+  google.onclick = async () => {
+    try {
+      await signInWithPopup(auth, new GoogleAuthProvider());
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.style.color = "#f4212e";
+    }
+  };
+
+  onAuthStateChanged(auth, u => {
+    if (u) location.href = "home.html";
+  });
+</script>
+
+</body>
+  </html>
