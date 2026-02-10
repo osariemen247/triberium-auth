@@ -1,197 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>TRIBERIUM</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>TRIBERIUM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<style>
-:root {
-  --bg: #0f1419;
-  --panel: #161b22;
-  --border: #2f3336;
-  --text: #e7e9ea;
-  --muted: #71767b;
-  --accent: #1da1f2;
-}
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-* { box-sizing: border-box; }
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/authStyles.css">
 
-body {
-  margin: 0;
-  font-family: Inter, system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  <style>
+    /* --- Base Styles for TRIBERIUM Auth --- */
+    :root {
+      --bg: #0f1419;
+      --panel: #161b22;
+      --border: #2f3336;
+      --text: #e7e9ea;
+      --muted: #71767b;
+      --accent: #1da1f2;
+    }
 
-.auth {
-  width: 100%;
-  max-width: 420px;
-  padding: 32px;
-}
+    * { box-sizing: border-box; }
 
-h1 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-.subtitle {
-  color: var(--muted);
-  margin-bottom: 28px;
-}
+    .auth {
+      width: 100%;
+      max-width: 420px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-input {
-  width: 100%;
-  padding: 14px;
-  margin-bottom: 12px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-size: 15px;
-}
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
 
-input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 28px;
+      font-size: 15px;
+      text-align: center;
+    }
 
-button {
-  width: 100%;
-  padding: 14px;
-  border-radius: 999px;
-  border: none;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 10px;
-}
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+    }
 
-.primary {
-  background: var(--accent);
-  color: #fff;
-}
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
 
-.secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-}
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-button:hover {
-  opacity: 0.95;
-}
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
 
-.divider {
-  display: flex;
-  align-items: center;
-  margin: 22px 0;
-  color: var(--muted);
-  font-size: 13px;
-}
+    .secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
 
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
+    button:hover {
+      opacity: 0.95;
+    }
 
-.divider span {
-  margin: 0 12px;
-}
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 22px 0;
+      color: var(--muted);
+      font-size: 13px;
+      width: 100%;
+    }
 
-#authMessage {
-  margin-top: 14px;
-  font-size: 14px;
-}
-</style>
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider span {
+      margin: 0 12px;
+      text-align: center;
+    }
+
+    #authMessage {
+      margin-top: 14px;
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="auth">
-  <h1>TRIBERIUM</h1>
-  <div class="subtitle">Connect, Create, Earn, Belong</div>
+  <div class="auth">
+    <h1>TRIBERIUM</h1>
+    <div class="subtitle">Connect, Create, Earn, Belong</div>
 
-  <input id="email" type="email" placeholder="Email address">
-  <input id="password" type="password" placeholder="Password">
+    <input id="email" type="email" placeholder="Email address">
+    <input id="password" type="password" placeholder="Password">
 
-  <button class="primary" id="login">Log in</button>
-  <button class="secondary" id="signup">Create account</button>
+    <button class="primary" id="login">Log in</button>
+    <button class="secondary" id="signup">Create account</button>
 
-  <div class="divider"><span>or</span></div>
+    <div class="divider"><span>or</span></div>
 
-  <button class="secondary" id="google">Continue with Google</button>
+    <button class="secondary" id="google">Continue with Google</button>
 
-  <div id="authMessage"></div>
-</div>
+    <div id="authMessage"></div>
+  </div>
 
-<!-- 🔐 AUTH SCRIPT (UNCHANGED, WORKING) -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    GoogleAuthProvider,
-    signInWithPopup,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  <!-- 🔐 AUTH SCRIPT -->
+  <script type="module">
+    import { auth, monitorAuthState, loginWithGoogle } from "./js/firebaseModule.js";
+    import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
-    authDomain: "triberium-mvp.firebaseapp.com",
-    projectId: "triberium-mvp",
-    appId: "1:519861052514:web:56348e80320066cd311d3b"
-  };
+    const emailField = document.getElementById("email");
+    const passwordField = document.getElementById("password");
+    const signupBtn = document.getElementById("signup");
+    const loginBtn = document.getElementById("login");
+    const googleBtn = document.getElementById("google");
+    const msg = document.getElementById("authMessage");
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const msg = document.getElementById("authMessage");
+    // Signup with email/password
+    signupBtn.onclick = async () => {
+      try {
+        await createUserWithEmailAndPassword(auth, emailField.value, passwordField.value);
+        msg.textContent = "Account created successfully!";
+        msg.style.color = "#1da1f2";
+      } catch (e) {
+        msg.textContent = e.message;
+        msg.style.color = "#f4212e";
+      }
+    };
 
-  signup.onclick = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email.value, password.value);
-      msg.textContent = "Account created";
-      msg.style.color = "#1da1f2";
-    } catch (e) {
-      msg.textContent = e.message;
-      msg.style.color = "#f4212e";
-    }
-  };
+    // Login with email/password
+    loginBtn.onclick = async () => {
+      try {
+        await signInWithEmailAndPassword(auth, emailField.value, passwordField.value);
+        msg.textContent = "Logged in successfully!";
+        msg.style.color = "#1da1f2";
+      } catch (e) {
+        msg.textContent = e.message;
+        msg.style.color = "#f4212e";
+      }
+    };
 
-  login.onclick = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email.value, password.value);
-      msg.textContent = "Logged in";
-      msg.style.color = "#1da1f2";
-    } catch (e) {
-      msg.textContent = e.message;
-      msg.style.color = "#f4212e";
-    }
-  };
+    // Login with Google
+    googleBtn.onclick = async () => {
+      try {
+        await loginWithGoogle();
+      } catch (e) {
+        msg.textContent = e.message;
+        msg.style.color = "#f4212e";
+      }
+    };
 
-  google.onclick = async () => {
-    try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
-    } catch (e) {
-      msg.textContent = e.message;
-      msg.style.color = "#f4212e";
-    }
-  };
-
-  onAuthStateChanged(auth, u => {
-    if (u) location.href = "home.html";
-  });
-</script>
+    // Redirect if user is already logged in
+    monitorAuthState(() => {
+      window.location.href = "home.html";
+    });
+  </script>
 
 </body>
-</html>
+      </html>
