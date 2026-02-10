@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Chat</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/chatStyles.css">
+  <link rel="stylesheet" href="css/profileStyles.css">
+  <link rel="stylesheet" href="css/feedStyles.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Mobile-first Chat Page --- */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e6ecf0;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 100;
+    }
+    header .logo {
+      font-weight: 700;
+      color: #1d72b8;
+      font-size: 1.4rem;
+      animation: pulse 1.5s infinite alternate;
+    }
+    header button {
+      border: none;
+      background: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Chat List */
+    main.chat-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px 0;
+      background: #fff;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e6ecf0;
+      cursor: pointer;
+      gap: 12px;
+    }
+
+    .chat-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .chat-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .chat-info .username {
+      font-weight: 600;
+    }
+    .chat-info .last-message {
+      font-size: 0.85rem;
+      color: #657786;
+      margin-top: 2px;
+    }
+
+    .chat-time {
+      font-size: 0.75rem;
+      color: #657786;
+    }
+
+    /* Bottom Navigation */
+    nav.bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #e6ecf0;
+      background: #fff;
+      padding: 8px 0;
+      position: sticky;
+      bottom: 0;
+    }
+    nav.bottom-nav button {
+      border: none;
+      background: none;
+      font-weight: 600;
+      color: #657786;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    nav.bottom-nav button.active { color: #1d72b8; }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">TRIBERIUM</div>
+  <button onclick="toggleSideNav()">☰</button>
+</header>
+
+<!-- Chat List -->
+<main class="chat-list" id="chatList">
+  <!-- Sample Chat Items -->
+  <div class="chat-item" onclick="openChat('alice')">
+    <img src="" alt="Alice Johnson">
+    <div class="chat-info">
+      <div class="username">Alice Johnson</div>
+      <div class="last-message">Hey, did you check TRIBERIUM today?</div>
+    </div>
+    <div class="chat-time">10:24 AM</div>
+  </div>
+
+  <div class="chat-item" onclick="openChat('bob')">
+    <img src="" alt="Bob Smith">
+    <div class="chat-info">
+      <div class="username">Bob Smith</div>
+      <div class="last-message">Let's connect and explore posts!</div>
+    </div>
+    <div class="chat-time">09:15 AM</div>
+  </div>
+</main>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button onclick="navigateBottom('home')">Home</button>
+  <button onclick="navigateBottom('wallet')">Wallet</button>
+  <button onclick="navigateBottom('notifications')">Notifications</button>
+  <button onclick="navigateBottom('search')">Search</button>
+  <button class="active" onclick="navigateBottom('chat')">Chat</button>
+</nav>
+
+<!-- Firebase + Modules -->
+<script type="module" src="js/firebaseModule.js"></script>
+<script type="module" src="js/chatModule.js"></script>
+
+<script type="module">
+  // TEMP Functions for demo
+  function toggleSideNav(){ alert('Side Nav'); }
+  function navigateBottom(page){ alert(page+' clicked'); }
+  function openChat(userId){ alert('Opening chat with '+userId); }
+</script>
+
+</body>
+    </html>
