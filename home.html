@@ -1,116 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- =========================
-       META
-  ========================== -->
+
+  <!-- =====================================
+       BASIC META
+  ====================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TRIBERIUM home feed – social + crypto">
+  <meta name="description" content="TRIBERIUM home feed">
 
   <title>TRIBERIUM – Home</title>
 
-  <!-- =========================
-       GLOBAL & PAGE STYLES
-       (Order matters)
-  ========================== -->
-  <link rel="stylesheet" href="css/reset.css">
+  <!-- =====================================
+       CORE STYLES
+       Load order is intentional
+  ====================================== -->
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/navigation.css">
   <link rel="stylesheet" href="css/post.css">
   <link rel="stylesheet" href="css/home.css">
 
-  <!-- =========================
-       FAVICON (OPTIONAL)
-  ========================== -->
-  <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 
 <body>
 
-  <!-- =========================
-       APP WRAPPER
-  ========================== -->
-  <div id="app-root">
+  <!-- =====================================
+       TOP NAVIGATION
+       Injected dynamically
+  ====================================== -->
+  <header id="navigation-container"></header>
 
-    <!-- =========================
-         TOP NAVIGATION
-         (Injected via navigation.js)
-    ========================== -->
-    <header id="navigation-container"></header>
-
-    <!-- =========================
-         WALLET BAR
-         Shows TBM balance
-    ========================== -->
-    <section class="wallet-bar">
-      <div class="wallet-left">
-        <span class="wallet-label">wallet</span>
-      </div>
-
-      <div class="wallet-right">
-        <span class="wallet-balance" id="walletBalance">
-          TBM 0.00
-        </span>
-      </div>
-    </section>
-
-    <!-- =========================
-         MAIN FEED AREA
-    ========================== -->
-    <main class="feed" role="main">
-
-      <!-- =========================
-           POSTS CONTAINER
-           Filled dynamically by post.js
-      ========================== -->
-      <section
-        id="post-container"
-        class="post-container"
-        aria-live="polite"
-      >
-        <!-- Posts render here -->
-      </section>
-
-    </main>
-
-    <!-- =========================
-         BOTTOM SPACING
-         Prevents nav overlap
-    ========================== -->
-    <div class="bottom-safe-space"></div>
-
+  <!-- =====================================
+       WALLET BAR
+       Displays TBM balance
+  ====================================== -->
+  <div class="wallet-bar">
+    <span class="wallet-label">wallet</span>
+    <span class="wallet-balance" id="walletBalance">TBM 0.00</span>
   </div>
 
-  <!-- =========================
-       CORE APPLICATION STATE
-       (Must load first)
-  ========================== -->
+  <!-- =====================================
+       MAIN FEED
+  ====================================== -->
+  <main class="feed">
+
+    <!-- =====================================
+         POSTS RENDER HERE
+    ====================================== -->
+    <div id="post-container" class="post-container">
+      <!-- post.js injects posts here -->
+    </div>
+
+  </main>
+
+  <!-- =====================================
+       BOTTOM NAV CLEARANCE
+  ====================================== -->
+  <div class="bottom-safe-space"></div>
+
+  <!-- =====================================
+       JAVASCRIPT
+       Load order matters
+  ====================================== -->
   <script src="js/state.js"></script>
-
-  <!-- =========================
-       GLOBAL ACTIONS
-       (likes, retribe, save, share)
-  ========================== -->
   <script src="js/actions.js"></script>
-
-  <!-- =========================
-       NAVIGATION LOGIC
-       (hamburger, bottom nav, chat)
-  ========================== -->
   <script src="js/navigation.js"></script>
-
-  <!-- =========================
-       POST RENDERING & FEED LOGIC
-  ========================== -->
   <script src="js/post.js"></script>
 
-  <!-- =========================
-       HOME-SPECIFIC LOGIC
-       (wallet sync, feed refresh)
-  ========================== -->
-  <script src="js/home.js"></script>
-
 </body>
-    </html>
+</html>
