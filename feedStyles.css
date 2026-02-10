@@ -1,156 +1,169 @@
-/* ============================= */
-/* TRIBERIUM MVP — Feed / Home Styles */
-/* ============================= */
+/* =========================
+TRIBERIUM — Feed Styles
+Handles main feed, posts, actions, scroll, and layout
+========================= */
 
-/* General feed container */
-.feed-container {
+/* Root Variables */
+:root {
+  --bg: #fff;
+  --primary: #1d72b8;
+  --secondary: #657786;
+  --border: #e6ecf0;
+  --shadow: rgba(0,0,0,0.05);
+  --text: #111;
+  --muted: #aab8c2;
+  --action-hover: #e8f5fd;
+}
+
+/* --------------------------
+Body & Feed Container
+-------------------------- */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+main.feed {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 16px;
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: 'Orbitron', sans-serif;
-  color: #f0f0f5;
-  background-color: #0f0f1f;
+  gap: 12px;
+  padding: 12px 0;
+  overflow-y: auto;
 }
 
-/* Individual post card */
-.post-card {
-  background: linear-gradient(145deg, #1a1a2e, #121224);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+/* --------------------------
+Post Card
+-------------------------- */
+.post {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background 0.2s ease;
 }
 
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 30px rgba(74, 144, 226, 0.6);
+.post:hover {
+  background: var(--action-hover);
+  cursor: pointer;
 }
 
-/* User info section */
+/* --------------------------
+Post Header
+-------------------------- */
 .post-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  justify-content: space-between;
 }
 
-.post-header img.avatar {
-  width: 48px;
-  height: 48px;
+.post-header .user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Profile picture */
+.post-header .user-info img {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 2px solid #4a90e2;
+  object-fit: cover;
+  border: 1px solid var(--border);
 }
 
+/* Username & Handle */
 .post-header .username {
-  font-weight: 700;
-  font-size: 1rem;
-  color: #4a90e2;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
-.post-header .timestamp {
-  font-size: 0.75rem;
-  color: #8888aa;
-  margin-left: auto;
+.post-header .handle {
+  font-size: 0.8rem;
+  color: var(--secondary);
 }
 
-/* Post content */
-.post-content {
-  font-size: 1rem;
-  line-height: 1.4;
-  color: #e0e0f0;
-  margin-bottom: 12px;
-  word-wrap: break-word;
-}
-
-.post-media img,
-.post-media video {
-  width: 100%;
-  border-radius: 12px;
-  margin-top: 12px;
-}
-
-/* Engagement buttons */
-.post-actions {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.post-actions button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
+/* Follow Button */
+.post-header button {
+  padding: 4px 12px;
+  border-radius: 20px;
   border: none;
-  color: #f0f0f5;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color 0.2s ease-in-out;
-}
-
-.post-actions button:hover {
-  color: #4a90e2;
-}
-
-/* Likes counter */
-.likes-counter {
-  font-size: 0.85rem;
-  color: #8888aa;
-}
-
-/* Comments section */
-.comments-section {
-  margin-top: 12px;
-  border-top: 1px solid #2a2a44;
-  padding-top: 12px;
-}
-
-.comment {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.comment img.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid #4a90e2;
-}
-
-.comment-content {
-  background-color: #1a1a2e;
-  border-radius: 12px;
-  padding: 8px 12px;
-  font-size: 0.85rem;
-  color: #e0e0f0;
-}
-
-/* Add comment input */
-.comment-input {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.comment-input input {
-  flex: 1;
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: 1px solid #4a90e2;
-  background-color: #121224;
-  color: #f0f0f5;
-}
-
-.comment-input button {
-  padding: 8px 12px;
-  border-radius: 12px;
-  background-color: #4a90e2;
+  background: var(--primary);
   color: #fff;
   font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-.comment-input button:hover
+.post-header button:hover {
+  background: #155fa0;
+}
+
+/* --------------------------
+Post Content
+-------------------------- */
+.post-content {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* --------------------------
+Post Actions
+-------------------------- */
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.85rem;
+}
+
+.post-actions span {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.post-actions span:hover {
+  color: #155fa0;
+}
+
+/* --------------------------
+Responsive Adjustments
+-------------------------- */
+@media (max-width: 480px) {
+  .post-header .username {
+    font-size: 0.9rem;
+  }
+
+  .post-header .handle {
+    font-size: 0.75rem;
+  }
+
+  .post-actions {
+    font-size: 0.8rem;
+  }
+}
+
+/* --------------------------
+Scroll Styling
+-------------------------- */
+main.feed::-webkit-scrollbar {
+  width: 6px;
+}
+
+main.feed::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+main.feed::-webkit-scrollbar-thumb {
+  background-color: var(--muted);
+  border-radius: 3px;
+}
+
+/* End of feedStyles.css */
