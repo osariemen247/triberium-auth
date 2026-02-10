@@ -1,83 +1,65 @@
-// authModule.js
-// Handles TRIBERIUM authentication: Email/Password + Google login
+// js/authModule.js
 import { auth } from "./firebaseModule.js";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// DOM Elements
-const emailInput = document.getElementById("emailInput");
-const passwordInput = document.getElementById("passwordInput");
-const signupBtn = document.getElementById("signupBtn");
-const loginBtn = document.getElementById("loginBtn");
-const googleLoginBtn = document.getElementById("googleLoginBtn");
-const authMessage = document.getElementById("authMessage");
+document.addEventListener("DOMContentLoaded", () => {
 
-// --- Email / Password Sign Up ---
-signupBtn.addEventListener("click", async () => {
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
+  const email = document.getElementById("emailInput");
+  const password = document.getElementById("passwordInput");
+  const signupBtn = document.getElementById("signupBtn");
+  const loginBtn = document.getElementById("loginBtn");
+  const googleBtn = document.getElementById("googleLoginBtn");
+  const message = document.getElementById("authMessage");
 
-  if (!email || !password) {
-    authMessage.textContent = "Please enter email and password.";
+  // 🛑 If auth UI does not exist on this page, STOP
+  if (!email || !password || !signupBtn || !loginBtn || !googleBtn) {
     return;
   }
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    authMessage.style.color = "#00ff88";
-    authMessage.textContent = `Signed up as ${userCredential.user.email}`;
-    // Redirect to home after signup
-    window.location.href = "home.html";
-  } catch (error) {
-    authMessage.style.color = "#ff5555";
-    authMessage.textContent = error.message;
-  }
-});
+  signupBtn.onclick = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email.value, password.value);
+      message.textContent = "Account created. Redirecting…";
+      message.style.color = "#00ffcc";
+    } catch (err) {
+      message.textContent = err.message;
+      message.style.color = "#ff4d4d";
+    }
+  };
 
-// --- Email / Password Login ---
-loginBtn.addEventListener("click", async () => {
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
+  loginBtn.onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      message.textContent = "Logged in. Redirecting…";
+      message.style.color = "#00ffcc";
+    } catch (err) {
+      message.textContent = err.message;
+      message.style.color = "#ff4d4d";
+    }
+  };
 
-  if (!email || !password) {
-    authMessage.textContent = "Please enter email and password.";
-    return;
-  }
+  googleBtn.onclick = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      message.textContent = "Google login successful";
+      message.style.color = "#00ffcc";
+    } catch (err) {
+      message.textContent = err.message;
+      message.style.color = "#ff4d4d";
+    }
+  };
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    authMessage.style.color = "#00ff88";
-    authMessage.textContent = `Logged in successfully!`;
-    window.location.href = "home.html";
-  } catch (error) {
-    authMessage.style.color = "#ff5555";
-    authMessage.textContent = error.message;
-  }
-});
-
-// --- Google Login ---
-googleLoginBtn.addEventListener("click", async () => {
-  const provider = new GoogleAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    authMessage.style.color = "#00ff88";
-    authMessage.textContent = `Logged in as ${user.displayName}`;
-    window.location.href = "home.html";
-  } catch (error) {
-    authMessage.style.color = "#ff5555";
-    authMessage.textContent = error.message;
-  }
-});
-
-// --- Monitor Auth State ---
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("User logged in:", user.email);
-    // Optional: Redirect to home if already logged in
-    if (window.location.pathname.includes("index.html") || window.location.pathname === "/") {
+  // 🔐 Auth state = truth
+  onAuthStateChanged(auth, user => {
+    if (user) {
       window.location.href = "home.html";
     }
-  } else {
-    console.log("No user logged in");
-  }
+  });
 });
