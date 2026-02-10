@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIBERIUM — Wallet</title>
+
+<!-- Favicon -->
+<link rel="icon" href="pwa/icons/icon-192x192.png">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/walletStyles.css">
+<link rel="stylesheet" href="css/feedStyles.css">
+<link rel="stylesheet" href="css/profileStyles.css">
+<link rel="stylesheet" href="css/notificationsStyles.css">
+<link rel="stylesheet" href="css/searchStyles.css">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* --- Wallet Page Styles --- */
+  body { margin:0; font-family:'Inter',sans-serif; background:#fff; color:#111; display:flex; flex-direction:column; min-height:100vh; }
+
+  header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #e6ecf0; background:#fff; position:sticky; top:0; z-index:100; }
+  header .logo { font-weight:700; color:#1d72b8; font-size:1.4rem; }
+  header button { border:none; background:none; font-size:1.4rem; cursor:pointer; }
+
+  .wallet-header { display:flex; flex-direction:column; align-items:center; padding:16px; border-bottom:1px solid #e6ecf0; background:#fff; }
+  .wallet-balance { font-size:2rem; font-weight:700; color:#1d72b8; margin-bottom:8px; }
+  .wallet-tbm { font-size:1rem; color:#657786; margin-bottom:16px; }
+
+  .wallet-actions { display:flex; justify-content:center; gap:12px; margin-bottom:16px; }
+  .wallet-actions button { padding:8px 20px; border-radius:20px; border:none; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; font-size:0.9rem; }
+
+  .transaction-section { padding:16px; }
+  .transaction-section h2 { font-weight:700; margin-bottom:12px; }
+  .transaction-list { display:flex; flex-direction:column; gap:12px; }
+  .transaction { display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid #e6ecf0; border-radius:12px; background:#fff; }
+  .transaction .details { display:flex; flex-direction:column; }
+  .transaction .details span:first-child { font-weight:600; }
+  .transaction .details span:last-child { font-size:0.85rem; color:#657786; }
+  .transaction .amount { font-weight:700; color:#1d72b8; }
+
+  nav.bottom-nav { display:flex; justify-content:space-around; border-top:1px solid #e6ecf0; background:#fff; padding:8px 0; position:sticky; bottom:0; }
+  nav.bottom-nav button { border:none; background:none; font-weight:600; color:#657786; cursor:pointer; font-size:0.9rem; }
+  nav.bottom-nav button.active { color:#1d72b8; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">TRIBERIUM</div>
+  <button onclick="toggleSideNav()">☰</button>
+</header>
+
+<!-- Wallet Header -->
+<div class="wallet-header">
+  <div class="wallet-balance" id="walletBalance">0.00</div>
+  <div class="wallet-tbm">TBM Balance</div>
+  <div class="wallet-actions">
+    <button onclick="addFunds()">Add TBM</button>
+    <button onclick="withdrawFunds()">Withdraw</button>
+  </div>
+</div>
+
+<!-- Transactions -->
+<div class="transaction-section">
+  <h2>Recent Transactions</h2>
+  <div class="transaction-list" id="transactionList">
+    <!-- Sample Transaction -->
+    <div class="transaction">
+      <div class="details">
+        <span>Received TBM</span>
+        <span>From Alice Johnson</span>
+      </div>
+      <div class="amount">+50 TBM</div>
+    </div>
+    <div class="transaction">
+      <div class="details">
+        <span>Sent TBM</span>
+        <span>To Bob Smith</span>
+      </div>
+      <div class="amount">-20 TBM</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button onclick="navigateBottom('home')">Home</button>
+  <button class="active" onclick="navigateBottom('wallet')">Wallet</button>
+  <button onclick="navigateBottom('notifications')">Notifications</button>
+  <button onclick="navigateBottom('profile')">Profile</button>
+  <button onclick="navigateBottom('chat')">Chat</button>
+</nav>
+
+<!-- JS Modules -->
+<script type="module" src="js/firebaseModule.js"></script>
+<script type="module" src="js/walletModule.js"></script>
+<script type="module" src="js/feedModule.js"></script>
+<script type="module" src="js/profileModule.js"></script>
+<script type="module" src="js/followModule.js"></script>
+<script type="module" src="js/notificationsModule.js"></script>
+<script type="module" src="js/searchModule.js"></script>
+
+<script type="module">
+  // TEMP Functions
+  function toggleSideNav(){ alert('Side Nav'); }
+  function addFunds(){ alert('Add TBM clicked'); }
+  function withdrawFunds(){ alert('Withdraw clicked'); }
+  function navigateBottom(page){ alert(page+' clicked'); }
+</script>
+
+</body>
+  </html>
