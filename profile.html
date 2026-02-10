@@ -1,177 +1,142 @@
-/**
- * ==========================================
- * TRIBERIUM — Profile Module
- * ------------------------------------------
- * Handles user profile display, DM, editing,
- * and profile post actions.
- * ==========================================
- */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIBERIUM — Profile</title>
 
-import { db, auth, monitorAuthState, getDocument, listenCollection, updateDocument } from "./firebaseModule.js";
+<!-- Favicon -->
+<link rel="icon" href="pwa/icons/icon-192x192.png">
 
-/**
- * =========================
- * DOM References
- * =========================
- */
-const profileNameEl = document.getElementById("profileName");
-const profileHandleEl = document.getElementById("profileHandle");
-const profilePicEl = document.getElementById("profilePic");
-const profileBioEl = document.getElementById("profileBio");
-const profileStatsEl = document.getElementById("profileStats");
-const postsContainer = document.getElementById("profilePosts");
-const dmBtn = document.getElementById("dmUser");
-const editProfileBtn = document.getElementById("editProfile");
+<!-- CSS -->
+<link rel="stylesheet" href="css/profileStyles.css">
+<link rel="stylesheet" href="css/feedStyles.css">
+<link rel="stylesheet" href="css/walletStyles.css">
+<link rel="stylesheet" href="css/notificationsStyles.css">
+<link rel="stylesheet" href="css/searchStyles.css">
 
-/**
- * =========================
- * Helper Functions
- * =========================
- */
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-/**
- * Renders user's profile data
- * @param {Object} userData 
- */
-const renderProfile = (userData) => {
-  profileNameEl.textContent = userData.username || "Unknown";
-  profileHandleEl.textContent = `@${userData.handle || "unknown"}`;
-  profilePicEl.src = userData.profilePic || ""; // blank if empty
-  profileBioEl.textContent = userData.bio || "No bio yet.";
-  profileStatsEl.innerHTML = `
-    <span>Posts: ${userData.postsCount || 0}</span>
-    <span>Followers: ${userData.followersCount || 0}</span>
-    <span>Following: ${userData.followingCount || 0}</span>
-  `;
-};
+<style>
+  /* --- Profile Page Styles --- */
+  body { margin:0; font-family:'Inter',sans-serif; background:#fff; color:#111; display:flex; flex-direction:column; min-height:100vh; }
+  
+  header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #e6ecf0; background:#fff; position:sticky; top:0; z-index:100; }
+  header .logo { font-weight:700; color:#1d72b8; font-size:1.4rem; }
+  header button { border:none; background:none; font-size:1.4rem; cursor:pointer; }
 
-/**
- * Creates a single post for profile feed
- * @param {Object} postData 
- * @returns {HTMLElement}
- */
-const createProfilePost = (postData) => {
-  const postEl = document.createElement("div");
-  postEl.classList.add("post");
-  postEl.id = postData.id;
+  .profile-header { display:flex; flex-direction:column; align-items:center; padding:16px; border-bottom:1px solid #e6ecf0; background:#fff; }
+  .profile-avatar { width:100px; height:100px; border-radius:50%; background:#ccd6dd; margin-bottom:12px; }
+  .profile-username { font-weight:700; font-size:1.3rem; margin-bottom:4px; }
+  .profile-handle { color:#657786; margin-bottom:12px; }
+  .profile-bio { text-align:center; color:#111; font-size:0.95rem; margin-bottom:12px; }
 
-  const headerEl = document.createElement("div");
-  headerEl.classList.add("post-header");
+  .profile-stats { display:flex; gap:24px; margin-bottom:16px; }
+  .profile-stats div { text-align:center; }
+  .profile-stats div span:first-child { font-weight:700; display:block; font-size:1rem; }
+  .profile-stats div span:last-child { color:#657786; font-size:0.85rem; }
 
-  // User info (just handle, since profile owner)
-  const userInfoEl = document.createElement("div");
-  userInfoEl.classList.add("user-info");
+  .profile-actions { display:flex; justify-content:center; gap:12px; margin-bottom:16px; }
+  .profile-actions button { padding:6px 14px; border-radius:20px; border:none; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; font-size:0.85rem; }
+  
+  main.profile-feed { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding:0 16px; }
 
-  const profileImg = document.createElement("img");
-  profileImg.src = postData.profilePic || "";
-  profileImg.alt = postData.username;
+  .post { background:#fff; border-bottom:1px solid #e6ecf0; padding:12px 0; display:flex; flex-direction:column; gap:8px; }
+  .post-header { display:flex; align-items:center; justify-content:space-between; padding:0 8px; }
+  .post-header .user-info { display:flex; align-items:center; gap:8px; }
+  .post-header .user-info img { width:40px; height:40px; border-radius:50%; object-fit:cover; }
+  .post-header .username { font-weight:600; }
+  .post-header .handle { font-size:0.85rem; color:#657786; }
+  .post-header button { padding:4px 10px; border:none; border-radius:20px; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; font-size:0.85rem; }
 
-  const nameContainer = document.createElement("div");
-  nameContainer.style.display = "flex";
-  nameContainer.style.flexDirection = "column";
+  .post-content { margin:8px 0; line-height:1.4; padding:0 8px; }
+  .post-actions { display:flex; justify-content:space-between; font-weight:600; color:#1d72b8; font-size:0.85rem; padding:0 8px; }
+  .post-actions span { cursor:pointer; }
 
-  const usernameEl = document.createElement("div");
-  usernameEl.classList.add("username");
-  usernameEl.textContent = postData.username;
+  nav.bottom-nav { display:flex; justify-content:space-around; border-top:1px solid #e6ecf0; background:#fff; padding:8px 0; position:sticky; bottom:0; }
+  nav.bottom-nav button { border:none; background:none; font-weight:600; color:#657786; cursor:pointer; font-size:0.9rem; }
+  nav.bottom-nav button.active { color:#1d72b8; }
+</style>
+</head>
 
-  const handleEl = document.createElement("div");
-  handleEl.classList.add("handle");
-  handleEl.textContent = `@${postData.handle}`;
+<body>
 
-  nameContainer.appendChild(usernameEl);
-  nameContainer.appendChild(handleEl);
-  userInfoEl.appendChild(profileImg);
-  userInfoEl.appendChild(nameContainer);
+<header>
+  <div class="logo">TRIBERIUM</div>
+  <button onclick="toggleSideNav()">☰</button>
+</header>
 
-  headerEl.appendChild(userInfoEl);
+<!-- Profile Header -->
+<div class="profile-header">
+  <div class="profile-avatar"></div>
+  <div class="profile-username">Alice Johnson</div>
+  <div class="profile-handle">@alice</div>
+  <div class="profile-bio">Explorer, Creator, TRIBERIUM enthusiast</div>
+  <div class="profile-stats">
+    <div><span id="postsCount">12</span><span>Posts</span></div>
+    <div><span id="followersCount">320</span><span>Followers</span></div>
+    <div><span id="followingCount">180</span><span>Following</span></div>
+  </div>
+  <div class="profile-actions">
+    <button onclick="followUser('alice')">Follow</button>
+    <button onclick="sendDM('alice')">DM</button>
+  </div>
+</div>
 
-  // DM button in profile
-  const dmButton = document.createElement("button");
-  dmButton.textContent = "DM";
-  dmButton.onclick = () => openDM(postData.handle);
-  headerEl.appendChild(dmButton);
+<!-- Profile Feed -->
+<main class="profile-feed" id="profileFeedContainer">
+  <!-- Sample Post -->
+  <div class="post" id="post1">
+    <div class="post-header">
+      <div class="user-info">
+        <img src="" alt="Profile Pic">
+        <div style="display:flex; flex-direction:column;">
+          <div class="username">Alice Johnson</div>
+          <div class="handle">@alice</div>
+        </div>
+      </div>
+      <button onclick="followUser('alice')">Follow</button>
+    </div>
+    <div class="post-content">This is my first post on TRIBERIUM!</div>
+    <div class="post-actions">
+      <span onclick="likePost('post1')">like</span>
+      <span onclick="retribePost('post1')">retribe</span>
+      <span onclick="savePost('post1')">save</span>
+      <span onclick="sharePost('post1')">share</span>
+    </div>
+  </div>
+</main>
 
-  // Post Content
-  const contentEl = document.createElement("div");
-  contentEl.classList.add("post-content");
-  contentEl.textContent = postData.content;
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button onclick="navigateBottom('home')">Home</button>
+  <button onclick="navigateBottom('wallet')">Wallet</button>
+  <button onclick="navigateBottom('notifications')">Notifications</button>
+  <button class="active" onclick="navigateBottom('profile')">Profile</button>
+  <button onclick="navigateBottom('chat')">Chat</button>
+</nav>
 
-  // Post Actions
-  const actionsEl = document.createElement("div");
-  actionsEl.classList.add("post-actions");
+<!-- JS Modules -->
+<script type="module" src="js/firebaseModule.js"></script>
+<script type="module" src="js/profileModule.js"></script>
+<script type="module" src="js/followModule.js"></script>
+<script type="module" src="js/feedModule.js"></script>
+<script type="module" src="js/walletModule.js"></script>
+<script type="module" src="js/notificationsModule.js"></script>
+<script type="module" src="js/searchModule.js"></script>
 
-  const likeBtn = document.createElement("span");
-  likeBtn.textContent = "like";
-  likeBtn.onclick = () => likePost(postData.id);
+<script type="module">
+  // TEMP functions for demo
+  function toggleSideNav(){ alert('Side Nav'); }
+  function followUser(userId){ alert('Followed '+userId); }
+  function sendDM(userId){ alert('DM with '+userId); }
+  function likePost(postId){ alert('Liked '+postId); }
+  function retribePost(postId){ alert('Retribed '+postId); }
+  function savePost(postId){ alert('Saved '+postId); }
+  function sharePost(postId){ alert('Shared '+postId); }
+  function navigateBottom(page){ alert(page+' clicked'); }
+</script>
 
-  const retribeBtn = document.createElement("span");
-  retribeBtn.textContent = "retribe";
-  retribeBtn.onclick = () => retribePost(postData.id);
-
-  const saveBtn = document.createElement("span");
-  saveBtn.textContent = "save";
-  saveBtn.onclick = () => savePost(postData.id);
-
-  actionsEl.appendChild(likeBtn);
-  actionsEl.appendChild(retribeBtn);
-  actionsEl.appendChild(saveBtn);
-
-  postEl.appendChild(headerEl);
-  postEl.appendChild(contentEl);
-  postEl.appendChild(actionsEl);
-
-  return postEl;
-};
-
-/**
- * =========================
- * Profile Actions
- * =========================
- */
-const likePost = (postId) => console.log(`Liked post: ${postId}`);
-const retribePost = (postId) => console.log(`Retribed post: ${postId}`);
-const savePost = (postId) => console.log(`Saved post: ${postId}`);
-const openDM = (handle) => console.log(`Open DM with: ${handle}`);
-
-const editProfile = () => {
-  const newBio = prompt("Update your bio:");
-  if (newBio !== null) {
-    updateDocument("users", auth.currentUser.uid, { bio: newBio });
-    profileBioEl.textContent = newBio;
-  }
-};
-
-/**
- * =========================
- * Load Profile
- * =========================
- */
-const loadProfile = async () => {
-  const uid = auth.currentUser.uid;
-  const userData = await getDocument("users", uid);
-  renderProfile(userData);
-
-  listenCollection("posts", (posts) => {
-    postsContainer.innerHTML = "";
-    posts
-      .filter(p => p.uid === uid)
-      .forEach(post => {
-        postsContainer.appendChild(createProfilePost(post));
-      });
-  });
-};
-
-/**
- * =========================
- * Initialize Profile
- * =========================
- */
-monitorAuthState(user => {
-  if (user) {
-    loadProfile();
-    editProfileBtn.onclick = editProfile;
-    dmBtn.onclick = () => console.log("DM Clicked"); // placeholder
-  } else {
-    window.location.href = "index.html";
-  }
-});
+</body>
+           </html>
