@@ -1,52 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Home</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/feedStyles.css">
+  <link rel="stylesheet" href="css/profileStyles.css">
+  <link rel="stylesheet" href="css/walletStyles.css">
+  <link rel="stylesheet" href="css/notificationsStyles.css">
+  <link rel="stylesheet" href="css/searchStyles.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Mobile-first clean UI --- */
+    body { margin:0; font-family:'Inter',sans-serif; background:#f5f7fa; color:#111; display:flex; flex-direction:column; height:100vh; }
+    header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:#fff; border-bottom:1px solid #ddd; position:sticky; top:0; z-index:100; }
+    header .logo { font-weight:700; color:#1d72b8; font-size:1.4rem; }
+    header button { border:none; background:none; font-size:1.4rem; cursor:pointer; }
+
+    .search-container { padding:8px 16px; background:#fff; border-bottom:1px solid #ddd; display:flex; gap:8px; }
+    .search-container input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #ccc; outline:none; }
+    .search-container button { padding:8px 12px; border:none; border-radius:20px; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; }
+
+    main.feed { flex:1; overflow-y:auto; padding:12px 16px; display:flex; flex-direction:column; gap:12px; }
+
+    .post { background:#fff; border-radius:12px; padding:12px; box-shadow:0 1px 3px rgba(0,0,0,0.1); display:flex; flex-direction:column; gap:8px; }
+    .post-header { display:flex; align-items:center; justify-content:space-between; }
+    .post-header .user-info { display:flex; flex-direction:column; }
+    .post-header .username { font-weight:600; }
+    .post-header .handle { font-size:0.85rem; color:#555; }
+    .post-header button { padding:4px 10px; border:none; border-radius:16px; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; }
+
+    .post-content { margin:8px 0; line-height:1.4; }
+
+    .post-actions { display:flex; justify-content:space-around; padding-top:8px; border-top:1px solid #eee; font-weight:600; color:#1d72b8; cursor:pointer; }
+
+    nav.bottom-nav { display:flex; justify-content:space-around; background:#fff; border-top:1px solid #ddd; padding:8px 0; position:sticky; bottom:0; }
+    nav.bottom-nav button { border:none; background:none; font-weight:600; color:#555; cursor:pointer; }
+    nav.bottom-nav button.active { color:#1d72b8; }
+
+  </style>
+</head>
+
 <body>
 
-<!-- LEFT NAV DRAWER -->
-<nav class="side-nav" id="sideNav">
-  <button onclick="navigateSide('home')">Home</button>
-  <button onclick="navigateSide('wallet')">Wallet</button>
-  <button onclick="navigateSide('notifications')">Notifications</button>
-  <button onclick="navigateSide('profile')">Profile</button>
-</nav>
-
-<!-- HEADER -->
-<header class="top-bar">
-  <div class="logo">TRIBE<span>RIUM</span></div>
-  <div class="top-right">
-    <div class="wallet" id="walletBalance">Wallet: 0.00 TBM</div>
-    <button onclick="toggleSideNav()">☰</button>
-  </div>
+<header>
+  <div class="logo">TRIBERIUM</div>
+  <button onclick="toggleSideNav()">☰</button>
 </header>
 
 <!-- SEARCH -->
 <div class="search-container">
-  <input type="text" placeholder="Search users or posts..." id="searchInput">
-  <button onclick="alert('Search clicked')">Search</button>
+  <input type="text" id="searchInput" placeholder="Search users or posts...">
+  <button onclick="handleSearch()">Search</button>
 </div>
 
 <!-- FEED -->
 <main class="feed" id="feedContainer">
-  <!-- EXAMPLE POST -->
-  <div class="post">
+  <!-- Sample Post -->
+  <div class="post" id="post1">
     <div class="post-header">
-      <div class="avatar">JD</div>
-      <div style="flex:1; display:flex; justify-content:space-between; align-items:center;">
-        <div>
-          <div class="username">John Doe</div>
-          <div class="handle">@johndoe</div>
-        </div>
-        <!-- FOLLOW BUTTON on top right -->
-        <button style="padding:4px 8px; border:none; border-radius:12px; background:#007aff; color:#fff; font-weight:600; cursor:pointer;"
-                onclick="followUser('user1')">Follow</button>
+      <div class="user-info">
+        <div class="username">Alice Johnson</div>
+        <div class="handle">@alice</div>
       </div>
+      <button onclick="followUser('alice')">Follow</button>
     </div>
-    <div class="post-content">
-      This is an example post content.
-    </div>
+    <div class="post-content">Welcome to TRIBERIUM! Start exploring posts and earning TBM.</div>
     <div class="post-actions">
       <span onclick="likePost('post1')">Like</span>
       <span onclick="retribePost('post1')">Retribe</span>
-      <span onclick="tipUser('user1')">Tip</span>
-      <span onclick="openDM('user1')">DM</span>
+      <span onclick="tipUser('alice')">Tip TBM</span>
+      <span onclick="openDM('alice')">DM</span>
     </div>
   </div>
 </main>
@@ -59,7 +91,7 @@
   <button onclick="navigateBottom('profile')">Profile</button>
 </nav>
 
-<!-- MODULES -->
+<!-- Firebase + Modules -->
 <script type="module" src="js/firebaseModule.js"></script>
 <script type="module" src="js/feedModule.js"></script>
 <script type="module" src="js/profileModule.js"></script>
@@ -67,16 +99,18 @@
 <script type="module" src="js/walletModule.js"></script>
 <script type="module" src="js/notificationsModule.js"></script>
 <script type="module" src="js/searchModule.js"></script>
-<script type="module">
-  function toggleSideNav() { document.getElementById('sideNav').classList.toggle('open'); }
-  function navigateSide(page) { alert(page+' clicked'); }
-  function navigateBottom(page) { alert(page+' clicked'); }
 
+<script type="module">
+  // TEMP FUNCTIONS
+  function toggleSideNav(){ alert('Side Nav'); }
+  function handleSearch(){ alert('Search triggered'); }
   function likePost(postId){ alert('Liked '+postId); }
   function retribePost(postId){ alert('Retribed '+postId); }
-  function tipUser(userId){ alert('Tipped '+userId); }
-  function openDM(userId){ alert('Open DM with '+userId); }
+  function tipUser(userId){ alert('Tipped TBM to '+userId); }
+  function openDM(userId){ alert('DM with '+userId); }
   function followUser(userId){ alert('Followed '+userId); }
+  function navigateBottom(page){ alert(page+' clicked'); }
 </script>
 
-  </body>
+</body>
+  </html>
