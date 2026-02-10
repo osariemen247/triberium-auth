@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- =========================
+  <!-- ==================================================
        META
-  ========================== -->
+  =================================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="TRIBERIUM home feed – social + crypto">
 
   <title>TRIBERIUM — Home</title>
 
-  <!-- =========================
+  <!-- ==================================================
        FAVICON
-  ========================== -->
+  =================================================== -->
   <link rel="icon" href="pwa/icons/icon-192x192.png">
 
-  <!-- =========================
-       GOOGLE FONTS
-  ========================== -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- ==================================================
+       FONTS
+  =================================================== -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  >
 
-  <!-- =========================
-       GLOBAL & GENERATED CSS
-       (All linked, no removal)
-  ========================== -->
+  <!-- ==================================================
+       GLOBAL & CORE STYLES
+       (Loaded first – foundations)
+  =================================================== -->
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/home.css">
+
+  <!-- ==================================================
+       FEATURE STYLES
+       (Each feature owns its CSS)
+  =================================================== -->
   <link rel="stylesheet" href="css/post.css">
   <link rel="stylesheet" href="css/engagement.css">
   <link rel="stylesheet" href="css/metric.css">
@@ -34,63 +43,79 @@
   <link rel="stylesheet" href="css/walletStyles.css">
   <link rel="stylesheet" href="css/notificationsStyles.css">
   <link rel="stylesheet" href="css/searchStyles.css">
-  <link rel="stylesheet" href="css/home.css">
 
-  <!-- =========================
-       LOCAL PAGE FIXES (ADDITIVE)
-  ========================== -->
+  <!-- ==================================================
+       PAGE-LEVEL SAFETY FIXES
+       (Prevents button overlap issues)
+  =================================================== -->
   <style>
-    main.feed { padding-bottom: 96px; box-sizing: border-box; }
-    .bottom-safe-space { height:96px; }
-    nav.bottom-nav { touch-action: manipulation; }
+    main.feed {
+      padding-bottom: 96px;
+      box-sizing: border-box;
+    }
+
+    .bottom-safe-space {
+      height: 96px;
+      width: 100%;
+    }
+
+    nav.bottom-nav {
+      touch-action: manipulation;
+    }
   </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER / LOGO
-========================= -->
-<header>
+<!-- ==================================================
+     HEADER
+================================================== -->
+<header class="app-header">
   <div class="logo" onclick="navigateBottom('home')">TRIBERIUM</div>
-  <button onclick="toggleSideNav()">☰</button>
+  <button class="menu-toggle" onclick="toggleSideNav()">☰</button>
 </header>
 
-<!-- =========================
+<!-- ==================================================
      SIDE NAVIGATION
-========================= -->
-<div class="side-nav" id="sideNav">
+================================================== -->
+<aside class="side-nav" id="sideNav">
   <button onclick="navigateBottom('profile')">Profile</button>
   <button onclick="navigateBottom('wallet')">Wallet</button>
   <button onclick="navigateBottom('notifications')">Notifications</button>
   <button onclick="navigateBottom('search')">Search</button>
   <button onclick="logout()">Logout</button>
-</div>
+</aside>
 
-<!-- =========================
+<!-- ==================================================
      WALLET BAR
-========================= -->
-<div class="wallet-bar">
-  <span>Wallet Balance</span>
-  <span id="walletBalance">0.00 TBM</span>
-</div>
+================================================== -->
+<section class="wallet-bar">
+  <span class="wallet-label">Wallet Balance</span>
+  <span class="wallet-balance" id="walletBalance">0.00 TBM</span>
+</section>
 
-<!-- =========================
+<!-- ==================================================
      SEARCH
-========================= -->
-<div class="search-container">
-  <input type="text" id="searchInput" placeholder="Search users or posts...">
+================================================== -->
+<section class="search-container">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search users or posts..."
+  >
   <button onclick="handleSearch()">Search</button>
-</div>
+</section>
 
-<!-- =========================
-     FEED
-========================= -->
-<main class="feed" id="feedContainer"></main>
+<!-- ==================================================
+     MAIN FEED
+================================================== -->
+<main class="feed" id="feedContainer">
+  <!-- Posts injected dynamically by post.js / feedModule.js -->
+</main>
 
-<!-- =========================
-     BOTTOM NAV
-========================= -->
+<!-- ==================================================
+     BOTTOM NAVIGATION
+================================================== -->
 <nav class="bottom-nav">
   <button class="active" onclick="navigateBottom('home')">Home</button>
   <button onclick="navigateBottom('wallet')">Wallet</button>
@@ -99,11 +124,13 @@
   <button onclick="navigateBottom('chat')">Chat</button>
 </nav>
 
+<!-- Safety spacer (never blocks interactions) -->
 <div class="bottom-safe-space"></div>
 
-<!-- =========================
-     GENERATED JS — CORE
-========================= -->
+<!-- ==================================================
+     CORE JS (NON-MODULE, SHARED STATE)
+     Must load first
+================================================== -->
 <script src="js/state.js"></script>
 <script src="js/actions.js"></script>
 <script src="js/post.js"></script>
@@ -111,9 +138,10 @@
 <script src="js/metric.js"></script>
 <script src="js/navigation.js"></script>
 
-<!-- =========================
-     MODULES
-========================= -->
+<!-- ==================================================
+     MODULED FEATURES
+     Each file controls ONE domain
+================================================== -->
 <script type="module" src="js/firebaseModule.js"></script>
 <script type="module" src="js/feedModule.js"></script>
 <script type="module" src="js/profileModule.js"></script>
@@ -123,4 +151,4 @@
 <script type="module" src="js/searchModule.js"></script>
 
 </body>
-  </html>
+    </html>
