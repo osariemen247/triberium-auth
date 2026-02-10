@@ -2,72 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Post • TRIBERIUM</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRIBERIUM — Post</title>
 
-  <!-- Favicon -->
-  <link rel="icon" href="pwa/icons/icon-192x192.png">
+  <!-- Global Styles -->
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/post.css">
 
-  <!-- Core CSS -->
-  <link rel="stylesheet" href="css/feedStyles.css">
-  <link rel="stylesheet" href="css/profileStyles.css">
-  <link rel="stylesheet" href="css/adminStyles.css">
-
-  <!-- Optional CSS Modules -->
-  <link rel="stylesheet" href="css/searchStyles.css">
-  <link rel="stylesheet" href="css/walletStyles.css">
-  <link rel="stylesheet" href="css/notificationsStyles.css">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Scripts -->
+  <script defer src="js/state.js"></script>
+  <script defer src="js/post.js"></script>
+  <script defer src="js/navigation.js"></script>
 </head>
+
 <body>
 
-  <!-- Header -->
-  <header class="flex center" style="padding:16px; background:#121224; color:#4a90e2;">
-    <h1>TRIBERIUM</h1>
-    <nav>
-      <button onclick="navigateTo('home')">Home</button>
-      <button onclick="navigateTo('profile')">Profile</button>
-      <button onclick="navigateTo('admin')">Admin</button>
-      <button onclick="navigateTo('wallet')">Wallet</button>
-    </nav>
-  </header>
+  <!-- Navigation -->
+  <div id="navigation-container"></div>
 
-  <!-- Post Section -->
-  <section class="post-container" id="postContainer">
-    <div class="post-header flex">
-      <img id="authorAvatar" class="avatar" src="assets/default-avatar.png" alt="Author Avatar">
-      <h2 id="authorName">Author Name</h2>
-    </div>
+  <!-- Main Layout -->
+  <main class="post-page">
 
-    <div class="post-content" id="postContent">
-      <!-- Post text, images, or video -->
-    </div>
+    <article class="post-card">
 
-    <div class="post-actions flex">
-      <button onclick="likePost()">Like</button>
-      <button onclick="commentOnPost()">Comment</button>
-      <button onclick="sharePost()">Share</button>
-    </div>
+      <!-- Post Header -->
+      <header class="post-header">
+        <div class="avatar-wrapper">
+          <img src="assets/default-avatar.png" alt="User Avatar">
+        </div>
 
-    <section class="comments-container" id="commentsContainer">
-      <!-- Comments dynamically loaded -->
-    </section>
-  </section>
+        <div class="post-user-info">
+          <span class="username">triberium_user</span>
+          <span class="handle">@tribe001</span>
+        </div>
+      </header>
 
-  <!-- Notifications -->
-  <div class="notification-container" id="notificationContainer"></div>
+      <!-- Post Content -->
+      <section class="post-content">
+        <p>
+          Building the future of decentralized social with
+          <strong>TRIBERIUM</strong>.
+        </p>
+      </section>
 
-  <!-- Firebase SDK -->
-  <script type="module" src="js/firebaseModule.js"></script>
+      <!-- Post Metadata -->
+      <div class="post-meta">
+        <span>2:14 PM</span>
+        <span>•</span>
+        <span>12 Sep 2026</span>
+      </div>
 
-  <!-- Core JS Modules -->
-  <script type="module" src="js/feedModule.js"></script>
-  <script type="module" src="js/profileModule.js"></script>
-  <script type="module" src="js/commentsModule.js"></script>
-  <script type="module" src="js/notificationsModule.js"></script>
-  <script type="module" src="js/uiUtilitiesModule.js"></script>
+      <!-- Post Actions -->
+      <footer class="post-actions">
+        <button class="action-btn" onclick="likePost()">like</button>
+        <button class="action-btn" onclick="retribePost()">retribe</button>
+        <button class="action-btn" onclick="savePost()">save</button>
+        <button class="action-btn" onclick="sharePost()">share</button>
+      </footer>
+
+    </article>
+
+  </main>
 
 </body>
-  </html>
+</html>
