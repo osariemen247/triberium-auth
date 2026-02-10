@@ -53,8 +53,57 @@ const firebaseConfig = {
  */
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+/**
+ * ==========================================
+ * TRIBERIUM — Firebase Module
+ * ------------------------------------------
+ * Centralized Firebase configuration, auth,
+ * Firestore helper functions, and listeners.
+ * ==========================================
+ */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  orderBy,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/**
+ * =========================
+ * Firebase Configuration
+ * =========================
+ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
+  authDomain: "triberium-mvp.firebaseapp.com",
+  projectId: "triberium-mvp",
+  appId: "1:519861052514:web:56348e80320066cd311d3b"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const googleProvider = new GoogleAuthProvider();
 
 /**
  * =========================
@@ -63,28 +112,40 @@ export const storage = getStorage(app);
  */
 
 /**
- * Logs out the current user and redirects to index.html
+ * Monitor authentication state
+ * @param {Function} callback 
  */
-export const logoutUser = async () => {
-  try {
-    await signOut(auth);
-    console.log("User logged out successfully");
-    window.location.href = "index.html";
-  } catch (error) {
-    console.error("Error logging out:", error.message);
-  }
+const monitorAuthState = (callback) => {
+  onAuthStateChanged(auth, callback);
 };
 
 /**
- * Checks if a user is currently authenticated
- * and runs a callback with the user object
- * @param {Function} callback 
+ * Sign up user with email/password
+ * @param {string} email 
+ * @param {string} password 
+ * @returns {Promise}
  */
-export const monitorAuthState = (callback) => {
-  onAuthStateChanged(auth, user => {
-    callback(user);
-  });
-};
+const signupWithEmail = (email, password) => createUserWithEmailAndPassword(auth, email, password);
+
+/**
+ * Sign in user with email/password
+ * @param {string} email 
+ * @param {string} password 
+ * @returns {Promise}
+ */
+const loginWithEmail = (email, password) => signInWithEmailAndPassword(auth, email, password);
+
+/**
+ * Sign in with Google
+ * @returns {Promise}
+ */
+const loginWithGoogle = () => signInWithPopup(auth, googleProvider);
+
+/**
+ * Logout current user
+ * @returns {Promise}
+ */
+const logoutUser = () => signOut(auth);
 
 /**
  * =========================
@@ -93,75 +154,69 @@ export const monitorAuthState = (callback) => {
  */
 
 /**
- * Creates or updates a Firestore document
- * @param {String} collectionName 
- * @param {String} docId 
+ * Get a single document from a collection
+ * @param {string} collectionName 
+ * @param {string} docId 
+ * @returns {Promise<Object>}
+ */
+const getDocument = async (collectionName, docId) => {
+  const docRef = doc(db, collectionName, docId);
+  const docSnap = await getDoc(docRef);
+  return docSnap.exists() ? docSnap.data() : null;
+};
+
+/**
+ * Update a document
+ * @param {string} collectionName 
+ * @param {string} docId 
  * @param {Object} data 
  */
-export const setDocument = async (collectionName, docId, data) => {
-  try {
-    await setDoc(doc(db, collectionName, docId), data, { merge: true });
-    console.log(`Document ${docId} in ${collectionName} updated successfully`);
-  } catch (error) {
-    console.error(`Error setting document ${docId}:`, error.message);
-  }
+const updateDocument = async (collectionName, docId, data) => {
+  const docRef = doc(db, collectionName, docId);
+  await updateDoc(docRef, data);
 };
 
 /**
- * Retrieves a Firestore document by collection and ID
- * @param {String} collectionName 
- * @param {String} docId 
- * @returns {Object|null}
+ * Create a new document with auto-generated ID
+ * @param {string} collectionName 
+ * @param {Object} data 
  */
-export const getDocument = async (collectionName, docId) => {
-  try {
-    const docSnap = await getDoc(doc(db, collectionName, docId));
-    if (docSnap.exists()) {
-      return docSnap.data();
-    } else {
-      console.warn(`Document ${docId} does not exist in ${collectionName}`);
-      return null;
-    }
-  } catch (error) {
-    console.error(`Error fetching document ${docId}:`, error.message);
-    return null;
-  }
+const addDocument = async (collectionName, data) => {
+  const colRef = collection(db, collectionName);
+  const docRef = await addDoc(colRef, data);
+  return docRef.id;
 };
 
 /**
- * Listens to real-time updates on a collection
- * @param {String} collectionName 
+ * Listen to a collection in real-time
+ * @param {string} collectionName 
  * @param {Function} callback 
- * @param {String} orderField Optional ordering field
  */
-export const listenCollection = (collectionName, callback, orderField = "createdAt") => {
-  const q = query(collection(db, collectionName), orderBy(orderField, "desc"));
-  return onSnapshot(q, snapshot => {
-    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    callback(data);
+const listenCollection = (collectionName, callback) => {
+  const colRef = collection(db, collectionName);
+  const q = query(colRef, orderBy("timestamp", "desc"));
+  return onSnapshot(q, (snapshot) => {
+    const docs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    callback(docs);
   });
 };
 
 /**
  * =========================
- * Storage Helpers
+ * Exports
  * =========================
  */
-
-/**
- * Uploads a file to Firebase Storage and returns its download URL
- * @param {File} file 
- * @param {String} path 
- * @returns {String} URL
- */
-export const uploadFile = async (file, path) => {
-  try {
-    const ref = storageRef(storage, path);
-    await uploadBytes(ref, file);
-    const url = await getDownloadURL(ref);
-    return url;
-  } catch (error) {
-    console.error(`Error uploading file to ${path}:`, error.message);
-    return null;
-  }
+export {
+  app,
+  auth,
+  db,
+  monitorAuthState,
+  signupWithEmail,
+  loginWithEmail,
+  loginWithGoogle,
+  logoutUser,
+  getDocument,
+  updateDocument,
+  addDocument,
+  listenCollection
 };
