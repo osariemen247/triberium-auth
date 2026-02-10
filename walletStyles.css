@@ -1,83 +1,217 @@
-/* ============================= */
-/* TRIBERIUM MVP — Wallet Styles */
-/* ============================= */
+/* =========================
+TRIBERIUM — Wallet Styles
+Handles user wallet page, balances, transactions, buttons
+========================= */
 
-.wallet-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 16px;
-  font-family: 'Orbitron', sans-serif;
-  color: #f0f0f5;
-  background-color: #0f0f1f;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+/* Root Variables */
+:root {
+  --bg: #fff;
+  --primary: #1d72b8;
+  --secondary: #657786;
+  --border: #e6ecf0;
+  --text: #111;
+  --muted: #aab8c2;
+  --shadow: rgba(0,0,0,0.05);
+  --accent-hover: #e8f5fd;
 }
 
-/* Wallet summary */
-.wallet-summary {
+/* --------------------------
+Wallet Page Container
+-------------------------- */
+body.wallet-page {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --------------------------
+Wallet Header
+-------------------------- */
+.wallet-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(145deg, #1a1a2e, #121224);
   padding: 16px;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
 
-.wallet-summary span.label {
-  font-size: 0.95rem;
-  color: #8888aa;
-}
-
-.wallet-summary span.amount {
-  font-size: 1.5rem;
+.wallet-header h1 {
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #4a90e2;
 }
 
-/* Transaction list */
-.transaction-list {
+.wallet-header button {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.wallet-header button:hover {
+  background: #155fa0;
+}
+
+/* --------------------------
+Wallet Balance Display
+-------------------------- */
+.wallet-balance {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-.transaction-card {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #1a1a2e, #121224);
-  box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
 
-.transaction-card .desc {
+.wallet-balance .amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.wallet-balance .label {
   font-size: 0.9rem;
-  color: #e0e0f0;
+  color: var(--secondary);
 }
 
-.transaction-card .amount {
-  font-weight: 700;
-  color: #4a90e2;
-}
-
-/* Buttons for top-up or send */
+/* --------------------------
+Wallet Actions
+-------------------------- */
 .wallet-actions {
   display: flex;
-  gap: 12px;
+  justify-content: space-around;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
 
 .wallet-actions button {
-  padding: 10px 16px;
+  flex: 1;
+  margin: 0 6px;
+  padding: 10px 0;
   border-radius: 12px;
+  border: none;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  background-color: #4a90e2;
+  transition: background 0.2s ease;
+}
+
+.wallet-actions button.deposit {
+  background: var(--primary);
+  color: #fff;
+}
+
+.wallet-actions button.withdraw {
+  background: var(--secondary);
   color: #fff;
 }
 
 .wallet-actions button:hover {
-  background-color: #357ab8;
+  opacity: 0.95;
+}
+
+/* --------------------------
+Transaction History
+-------------------------- */
+.transaction-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px var(--shadow);
+  font-size: 0.9rem;
+}
+
+.transaction .desc {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction .desc .title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.transaction .desc .date {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.transaction .amount {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* --------------------------
+Responsive Adjustments
+-------------------------- */
+@media (max-width: 480px) {
+  .wallet-header h1 {
+    font-size: 1.1rem;
   }
+
+  .wallet-balance .amount {
+    font-size: 1.6rem;
+  }
+
+  .wallet-balance .label {
+    font-size: 0.85rem;
+  }
+
+  .wallet-actions button {
+    font-size: 0.85rem;
+    padding: 8px 0;
+  }
+
+  .transaction {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .transaction .amount {
+    align-self: flex-end;
+  }
+}
+
+/* --------------------------
+Scrollbar Styling
+-------------------------- */
+.transaction-history::-webkit-scrollbar {
+  width: 6px;
+}
+
+.transaction-history::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.transaction-history::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 3px;
+}
+
+/* End of walletStyles.css */
