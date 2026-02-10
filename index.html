@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TRIBERIUM — SocialFi Network</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<title>TRIBERIUM — SocialFi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -13,7 +13,6 @@ body {
   background: radial-gradient(circle at top, #0f2027, #000);
   color: #e0f7ff;
 }
-
 .auth {
   max-width: 420px;
   margin: 12vh auto;
@@ -23,48 +22,97 @@ body {
   border-radius: 18px;
   box-shadow: 0 0 60px #00ffe5;
 }
-
-h1 {
-  text-align: center;
-  color: #00ffe5;
-}
-
+h1 { text-align:center; color:#00ffe5; }
 input, button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 12px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px;
+  width:100%; padding:14px; margin-top:12px;
+  border-radius:10px; border:none; font-size:14px;
 }
-
-input {
-  background: #0a1428;
-  color: #fff;
-}
-
+input { background:#0a1428; color:#fff; }
 button {
-  background: linear-gradient(135deg,#00ffe5,#0077ff);
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
+  background:linear-gradient(135deg,#00ffe5,#0077ff);
+  color:#000; font-weight:bold; cursor:pointer;
 }
-
-#authMessage {
-  margin-top: 14px;
-  text-align: center;
-}
+#authMessage { margin-top:14px; text-align:center; }
 </style>
 </head>
 
 <body>
 
-<button id="testBtn">TEST BUTTON</button>
+<div class="auth">
+  <h1>TRIBERIUM</h1>
+  <p style="text-align:center">Social • Crypto • Community</p>
 
-<script>
-  document.getElementById("testBtn").onclick = () => {
-    alert("Button works");
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button id="signup">Create Account</button>
+  <button id="login">Login</button>
+  <button id="google">Continue with Google</button>
+
+  <div id="authMessage"></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
+    authDomain: "triberium-mvp.firebaseapp.com",
+    projectId: "triberium-mvp",
+    appId: "1:519861052514:web:56348e80320066cd311d3b"
   };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const msg = document.getElementById("authMessage");
+
+  signup.onclick = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email.value, password.value);
+      msg.textContent = "Account created!";
+      msg.style.color = "#00ffcc";
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.style.color = "#ff4d4d";
+    }
+  };
+
+  login.onclick = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      msg.textContent = "Logged in!";
+      msg.style.color = "#00ffcc";
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.style.color = "#ff4d4d";
+    }
+  };
+
+  google.onclick = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      msg.textContent = "Google login successful!";
+      msg.style.color = "#00ffcc";
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.style.color = "#ff4d4d";
+    }
+  };
+
+  onAuthStateChanged(auth, user => {
+    if (user) window.location.href = "home.html";
+  });
 </script>
+
 </body>
-  </html>
+</html>
