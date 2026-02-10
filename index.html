@@ -59,25 +59,12 @@ button {
 
 <body>
 
-<div class="auth">
-  <h1>TRIBERIUM</h1>
-  <p style="text-align:center">Social • Crypto • Community</p>
-
-  <input id="emailInput" type="email" placeholder="Email">
-  <input id="passwordInput" type="password" placeholder="Password">
-
-  <button id="signupBtn">Create Account</button>
-  <button id="loginBtn">Login</button>
-  <button id="googleLoginBtn">Continue with Google</button>
-
-  <div id="authMessage"></div>
-</div>
-
-<script type="module" src="js/firebaseModule.js"></script>
-<script type="module" src="js/authModule.js"></script>
+<button id="testBtn">TEST BUTTON</button>
 
 <script>
-  alert("JavaScript is running");
+  document.getElementById("testBtn").onclick = () => {
+    alert("Button works");
+  };
 </script>
 </body>
   </html>
