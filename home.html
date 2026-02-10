@@ -1,205 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TRIBERIUM — Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Home</title>
 
-<!-- Favicon -->
-<link rel="icon" href="pwa/icons/icon-192x192.png">
+  <!-- Favicon -->
+  <link rel="icon" href="pwa/icons/icon-192x192.png">
 
-<!-- CSS -->
-<link rel="stylesheet" href="css/feedStyles.css">
-<link rel="stylesheet" href="css/profileStyles.css">
-<link rel="stylesheet" href="css/walletStyles.css">
-<link rel="stylesheet" href="css/notificationsStyles.css">
-<link rel="stylesheet" href="css/searchStyles.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- CSS Links -->
+  <link rel="stylesheet" href="css/feedStyles.css">
+  <link rel="stylesheet" href="css/profileStyles.css">
+  <link rel="stylesheet" href="css/walletStyles.css">
+  <link rel="stylesheet" href="css/notificationsStyles.css">
+  <link rel="stylesheet" href="css/searchStyles.css">
 
-<style>
-/* --- Mobile-first Twitter-like clean UI --- */
-body {
-  margin:0;
-  font-family:'Inter',sans-serif;
-  background:#fff;
-  color:#111;
-  display:flex;
-  flex-direction:column;
-  height:100vh;
-}
+  <style>
+    /* --- Mobile-first Twitter-like Home UI --- */
+    body { margin:0; font-family:'Inter',sans-serif; background:#fff; color:#111; display:flex; flex-direction:column; height:100vh; }
 
-/* Header */
-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 16px;
-  border-bottom:1px solid #e6ecf0;
-  position:sticky;
-  top:0;
-  background:#fff;
-  z-index:100;
-}
-header .logo {
-  font-weight:700;
-  color:#1d72b8;
-  font-size:1.4rem;
-}
-header button {
-  border:none;
-  background:none;
-  font-size:1.4rem;
-  cursor:pointer;
-}
+    /* Header */
+    header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #e6ecf0; position:sticky; top:0; background:#fff; z-index:100; }
+    header .logo { font-weight:700; color:#1d72b8; font-size:1.4rem; }
+    header button { border:none; background:none; font-size:1.4rem; cursor:pointer; }
 
-/* TBM Wallet Bar */
-.wallet-bar {
-  padding:8px 16px;
-  border-bottom:1px solid #e6ecf0;
-  background:#fff;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-weight:600;
-  font-size:0.95rem;
-}
+    /* Wallet Bar */
+    .wallet-bar { padding:8px 16px; border-bottom:1px solid #e6ecf0; background:#fff; display:flex; justify-content:space-between; align-items:center; font-weight:600; }
 
-/* Search Bar */
-.search-container {
-  padding:8px 16px;
-  border-bottom:1px solid #e6ecf0;
-  display:flex;
-  gap:8px;
-  background:#fff;
-}
-.search-container input {
-  flex:1;
-  padding:10px 14px;
-  border-radius:20px;
-  border:1px solid #ccd6dd;
-  outline:none;
-  font-size:0.95rem;
-}
-.search-container button {
-  padding:8px 12px;
-  border:none;
-  border-radius:20px;
-  background:#1d72b8;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  font-size:0.95rem;
-}
+    /* Search Bar */
+    .search-container { padding:8px 16px; border-bottom:1px solid #e6ecf0; display:flex; gap:8px; background:#fff; }
+    .search-container input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #ccd6dd; outline:none; }
+    .search-container button { padding:8px 12px; border:none; border-radius:20px; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; }
 
-/* Feed */
-main.feed {
-  flex:1;
-  overflow-y:auto;
-  padding:12px 0;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
+    /* Feed */
+    main.feed { flex:1; overflow-y:auto; padding:12px 0; display:flex; flex-direction:column; gap:12px; }
 
-/* Single Post */
-.post {
-  background:#fff;
-  border-bottom:1px solid #e6ecf0;
-  padding:12px 16px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
+    .post { background:#fff; border-bottom:1px solid #e6ecf0; padding:12px 16px; display:flex; flex-direction:column; gap:8px; }
+    .post-header { display:flex; align-items:center; justify-content:space-between; }
 
-/* Post Header */
-.post-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
+    /* User Info with Profile Pic */
+    .post-header .user-info { display:flex; align-items:center; gap:8px; }
+    .post-header .user-info img { width:40px; height:40px; border-radius:50%; object-fit:cover; background:#ccd6dd; }
 
-/* User Info with Profile Pic */
-.post-header .user-info {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .post-header .username { font-weight:600; }
+    .post-header .handle { font-size:0.85rem; color:#657786; }
 
-/* Round profile picture placeholder */
-.post-header .user-info img {
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:#ccd6dd; /* light grey placeholder */
-  object-fit:cover;
-}
+    .post-header button { padding:4px 10px; border:none; border-radius:20px; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; font-size:0.85rem; }
 
-/* Username & Handle */
-.post-header .user-info .username {
-  font-weight:600;
-  font-size:1rem;
-}
-.post-header .user-info .handle {
-  font-size:0.85rem;
-  color:#657786;
-}
+    .post-content { margin:8px 0; line-height:1.4; }
 
-/* Follow button */
-.post-header button {
-  padding:4px 12px;
-  border:none;
-  border-radius:20px;
-  background:#1d72b8;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  font-size:0.85rem;
-}
+    .post-actions { display:flex; justify-content:space-between; font-weight:600; color:#1d72b8; font-size:0.85rem; }
+    .post-actions span { cursor:pointer; }
 
-/* Post Content */
-.post-content {
-  margin:8px 0;
-  line-height:1.4;
-  font-size:0.95rem;
-  color:#111;
-}
+    /* Hamburger Navigation Panel */
+    .side-nav { position:fixed; top:0; left:-260px; width:260px; height:100%; background:#fff; border-right:1px solid #e6ecf0; padding:16px; display:flex; flex-direction:column; gap:12px; transition:0.3s; z-index:200; }
+    .side-nav.active { left:0; }
+    .side-nav button { text-align:left; padding:10px 14px; border:none; background:none; font-weight:600; color:#1d72b8; cursor:pointer; border-radius:12px; transition:0.2s; }
+    .side-nav button:hover { background:#f5f8fa; }
 
-/* Post Actions */
-.post-actions {
-  display:flex;
-  justify-content:space-between;
-  font-weight:600;
-  color:#1d72b8;
-  font-size:0.85rem;
-}
-.post-actions span {
-  cursor:pointer;
-}
-
-/* Bottom Navigation */
-nav.bottom-nav {
-  display:flex;
-  justify-content:space-around;
-  border-top:1px solid #e6ecf0;
-  background:#fff;
-  padding:8px 0;
-  position:sticky;
-  bottom:0;
-}
-nav.bottom-nav button {
-  border:none;
-  background:none;
-  font-weight:600;
-  color:#657786;
-  cursor:pointer;
-  font-size:0.9rem;
-}
-nav.bottom-nav button.active {
-  color:#1d72b8;
-}
-</style>
+    /* Bottom Navigation */
+    nav.bottom-nav { display:flex; justify-content:space-around; border-top:1px solid #e6ecf0; background:#fff; padding:8px 0; position:sticky; bottom:0; }
+    nav.bottom-nav button { border:none; background:none; font-weight:600; color:#657786; cursor:pointer; font-size:0.9rem; }
+    nav.bottom-nav button.active { color:#1d72b8; }
+  </style>
 </head>
 
 <body>
@@ -209,7 +75,16 @@ nav.bottom-nav button.active {
   <button onclick="toggleSideNav()">☰</button>
 </header>
 
-<!-- TBM Wallet Bar -->
+<!-- Hamburger Side Navigation -->
+<div class="side-nav" id="sideNav">
+  <button onclick="navigateSide('home')">Home</button>
+  <button onclick="navigateSide('wallet')">Wallet</button>
+  <button onclick="navigateSide('notifications')">Notifications</button>
+  <button onclick="navigateSide('profile')">Profile</button>
+  <button onclick="logoutUser()">Logout</button>
+</div>
+
+<!-- Wallet Bar -->
 <div class="wallet-bar">
   <span>Wallet Balance</span>
   <span id="walletBalance">0.00 TBM</span>
@@ -227,20 +102,17 @@ nav.bottom-nav button.active {
   <div class="post" id="post1">
     <div class="post-header">
       <div class="user-info">
-        <!-- Blank profile pic placeholder -->
-        <img src="" alt="User profile pic">
+        <!-- Profile pic placeholder -->
+        <img src="" alt="User Profile">
 
         <div style="display:flex; flex-direction:column;">
           <div class="username">Alice Johnson</div>
           <div class="handle">@alice</div>
         </div>
       </div>
-
       <button onclick="followUser('alice')">Follow</button>
     </div>
-
     <div class="post-content">Welcome to TRIBERIUM! Start exploring posts and earning TBM.</div>
-
     <div class="post-actions">
       <span onclick="likePost('post1')">like</span>
       <span onclick="retribePost('post1')">retribe</span>
@@ -256,9 +128,10 @@ nav.bottom-nav button.active {
   <button onclick="navigateBottom('wallet')">Wallet</button>
   <button onclick="navigateBottom('notifications')">Notifications</button>
   <button onclick="navigateBottom('profile')">Profile</button>
+  <button onclick="navigateBottom('chat')">Chat</button>
 </nav>
 
-<!-- Firebase + Modules -->
+<!-- JS Modules -->
 <script type="module" src="js/firebaseModule.js"></script>
 <script type="module" src="js/feedModule.js"></script>
 <script type="module" src="js/profileModule.js"></script>
@@ -266,17 +139,23 @@ nav.bottom-nav button.active {
 <script type="module" src="js/walletModule.js"></script>
 <script type="module" src="js/notificationsModule.js"></script>
 <script type="module" src="js/searchModule.js"></script>
+<script type="module" src="js/chatModule.js"></script>
 
 <script type="module">
-  // TEMP Functions for demo
-  function toggleSideNav(){ alert('Side Nav'); }
+  // TEMP Functions
+  const sideNav = document.getElementById('sideNav');
+
+  function toggleSideNav() { sideNav.classList.toggle('active'); }
+  function navigateSide(page) { alert(page + ' side nav clicked'); sideNav.classList.remove('active'); }
+  function navigateBottom(page) { alert(page + ' bottom nav clicked'); }
+  function logoutUser() { alert('Logged out'); }
+
   function handleSearch(){ alert('Search triggered'); }
   function likePost(postId){ alert('Liked '+postId); }
   function retribePost(postId){ alert('Retribed '+postId); }
   function savePost(postId){ alert('Saved '+postId); }
   function sharePost(postId){ alert('Shared '+postId); }
   function followUser(userId){ alert('Followed '+userId); }
-  function navigateBottom(page){ alert(page+' clicked'); }
 </script>
 
 </body>
