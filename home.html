@@ -91,8 +91,8 @@
     <div class="post-actions">
       <span onclick="likePost('post1')">like</span>
       <span onclick="retribePost('post1')">retribe</span>
-      <span onclick="tipUser('alice')">tip tbm</span>
-      <span onclick="openDM('alice')">dm</span>
+      <span onclick="savePost('post1')">save</span>
+      <span onclick="sharePost('post1')">share</span>
     </div>
   </div>
 </main>
@@ -120,11 +120,11 @@
   function handleSearch(){ alert('Search triggered'); }
   function likePost(postId){ alert('Liked '+postId); }
   function retribePost(postId){ alert('Retribed '+postId); }
-  function tipUser(userId){ alert('Tipped TBM to '+userId); }
-  function openDM(userId){ alert('DM with '+userId); }
+  function savePost(postId){ alert('Saved '+postId); }
+  function sharePost(postId){ alert('Shared '+postId); }
   function followUser(userId){ alert('Followed '+userId); }
   function navigateBottom(page){ alert(page+' clicked'); }
 </script>
 
 </body>
-          </html>
+  </html>
