@@ -1,94 +1,177 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRIBERIUM — Profile</title>
+/**
+ * ==========================================
+ * TRIBERIUM — Profile Module
+ * ------------------------------------------
+ * Handles user profile display, DM, editing,
+ * and profile post actions.
+ * ==========================================
+ */
 
-  <!-- Favicon -->
-  <link rel="icon" href="pwa/icons/icon-192x192.png">
+import { db, auth, monitorAuthState, getDocument, listenCollection, updateDocument } from "./firebaseModule.js";
 
-  <!-- Core CSS -->
-  <link rel="stylesheet" href="css/profileStyles.css">
-  <link rel="stylesheet" href="css/feedStyles.css">
-  <link rel="stylesheet" href="css/adminStyles.css">
+/**
+ * =========================
+ * DOM References
+ * =========================
+ */
+const profileNameEl = document.getElementById("profileName");
+const profileHandleEl = document.getElementById("profileHandle");
+const profilePicEl = document.getElementById("profilePic");
+const profileBioEl = document.getElementById("profileBio");
+const profileStatsEl = document.getElementById("profileStats");
+const postsContainer = document.getElementById("profilePosts");
+const dmBtn = document.getElementById("dmUser");
+const editProfileBtn = document.getElementById("editProfile");
 
-  <!-- Optional CSS Modules -->
-  <link rel="stylesheet" href="css/searchStyles.css">
-  <link rel="stylesheet" href="css/walletStyles.css">
-  <link rel="stylesheet" href="css/notificationsStyles.css">
+/**
+ * =========================
+ * Helper Functions
+ * =========================
+ */
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
+/**
+ * Renders user's profile data
+ * @param {Object} userData 
+ */
+const renderProfile = (userData) => {
+  profileNameEl.textContent = userData.username || "Unknown";
+  profileHandleEl.textContent = `@${userData.handle || "unknown"}`;
+  profilePicEl.src = userData.profilePic || ""; // blank if empty
+  profileBioEl.textContent = userData.bio || "No bio yet.";
+  profileStatsEl.innerHTML = `
+    <span>Posts: ${userData.postsCount || 0}</span>
+    <span>Followers: ${userData.followersCount || 0}</span>
+    <span>Following: ${userData.followingCount || 0}</span>
+  `;
+};
 
-  <!-- Header -->
-  <header class="flex center" style="padding:16px; background:#121224; color:#4a90e2;">
-    <h1>TRIBERIUM</h1>
-    <nav>
-      <button onclick="navigateTo('home')">Home</button>
-      <button onclick="navigateTo('profile')">Profile</button>
-      <button onclick="navigateTo('admin')">Admin</button>
-      <button onclick="navigateTo('wallet')">Wallet</button>
-    </nav>
-  </header>
+/**
+ * Creates a single post for profile feed
+ * @param {Object} postData 
+ * @returns {HTMLElement}
+ */
+const createProfilePost = (postData) => {
+  const postEl = document.createElement("div");
+  postEl.classList.add("post");
+  postEl.id = postData.id;
 
-  <!-- Profile Section -->
-  <section class="profile-container" id="profileContainer">
-    <div class="profile-header flex">
-      <img id="avatarImg" class="avatar" src="assets/default-avatar.png" alt="User Avatar">
-      <div class="profile-info">
-        <h2 id="username">Username</h2>
-        <p id="bio">User bio goes here...</p>
-        <div class="follow-stats flex">
-          <span id="followersCount">0 Followers</span>
-          <span id="followingCount">0 Following</span>
-        </div>
-      </div>
-      <button onclick="editProfile()" id="editProfileBtn">Edit Profile</button>
-    </div>
+  const headerEl = document.createElement("div");
+  headerEl.classList.add("post-header");
 
-    <!-- Followers & Following List -->
-    <section class="followers-container" id="followersContainer">
-      <!-- Followers/Following will be dynamically loaded -->
-    </section>
+  // User info (just handle, since profile owner)
+  const userInfoEl = document.createElement("div");
+  userInfoEl.classList.add("user-info");
 
-    <!-- User Posts -->
-    <section class="feed-container" id="userFeedContainer">
-      <!-- User posts will be dynamically inserted here -->
-    </section>
+  const profileImg = document.createElement("img");
+  profileImg.src = postData.profilePic || "";
+  profileImg.alt = postData.username;
 
-    <!-- TBM Wallet -->
-    <section class="wallet-container" id="walletContainer">
-      <div class="wallet-summary">
-        <span class="label">TBM Balance</span>
-        <span class="amount" id="tbmBalance">0 TBM</span>
-      </div>
-      <div class="wallet-actions">
-        <button onclick="topUpWallet()">Top Up</button>
-        <button onclick="sendTBM()">Send</button>
-      </div>
-      <div class="transaction-list" id="transactionList">
-        <!-- Transactions will be dynamically inserted -->
-      </div>
-    </section>
-  </section>
+  const nameContainer = document.createElement("div");
+  nameContainer.style.display = "flex";
+  nameContainer.style.flexDirection = "column";
 
-  <!-- Notifications -->
-  <div class="notification-container" id="notificationContainer"></div>
+  const usernameEl = document.createElement("div");
+  usernameEl.classList.add("username");
+  usernameEl.textContent = postData.username;
 
-  <!-- Firebase SDK -->
-  <script type="module" src="js/firebaseModule.js"></script>
+  const handleEl = document.createElement("div");
+  handleEl.classList.add("handle");
+  handleEl.textContent = `@${postData.handle}`;
 
-  <!-- Core JS Modules -->
-  <script type="module" src="js/profileModule.js"></script>
-  <script type="module" src="js/followModule.js"></script>
-  <script type="module" src="js/feedModule.js"></script>
-  <script type="module" src="js/searchModule.js"></script>
-  <script type="module" src="js/walletModule.js"></script>
-  <script type="module" src="js/notificationsModule.js"></script>
-  <script type="module" src="js/uiUtilitiesModule.js"></script>
+  nameContainer.appendChild(usernameEl);
+  nameContainer.appendChild(handleEl);
+  userInfoEl.appendChild(profileImg);
+  userInfoEl.appendChild(nameContainer);
 
-</body>
-  </html>
+  headerEl.appendChild(userInfoEl);
+
+  // DM button in profile
+  const dmButton = document.createElement("button");
+  dmButton.textContent = "DM";
+  dmButton.onclick = () => openDM(postData.handle);
+  headerEl.appendChild(dmButton);
+
+  // Post Content
+  const contentEl = document.createElement("div");
+  contentEl.classList.add("post-content");
+  contentEl.textContent = postData.content;
+
+  // Post Actions
+  const actionsEl = document.createElement("div");
+  actionsEl.classList.add("post-actions");
+
+  const likeBtn = document.createElement("span");
+  likeBtn.textContent = "like";
+  likeBtn.onclick = () => likePost(postData.id);
+
+  const retribeBtn = document.createElement("span");
+  retribeBtn.textContent = "retribe";
+  retribeBtn.onclick = () => retribePost(postData.id);
+
+  const saveBtn = document.createElement("span");
+  saveBtn.textContent = "save";
+  saveBtn.onclick = () => savePost(postData.id);
+
+  actionsEl.appendChild(likeBtn);
+  actionsEl.appendChild(retribeBtn);
+  actionsEl.appendChild(saveBtn);
+
+  postEl.appendChild(headerEl);
+  postEl.appendChild(contentEl);
+  postEl.appendChild(actionsEl);
+
+  return postEl;
+};
+
+/**
+ * =========================
+ * Profile Actions
+ * =========================
+ */
+const likePost = (postId) => console.log(`Liked post: ${postId}`);
+const retribePost = (postId) => console.log(`Retribed post: ${postId}`);
+const savePost = (postId) => console.log(`Saved post: ${postId}`);
+const openDM = (handle) => console.log(`Open DM with: ${handle}`);
+
+const editProfile = () => {
+  const newBio = prompt("Update your bio:");
+  if (newBio !== null) {
+    updateDocument("users", auth.currentUser.uid, { bio: newBio });
+    profileBioEl.textContent = newBio;
+  }
+};
+
+/**
+ * =========================
+ * Load Profile
+ * =========================
+ */
+const loadProfile = async () => {
+  const uid = auth.currentUser.uid;
+  const userData = await getDocument("users", uid);
+  renderProfile(userData);
+
+  listenCollection("posts", (posts) => {
+    postsContainer.innerHTML = "";
+    posts
+      .filter(p => p.uid === uid)
+      .forEach(post => {
+        postsContainer.appendChild(createProfilePost(post));
+      });
+  });
+};
+
+/**
+ * =========================
+ * Initialize Profile
+ * =========================
+ */
+monitorAuthState(user => {
+  if (user) {
+    loadProfile();
+    editProfileBtn.onclick = editProfile;
+    dmBtn.onclick = () => console.log("DM Clicked"); // placeholder
+  } else {
+    window.location.href = "index.html";
+  }
+});
