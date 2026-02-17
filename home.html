@@ -5,72 +5,220 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRIBERIUM — Home</title>
 
-  <!-- Favicon -->
+  <!-- =========================
+       FAVICON
+  ========================= -->
   <link rel="icon" href="pwa/icons/icon-192x192.png">
 
-  <!-- Google Fonts -->
+  <!-- =========================
+       GOOGLE FONTS
+  ========================= -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
+  <!-- =========================
+       EXTERNAL CSS
+  ========================= -->
   <link rel="stylesheet" href="css/feedStyles.css">
   <link rel="stylesheet" href="css/profileStyles.css">
   <link rel="stylesheet" href="css/walletStyles.css">
   <link rel="stylesheet" href="css/notificationsStyles.css">
   <link rel="stylesheet" href="css/searchStyles.css">
 
+  <!-- =========================
+       INLINE STYLES — HOME LAYOUT
+       Mobile-first Twitter-style UI
+  ========================= -->
   <style>
-    /* --- Mobile-first Twitter-like clean UI --- */
-    body { margin:0; font-family:'Inter',sans-serif; background:#f5f8fa; color:#111; display:flex; flex-direction:column; height:100vh; }
+    /* =========================
+       BODY BASE STYLES
+    ========================= */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f5f8fa;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
 
-    /* Header */
-    header { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #e6ecf0; position:sticky; top:0; background:#fff; z-index:100; }
-    header .logo { font-weight:700; font-size:1.4rem; animation: pulse 1.5s infinite; cursor:pointer; }
-    header button { border:none; background:none; font-size:1.4rem; cursor:pointer; }
+    /* =========================
+       HEADER
+       Sticky top with logo and hamburger
+    ========================= */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-bottom: 1px solid #e6ecf0;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 100;
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      animation: pulse 1.5s infinite;
+      cursor: pointer;
+    }
+
+    header button {
+      border: none;
+      background: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
 
     @keyframes pulse {
-      0% { transform: scale(1); color:#1d72b8; }
-      50% { transform: scale(1.1); color:#0d5ea8; }
-      100% { transform: scale(1); color:#1d72b8; }
+      0% { transform: scale(1); color: #1d72b8; }
+      50% { transform: scale(1.1); color: #0d5ea8; }
+      100% { transform: scale(1); color: #1d72b8; }
     }
 
-    /* TBM Wallet Bar */
-    .wallet-bar { padding:8px 16px; border-bottom:1px solid #e6ecf0; background:#fff; display:flex; justify-content:space-between; align-items:center; font-weight:600; }
+    /* =========================
+       TBM WALLET BAR
+       Sticky below header
+       Prevents visual overlap
+    ========================= */
+    .wallet-bar {
+      position: sticky;       /* Stick below header */
+      top: 56px;              /* Header height + buffer */
+      z-index: 101;           /* Above header */
+      isolation: isolate;     /* Prevent border bleed */
 
-    /* Search Bar */
-    .search-container { padding:8px 16px; border-bottom:1px solid #e6ecf0; display:flex; gap:8px; background:#fff; }
-    .search-container input { flex:1; padding:8px 12px; border-radius:20px; border:1px solid #ccd6dd; outline:none; }
-    .search-container button { padding:8px 12px; border:none; border-radius:20px; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; }
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-    /* Feed */
-    main.feed { flex:1; overflow-y:auto; padding:12px 0; display:flex; flex-direction:column; gap:12px; background:#f5f8fa; }
+      width: 100%;
+      padding: 8px 16px;
+
+      background-color: #ffffff;
+
+      border-bottom: 1px solid #e6ecf0; /* Subtle divider */
+      font-weight: 600;
+      font-size: 14px;
+      color: #0f1419;
+    }
+
+    /* =========================
+       SEARCH BAR
+       Input + Button styling
+    ========================= */
+    .search-container {
+      padding: 8px 16px;
+      border-bottom: 1px solid #e6ecf0;
+      display: flex;
+      gap: 8px;
+      background: #fff;
+    }
+
+    .search-container input {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 20px;
+      border: 1px solid #ccd6dd;
+      outline: none;
+    }
+
+    .search-container button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 20px;
+      background: #1d72b8;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* =========================
+       FEED
+       Scrollable main content
+    ========================= */
+    main.feed {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #f5f8fa;
+    }
 
     .post {
-      background:#fff;
-      padding:12px 16px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      border-radius:12px;
-      box-shadow:0 1px 3px rgba(0,0,0,0.1);
+      background: #fff;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-    .post-header { display:flex; justify-content:space-between; align-items:center; }
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-    /* User Info with Profile Pic */
-    .post-header .user-info { display:flex; align-items:center; gap:8px; }
-    .post-header .user-info img { width:48px; height:48px; border-radius:50%; background:#ccd6dd; object-fit:cover; }
+    .post-header .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-    .post-header .username { font-weight:600; }
-    .post-header .handle { font-size:0.85rem; color:#657786; }
+    .post-header .user-info img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #ccd6dd;
+      object-fit: cover;
+    }
 
-    .post-header button { padding:4px 12px; border:none; border-radius:20px; background:#1d72b8; color:#fff; font-weight:600; cursor:pointer; font-size:0.85rem; }
+    .post-header .username {
+      font-weight: 600;
+    }
 
-    .post-content { margin:8px 0; line-height:1.4; }
+    .post-header .handle {
+      font-size: 0.85rem;
+      color: #657786;
+    }
 
-    .post-actions { display:flex; justify-content:space-between; font-weight:600; color:#1d72b8; font-size:0.85rem; }
-    .post-actions span { cursor:pointer; }
+    .post-header button {
+      padding: 4px 12px;
+      border: none;
+      border-radius: 20px;
+      background: #1d72b8;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
 
-    /* Hamburger Navigation */
+    .post-content {
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      color: #1d72b8;
+      font-size: 0.85rem;
+    }
+
+    .post-actions span {
+      cursor: pointer;
+    }
+
+    /* =========================
+       HAMBURGER SIDE NAVIGATION
+       Slide-in menu
+    ========================= */
     .side-nav {
       position: fixed;
       left: -260px;
@@ -87,24 +235,46 @@
       z-index: 200;
     }
 
-    .side-nav.show { left:0; }
+    .side-nav.show { left: 0; }
 
     .side-nav button {
-      background:none;
-      border:none;
-      font-size:1rem;
-      text-align:left;
-      padding:12px 8px;
-      cursor:pointer;
-      font-weight:600;
-      color:#1d72b8;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      text-align: left;
+      padding: 12px 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #1d72b8;
     }
 
-    /* Bottom Nav */
-    nav.bottom-nav { display:flex; justify-content:space-around; border-top:1px solid #e6ecf0; background:#fff; padding:8px 0; position:sticky; bottom:0; z-index:100; }
-    nav.bottom-nav button { border:none; background:none; font-weight:600; color:#657786; cursor:pointer; font-size:0.9rem; }
-    nav.bottom-nav button.active { color:#1d72b8; }
+    /* =========================
+       BOTTOM NAVIGATION
+       Sticky bottom bar
+    ========================= */
+    nav.bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #e6ecf0;
+      background: #fff;
+      padding: 8px 0;
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+    }
 
+    nav.bottom-nav button {
+      border: none;
+      background: none;
+      font-weight: 600;
+      color: #657786;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    nav.bottom-nav button.active {
+      color: #1d72b8;
+    }
   </style>
 </head>
 
@@ -142,7 +312,7 @@
   <div class="post" id="post1">
     <div class="post-header">
       <div class="user-info">
-        <img alt="Profile pic"> <!-- empty round placeholder -->
+        <img alt="Profile pic">
         <div style="display:flex; flex-direction:column;">
           <div class="username">Alice Johnson</div>
           <div class="handle">@alice</div>
@@ -171,7 +341,9 @@
   <button onclick="navigateBottom('chat')">Chat</button>
 </nav>
 
-<!-- JS Modules -->
+<!-- =========================
+     JS MODULES
+========================= -->
 <script type="module" src="js/firebaseModule.js"></script>
 <script type="module" src="js/feedModule.js"></script>
 <script type="module" src="js/profileModule.js"></script>
@@ -181,11 +353,9 @@
 <script type="module" src="js/searchModule.js"></script>
 
 <script type="module">
-  // Hamburger Toggle
   const sideNav = document.getElementById('sideNav');
   function toggleSideNav(){ sideNav.classList.toggle('show'); }
 
-  // Demo Click Actions
   function handleSearch(){ alert('Search triggered'); }
   function likePost(postId){ alert('Liked '+postId); }
   function retribePost(postId){ alert('Retribed '+postId); }
@@ -197,4 +367,4 @@
 </script>
 
 </body>
-  </html>
+                                           </html>
