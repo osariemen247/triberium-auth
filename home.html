@@ -7,17 +7,20 @@
 
   <!-- =========================
        Favicon
+       High-resolution PWA icon
   ========================= -->
   <link rel="icon" href="pwa/icons/icon-192x192.png">
 
   <!-- =========================
        Google Fonts
+       Inter font for clean modern UI
   ========================= -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- =========================
-       CSS Files
-       Structured, modular
+       Modular CSS
+       Home, Feed, Profile, Wallet, Notifications, Search
+       Ensures proper layout and spacing
   ========================= -->
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/feedStyles.css">
@@ -32,28 +35,32 @@
 
   <!-- =========================
        HEADER
-       Sticky top bar with logo & menu
+       Sticky top header with logo and hamburger menu
+       Prevents overlap with wallet and feed
   ========================= -->
-  <header>
+  <header class="site-header">
     <div class="logo" onclick="navigateBottom('home')">TRIBERIUM</div>
-    <button onclick="toggleSideNav()">☰</button>
+    <button class="menu-toggle" onclick="toggleSideNav()">☰</button>
   </header>
 
   <!-- =========================
-       HAMBURGER SIDE NAVIGATION
-       Slide-in menu for profile, wallet, notifications
+       SIDE NAVIGATION
+       Slide-in hamburger menu for secondary navigation
+       Z-index higher than wallet and feed to prevent overlap
   ========================= -->
-  <div class="side-nav" id="sideNav">
+  <nav class="side-nav" id="sideNav">
     <button onclick="navigateBottom('profile')">Profile</button>
     <button onclick="navigateBottom('wallet')">Wallet</button>
     <button onclick="navigateBottom('notifications')">Notifications</button>
     <button onclick="navigateBottom('search')">Search</button>
     <button onclick="logout()">Logout</button>
-  </div>
+  </nav>
 
   <!-- =========================
        TBM WALLET BAR
-       Sticky below header, shows balance
+       Sticky below header
+       Z-index and isolation prevent white overlap issues
+       Display wallet balance prominently
   ========================= -->
   <div class="wallet-bar">
     <span class="wallet-label">Wallet Balance</span>
@@ -61,8 +68,9 @@
   </div>
 
   <!-- =========================
-       SEARCH CONTAINER
-       Search users or posts
+       SEARCH BAR
+       Sticky under wallet bar
+       Proper padding prevents overlap with feed
   ========================= -->
   <div class="search-container">
     <input type="text" id="searchInput" placeholder="Search users or posts...">
@@ -71,16 +79,21 @@
 
   <!-- =========================
        MAIN FEED
-       Scrollable posts
+       Scrollable vertical list of posts
+       Correct padding-top ensures no overlap with header, wallet, or search bar
+       Uses CSS class for smooth scroll and spacing
   ========================= -->
   <main class="feed" id="feedContainer">
 
-    <!-- Sample Post -->
+    <!-- =========================
+         Sample Post Template
+         Can be replicated dynamically via JS
+    ========================= -->
     <div class="post" id="post1">
       <div class="post-header">
         <div class="user-info">
           <img alt="Profile pic">
-          <div style="display:flex; flex-direction:column;">
+          <div class="user-meta">
             <div class="username">Alice Johnson</div>
             <div class="handle">@alice</div>
           </div>
@@ -88,7 +101,9 @@
         <button onclick="followUser('alice')">Follow</button>
       </div>
 
-      <div class="post-content">Welcome to TRIBERIUM! Start exploring posts and earning TBM.</div>
+      <div class="post-content">
+        Welcome to TRIBERIUM! Start exploring posts and earning TBM.
+      </div>
 
       <div class="post-actions">
         <span onclick="likePost('post1')">like</span>
@@ -102,7 +117,8 @@
 
   <!-- =========================
        BOTTOM NAVIGATION
-       Sticky navigation at bottom
+       Sticky bottom nav for primary actions
+       Proper z-index and spacing to prevent overlap with feed
   ========================= -->
   <nav class="bottom-nav">
     <button class="active" onclick="navigateBottom('home')">Home</button>
@@ -114,7 +130,7 @@
 
   <!-- =========================
        JS Modules
-       Modular, organized
+       Organized per feature
   ========================= -->
   <script type="module" src="js/firebaseModule.js"></script>
   <script type="module" src="js/feedModule.js"></script>
@@ -124,26 +140,28 @@
   <script type="module" src="js/notificationsModule.js"></script>
   <script type="module" src="js/searchModule.js"></script>
 
+  <!-- =========================
+       INLINE JS
+       Handles demo actions and hamburger toggle
+  ========================= -->
   <script type="module">
-    // =========================
-    // HAMBURGER TOGGLE
-    // =========================
     const sideNav = document.getElementById('sideNav');
-    function toggleSideNav() { sideNav.classList.toggle('show'); }
 
-    // =========================
-    // DEMO CLICK HANDLERS
-    // =========================
+    // Toggle hamburger menu
+    function toggleSideNav() {
+      sideNav.classList.toggle('show');
+    }
+
+    // Demo click handlers
     function handleSearch() { alert('Search triggered'); }
-    function likePost(postId) { alert('Liked '+postId); }
-    function retribePost(postId) { alert('Retribed '+postId); }
-    function savePost(postId) { alert('Saved '+postId); }
-    function sharePost(postId) { alert('Shared '+postId); }
-    function followUser(userId) { alert('Followed '+userId); }
+    function likePost(postId) { alert('Liked ' + postId); }
+    function retribePost(postId) { alert('Retribed ' + postId); }
+    function savePost(postId) { alert('Saved ' + postId); }
+    function sharePost(postId) { alert('Shared ' + postId); }
+    function followUser(userId) { alert('Followed ' + userId); }
     function logout() { alert('Logged out'); }
-    function navigateBottom(page) { alert(page+' clicked'); }
-
+    function navigateBottom(page) { alert(page + ' clicked'); }
   </script>
 
 </body>
-</html>
+                                                   </html>
