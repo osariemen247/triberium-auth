@@ -1,4 +1,4 @@
-/* =====================================================
+h/* =====================================================
    HOME PAGE LAYOUT STYLES
    File: home.css
    Scope: Home feed, wallet bar, spacing safety
@@ -28,7 +28,12 @@
 .wallet-bar {
   position: sticky;
   top: 0;
-  z-index: 20;
+
+  /* Increased stacking priority */
+  z-index: 100;
+
+  /* Isolates stacking context to prevent border bleed */
+  isolation: isolate;
 
   display: flex;
   align-items: center;
@@ -39,7 +44,7 @@
 
   background-color: #ffffff;
 
-  /* Subtle Twitter-style divider */
+  /* Divider */
   border-bottom: 1px solid #e6ecf0;
 
   /* Typography */
