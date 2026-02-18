@@ -10,7 +10,7 @@
 <style>
 
 /* ======================================================
-   THEME SYSTEM (LIGHT + DARK)
+   GLOBAL DESIGN SYSTEM
 ====================================================== */
 
 :root {
@@ -20,7 +20,7 @@
   --card: #ffffff;
   --text: #111;
   --muted: #6b7280;
-  --border: rgba(123,44,191,0.12);
+  --border: rgba(123,44,191,0.15);
 }
 
 [data-theme="dark"] {
@@ -31,7 +31,9 @@
   --border: rgba(255,255,255,0.08);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html, body {
   margin: 0;
@@ -55,13 +57,13 @@ html, body {
   justify-content: space-between;
   align-items: center;
   backdrop-filter: blur(12px);
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.75);
   border-bottom: 1px solid var(--border);
   z-index: 1000;
 }
 
 [data-theme="dark"] .header {
-  background: rgba(20,20,25,0.8);
+  background: rgba(20,20,25,0.85);
 }
 
 .logo {
@@ -78,51 +80,178 @@ html, body {
   to { filter: brightness(1.4); }
 }
 
+.toggle {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
 /* ======================================================
-   PAGE TRANSITION SYSTEM
+   SIDEBAR NAVIGATION (RIGHT SLIDE)
+====================================================== */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 280px;
+  height: 100vh;
+  background: var(--card);
+  border-left: 1px solid var(--border);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: right 0.4s ease;
+  z-index: 2000;
+}
+
+.sidebar.active {
+  right: 0;
+}
+
+.sidebar button {
+  background: none;
+  border: none;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px 0;
+  color: var(--primary);
+  transition: 0.2s;
+}
+
+.sidebar button:hover {
+  transform: translateX(6px);
+  color: var(--primary-dark);
+}
+
+/* ======================================================
+   PAGE CONTAINER
 ====================================================== */
 
 .page {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: 0.4s ease;
   padding: 20px;
   min-height: calc(100vh - 120px);
 }
 
-.page.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 /* ======================================================
-   CARD + SKELETON
+   POST CARD SYSTEM
 ====================================================== */
 
 .card {
   background: var(--card);
   padding: 18px;
   border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.05);
   margin-bottom: 20px;
+  border: 1px solid var(--border);
 }
 
-.skeleton {
-  height: 16px;
-  background: linear-gradient(90deg, #eee, #ddd, #eee);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-  border-radius: 6px;
+/* -------------------------------
+   POST HEADER
+-------------------------------- */
+
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 12px;
 }
 
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Circular profile placeholder */
+
+.profile-placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e9d5ff, #c084fc);
+  border: 2px solid var(--primary);
+}
+
+/* Username */
+
+.username {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Follow button */
+
+.follow-btn {
+  background: var(--primary);
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.follow-btn:hover {
+  background: var(--primary-dark);
+}
+
+/* -------------------------------
+   POST BODY
+-------------------------------- */
+
+.post-content {
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+/* -------------------------------
+   POST ACTIONS
+-------------------------------- */
+
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--primary);
 }
 
 /* ======================================================
-   FLOATING TOKEN ANIMATION
+   BOTTOM NAVIGATION
+====================================================== */
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nav button.active {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+/* ======================================================
+   TOKEN FLOAT ANIMATION
 ====================================================== */
 
 .token {
@@ -138,90 +267,6 @@ html, body {
   100% { opacity: 0; transform: translateY(-60px); }
 }
 
-/* ======================================================
-   BOTTOM NAVIGATION
-====================================================== */
-
-.nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background: var(--card);
-  padding: 10px 0;
-  border-top: 1px solid var(--border);
-}
-
-.nav button {
-  background: none;
-  border: none;
-  color: var(--muted);
-  font-size: 0.7rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.nav button.active {
-  color: var(--primary);
-  transform: scale(1.1);
-}
-
-.badge {
-  position: absolute;
-  font-size: 0.6rem;
-  background: var(--primary);
-  color: white;
-  padding: 2px 6px;
-  border-radius: 12px;
-  top: 2px;
-  right: 10px;
-}
-
-/* ======================================================
-   NOTIFICATION DROPDOWN
-====================================================== */
-
-.notifications-panel {
-  position: fixed;
-  top: 60px;
-  right: 20px;
-  width: 260px;
-  max-height: 320px;
-  overflow-y: auto;
-  background: var(--card);
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  border: 1px solid var(--border);
-  display: none;
-  padding: 14px;
-  z-index: 2000;
-}
-
-.notifications-panel.active {
-  display: block;
-}
-
-.notification-item {
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.85rem;
-}
-
-/* ======================================================
-   DARK MODE TOGGLE
-====================================================== */
-
-.toggle {
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-}
-
 </style>
 </head>
 
@@ -229,49 +274,64 @@ html, body {
 
 <header class="header">
   <div class="logo">TRIBERIUM</div>
-  <div class="toggle" onclick="toggleTheme()">🌙</div>
+  <div>
+    <span class="toggle" onclick="toggleTheme()">🌙</span>
+    <span class="toggle" onclick="toggleSidebar()">☰</span>
+  </div>
 </header>
 
-<!-- HOME PAGE -->
-<section id="homePage" class="page active">
-  <div class="card">
-    Welcome to TRIBERIUM.
-    <div onclick="earnToken(event)">Like & Earn TBM</div>
-  </div>
-</section>
-
-<!-- COMMUNITY PAGE -->
-<section id="communityPage" class="page">
-  <div class="card">Community Feed Section</div>
-</section>
-
-<!-- NOTIFICATION DROPDOWN -->
-<div id="notificationPanel" class="notifications-panel">
-  <div class="notification-item">Alice liked your post</div>
-  <div class="notification-item">You earned 5 TBM</div>
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <button>Profile</button>
+  <button>Metrics / Analytics</button>
+  <button>News</button>
+  <button>Access Zytherion</button>
+  <button>Live Stream</button>
+  <button>Saved Posts</button>
+  <button>Settings</button>
+  <button>Logout</button>
 </div>
 
-<!-- NAVIGATION -->
+<!-- MAIN PAGE -->
+<section class="page">
+
+  <div class="card">
+
+    <div class="post-header">
+      <div class="post-user">
+        <div class="profile-placeholder"></div>
+        <div class="username">@TriberiumUser</div>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+
+    <div class="post-content">
+      Welcome to TRIBERIUM SocialFi evolution. Earn, connect, build.
+    </div>
+
+    <div class="post-actions">
+      <span onclick="earnToken(event)">Like</span>
+      <span>Retribe</span>
+      <span>Save</span>
+      <span>Share</span>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- BOTTOM NAV -->
 <nav class="nav">
-  <button class="active" onclick="switchPage('homePage')">Home</button>
-  <button onclick="switchPage('communityPage')">Community</button>
-  <button onclick="alert('Chat')">Chat</button>
-  <button onclick="toggleNotifications()">Notifications</button>
+  <button class="active">Home</button>
+  <button>Community</button>
+  <button>Chat</button>
+  <button>Notifications</button>
 </nav>
 
 <script>
 
 /* ======================================================
-   PAGE SWITCHING
-====================================================== */
-
-function switchPage(pageId){
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-}
-
-/* ======================================================
-   DARK MODE
+   THEME SYSTEM
 ====================================================== */
 
 function toggleTheme(){
@@ -286,17 +346,15 @@ if(localStorage.getItem("theme")){
 }
 
 /* ======================================================
-   NOTIFICATIONS
+   SIDEBAR CONTROL
 ====================================================== */
 
-let notificationCount = 2;
-
-function toggleNotifications(){
-  document.getElementById("notificationPanel").classList.toggle("active");
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
 }
 
 /* ======================================================
-   TOKEN EARN ANIMATION
+   TOKEN ANIMATION
 ====================================================== */
 
 function earnToken(e){
