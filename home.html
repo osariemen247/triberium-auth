@@ -31,9 +31,7 @@
   --border: rgba(255,255,255,0.08);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -46,49 +44,87 @@ html, body {
 }
 
 /* ======================================================
-   HEADER
+   HEADER SYSTEM (RESTRUCTURED)
 ====================================================== */
 
 .header {
   position: sticky;
   top: 0;
-  padding: 16px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  backdrop-filter: blur(12px);
-  background: rgba(255,255,255,0.75);
-  border-bottom: 1px solid var(--border);
   z-index: 1000;
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.8);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 [data-theme="dark"] .header {
-  background: rgba(20,20,25,0.85);
+  background: rgba(20,20,25,0.9);
 }
+
+/* Hamburger Button */
+
+.menu-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Logo + Wallet Container */
+
+.brand-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Animated Gradient Logo */
 
 .logo {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  background: linear-gradient(
+      90deg,
+      var(--primary),
+      #a855f7,
+      var(--primary-dark),
+      var(--primary)
+  );
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: glow 3s infinite alternate;
+  animation: gradientFlow 6s ease infinite;
 }
 
-@keyframes glow {
-  from { filter: brightness(1); }
-  to { filter: brightness(1.4); }
+/* Advanced Gradient Animation */
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.toggle {
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+/* Wallet Balance */
+
+.wallet-balance {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* ======================================================
-   SIDEBAR NAVIGATION (RIGHT SLIDE)
+   SIDEBAR NAVIGATION
 ====================================================== */
 
 .sidebar {
@@ -107,9 +143,7 @@ html, body {
   z-index: 2000;
 }
 
-.sidebar.active {
-  right: 0;
-}
+.sidebar.active { right: 0; }
 
 .sidebar button {
   background: none;
@@ -149,14 +183,12 @@ html, body {
   border: 1px solid var(--border);
 }
 
-/* -------------------------------
-   POST HEADER
--------------------------------- */
+/* Post Header */
 
 .post-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 12px;
 }
 
@@ -166,8 +198,6 @@ html, body {
   gap: 12px;
 }
 
-/* Circular profile placeholder */
-
 .profile-placeholder {
   width: 42px;
   height: 42px;
@@ -176,14 +206,10 @@ html, body {
   border: 2px solid var(--primary);
 }
 
-/* Username */
-
 .username {
   font-weight: 600;
   font-size: 0.95rem;
 }
-
-/* Follow button */
 
 .follow-btn {
   background: var(--primary);
@@ -200,18 +226,14 @@ html, body {
   background: var(--primary-dark);
 }
 
-/* -------------------------------
-   POST BODY
--------------------------------- */
+/* Post Content */
 
 .post-content {
   font-size: 0.95rem;
   margin-bottom: 14px;
 }
 
-/* -------------------------------
-   POST ACTIONS
--------------------------------- */
+/* Post Actions */
 
 .post-actions {
   display: flex;
@@ -272,12 +294,22 @@ html, body {
 
 <body>
 
+<!-- HEADER -->
 <header class="header">
-  <div class="logo">TRIBERIUM</div>
-  <div>
-    <span class="toggle" onclick="toggleTheme()">🌙</span>
-    <span class="toggle" onclick="toggleSidebar()">☰</span>
+
+  <!-- Hamburger LEFT -->
+  <button class="menu-btn" onclick="toggleSidebar()">
+    ☰
+  </button>
+
+  <!-- Logo + Wallet -->
+  <div class="brand-container">
+    <div class="logo">TRIBERIUM</div>
+    <div class="wallet-balance">
+      TBM Balance: <span id="walletAmount">1,250</span>
+    </div>
   </div>
+
 </header>
 
 <!-- SIDEBAR -->
@@ -292,7 +324,7 @@ html, body {
   <button>Logout</button>
 </div>
 
-<!-- MAIN PAGE -->
+<!-- MAIN CONTENT -->
 <section class="page">
 
   <div class="card">
@@ -331,22 +363,7 @@ html, body {
 <script>
 
 /* ======================================================
-   THEME SYSTEM
-====================================================== */
-
-function toggleTheme(){
-  const root = document.documentElement;
-  const current = root.getAttribute("data-theme");
-  root.setAttribute("data-theme", current === "dark" ? "light" : "dark");
-  localStorage.setItem("theme", root.getAttribute("data-theme"));
-}
-
-if(localStorage.getItem("theme")){
-  document.documentElement.setAttribute("data-theme", localStorage.getItem("theme"));
-}
-
-/* ======================================================
-   SIDEBAR CONTROL
+   SIDEBAR TOGGLE
 ====================================================== */
 
 function toggleSidebar(){
@@ -354,7 +371,7 @@ function toggleSidebar(){
 }
 
 /* ======================================================
-   TOKEN ANIMATION
+   TOKEN EARN ANIMATION + WALLET UPDATE
 ====================================================== */
 
 function earnToken(e){
@@ -364,7 +381,12 @@ function earnToken(e){
   token.style.left = e.clientX + "px";
   token.style.top = e.clientY + "px";
   document.body.appendChild(token);
+
   setTimeout(() => token.remove(), 1200);
+
+  // Update wallet balance dynamically
+  const wallet = document.getElementById("walletAmount");
+  wallet.innerText = parseInt(wallet.innerText.replace(/,/g,'')) + 5;
 }
 
 </script>
