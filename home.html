@@ -5,13 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TRIBERIUM — Home</title>
 
-<!-- Favicon -->
 <link rel="icon" href="pwa/icons/icon-192x192.png">
-
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<!-- External Styles -->
 <link rel="stylesheet" href="css/feedStyles.css">
 <link rel="stylesheet" href="css/profileStyles.css">
 <link rel="stylesheet" href="css/walletStyles.css">
@@ -21,32 +17,41 @@
 <style>
 
 /* =========================
-   GLOBAL RESET & STRUCTURE
+   THEME VARIABLES
+========================= */
+
+:root {
+  --primary: #7b2cbf;
+  --primary-dark: #5a189a;
+  --bg-light: #f6f2fb;
+  --white: #ffffff;
+  --text-dark: #111;
+  --text-muted: #6b7280;
+  --border: #ece3f8;
+}
+
+/* =========================
+   GLOBAL RESET
 ========================= */
 
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden;            /* CRITICAL FIX */
+  overflow-x: hidden;
   font-family: 'Inter', sans-serif;
-  background: #f5f8fa;
-  color: #111;
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
-/* Root App Container */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100%;
-  position: relative;
 }
 
 /* =========================
@@ -57,26 +62,89 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 18px;
-  background: #ffffff;
-  border-bottom: 1px solid #e6ecf0;
+  padding: 14px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
+/* Animated Logo */
+
 .logo {
   font-weight: 700;
-  font-size: 1.4rem;
-  color: #1d72b8;
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: logoPulse 3s ease-in-out infinite;
   cursor: pointer;
+}
+
+@keyframes logoPulse {
+  0% { letter-spacing: 0px; }
+  50% { letter-spacing: 1px; }
+  100% { letter-spacing: 0px; }
 }
 
 .menu-btn {
   border: none;
   background: none;
-  font-size: 1.4rem;
   cursor: pointer;
+}
+
+/* =========================
+   SIDE NAV (RIGHT)
+========================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+  z-index: 1500;
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.side-nav {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100vh;
+  background: var(--white);
+  box-shadow: -4px 0 12px rgba(0,0,0,0.08);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: right 0.35s cubic-bezier(.4,0,.2,1);
+  z-index: 2000;
+}
+
+.side-nav.active { right: 0; }
+
+.side-nav button {
+  border: none;
+  background: none;
+  text-align: left;
+  font-weight: 600;
+  padding: 12px 0;
+  cursor: pointer;
+  color: var(--primary);
+  transition: 0.2s;
+}
+
+.side-nav button:hover {
+  color: var(--primary-dark);
 }
 
 /* =========================
@@ -84,9 +152,9 @@ html, body {
 ========================= */
 
 .wallet-bar {
-  background: #ffffff;
-  padding: 10px 18px;
-  border-bottom: 1px solid #e6ecf0;
+  background: var(--white);
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   font-weight: 600;
@@ -97,9 +165,9 @@ html, body {
 ========================= */
 
 .search-wrapper {
-  background: #ffffff;
-  padding: 12px 18px;
-  border-bottom: 1px solid #e6ecf0;
+  background: var(--white);
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
   display: flex;
   gap: 10px;
 }
@@ -107,19 +175,17 @@ html, body {
 .search-wrapper input {
   flex: 1;
   padding: 10px 14px;
-  border-radius: 24px;
-  border: 1px solid #ccd6dd;
-  outline: none;
+  border-radius: 22px;
+  border: 1px solid var(--border);
 }
 
 .search-wrapper button {
   padding: 10px 16px;
-  border-radius: 24px;
+  border-radius: 22px;
   border: none;
-  background: #1d72b8;
-  color: #ffffff;
+  background: var(--primary);
+  color: var(--white);
   font-weight: 600;
-  cursor: pointer;
 }
 
 /* =========================
@@ -128,120 +194,32 @@ html, body {
 
 .feed {
   flex: 1;
-  padding: 14px 18px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* Post Card */
 .post {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: var(--white);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(123,44,191,0.05);
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: transform 0.2s ease;
 }
 
-/* Post Header */
-.post-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.post:hover {
+  transform: translateY(-2px);
 }
 
-.user-info {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.user-info img {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #ccd6dd;
-}
-
-.user-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.username {
-  font-weight: 600;
-}
-
-.handle {
-  font-size: 0.85rem;
-  color: #657786;
-}
-
-.follow-btn {
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: none;
-  background: #1d72b8;
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* Post Content */
-.post-content {
-  line-height: 1.5;
-}
-
-/* Post Actions */
 .post-actions {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
   font-weight: 600;
-  color: #1d72b8;
-}
-
-.post-actions span {
-  cursor: pointer;
-}
-
-/* =========================
-   SIDE NAV (OFF CANVAS)
-========================= */
-
-.side-nav {
-  position: fixed;
-  top: 0;
-  left: -260px;                 /* fully hidden */
-  width: 260px;
-  height: 100vh;
-  background: #ffffff;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.15);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  transition: left 0.3s ease;
-  z-index: 2000;
-}
-
-.side-nav.active {
-  left: 0;
-}
-
-.side-nav button {
-  border: none;
-  background: none;
-  font-weight: 600;
-  font-size: 1rem;
-  text-align: left;
-  padding: 12px 0;
-  cursor: pointer;
-  color: #1d72b8;
+  color: var(--primary);
 }
 
 /* =========================
@@ -251,8 +229,9 @@ html, body {
 .bottom-nav {
   display: flex;
   justify-content: space-around;
-  background: #ffffff;
-  border-top: 1px solid #e6ecf0;
+  align-items: center;
+  background: var(--white);
+  border-top: 1px solid var(--border);
   padding: 10px 0;
   position: sticky;
   bottom: 0;
@@ -262,13 +241,27 @@ html, body {
 .bottom-nav button {
   border: none;
   background: none;
-  font-weight: 600;
-  color: #657786;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
   cursor: pointer;
+  font-size: 0.7rem;
+  transition: 0.2s;
 }
 
 .bottom-nav button.active {
-  color: #1d72b8;
+  color: var(--primary);
+}
+
+.bottom-nav svg {
+  width: 22px;
+  height: 22px;
+}
+
+.chat-center {
+  transform: translateY(-6px);
 }
 
 </style>
@@ -279,16 +272,25 @@ html, body {
 <div class="app-container">
 
 <header class="app-header">
-  <div class="logo" onclick="navigateBottom('home')">TRIBERIUM</div>
-  <button class="menu-btn" onclick="toggleSideNav()">☰</button>
+  <div class="logo">TRIBERIUM</div>
+  <button class="menu-btn" onclick="toggleSideNav()">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
 </header>
 
-<!-- Side Navigation -->
+<div class="overlay" id="overlay" onclick="toggleSideNav()"></div>
+
 <aside class="side-nav" id="sideNav">
-  <button onclick="navigateBottom('profile')">Profile</button>
-  <button onclick="navigateBottom('wallet')">Wallet</button>
-  <button onclick="navigateBottom('notifications')">Notifications</button>
-  <button onclick="navigateBottom('search')">Search</button>
+  <button>Metrics / Analytics</button>
+  <button>News</button>
+  <button>Access Zytherion</button>
+  <button>Live Stream</button>
+  <button>Saved Posts</button>
+  <button>Settings</button>
   <button onclick="logout()">Logout</button>
 </aside>
 
@@ -297,74 +299,59 @@ html, body {
   <span id="walletBalance">0.00 TBM</span>
 </div>
 
-<div class="search-wrapper">
-  <input type="text" id="searchInput" placeholder="Search users or posts...">
-  <button onclick="handleSearch()">Search</button>
-</div>
-
-<main class="feed" id="feedContainer">
-
-  <article class="post" id="post1">
-
-    <div class="post-header">
-      <div class="user-info">
-        <img alt="Profile picture">
-        <div class="user-text">
-          <div class="username">Alice Johnson</div>
-          <div class="handle">@alice</div>
-        </div>
-      </div>
-      <button class="follow-btn" onclick="followUser('alice')">Follow</button>
-    </div>
-
-    <div class="post-content">
-      Welcome to TRIBERIUM! Start exploring posts and earning TBM.
-    </div>
-
+<main class="feed">
+  <article class="post">
+    <div>Welcome to TRIBERIUM! Start exploring posts and earning TBM.</div>
     <div class="post-actions">
-      <span onclick="likePost('post1')">like</span>
-      <span onclick="retribePost('post1')">retribe</span>
-      <span onclick="savePost('post1')">save</span>
-      <span onclick="sharePost('post1')">share</span>
+      <span>Like</span>
+      <span>Retribe</span>
+      <span>Save</span>
+      <span>Share</span>
     </div>
-
   </article>
-
 </main>
 
 <nav class="bottom-nav">
-  <button class="active" onclick="navigateBottom('home')">Home</button>
-  <button onclick="navigateBottom('wallet')">Wallet</button>
-  <button onclick="navigateBottom('notifications')">Notifications</button>
-  <button onclick="navigateBottom('profile')">Profile</button>
-  <button onclick="navigateBottom('chat')">Chat</button>
+  <button class="active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 12L12 3l9 9"/>
+      <path d="M9 21V12h6v9"/>
+    </svg>
+    Home
+  </button>
+
+  <button>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M8 12h8M12 8v8"/>
+    </svg>
+    Community
+  </button>
+
+  <button class="chat-center">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+    </svg>
+    Chat
+  </button>
+
+  <button>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 8a6 6 0 0 0-12 0v5l-2 2h16l-2-2z"/>
+    </svg>
+    Notifications
+  </button>
 </nav>
 
 </div>
 
-<!-- Modules -->
-<script type="module" src="js/firebaseModule.js"></script>
-<script type="module" src="js/feedModule.js"></script>
-<script type="module" src="js/profileModule.js"></script>
-<script type="module" src="js/followModule.js"></script>
-<script type="module" src="js/walletModule.js"></script>
-<script type="module" src="js/notificationsModule.js"></script>
-<script type="module" src="js/searchModule.js"></script>
-
 <script>
-function toggleSideNav() {
+function toggleSideNav(){
   document.getElementById("sideNav").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
 }
-
-function handleSearch(){ alert('Search triggered'); }
-function likePost(id){ alert('Liked '+id); }
-function retribePost(id){ alert('Retribed '+id); }
-function savePost(id){ alert('Saved '+id); }
-function sharePost(id){ alert('Shared '+id); }
-function followUser(id){ alert('Followed '+id); }
-function logout(){ alert('Logged out'); }
-function navigateBottom(page){ alert(page+' clicked'); }
+function logout(){ alert("Logged out"); }
 </script>
 
 </body>
-  </html>
+   </html>
