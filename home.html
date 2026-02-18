@@ -3,265 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>TRIBERIUM — Home</title>
+<title>TRIBERIUM — SocialFi</title>
 
-<link rel="icon" href="pwa/icons/icon-192x192.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="css/feedStyles.css">
-<link rel="stylesheet" href="css/profileStyles.css">
-<link rel="stylesheet" href="css/walletStyles.css">
-<link rel="stylesheet" href="css/notificationsStyles.css">
-<link rel="stylesheet" href="css/searchStyles.css">
 
 <style>
 
-/* =========================
-   THEME VARIABLES
-========================= */
+/* ======================================================
+   THEME SYSTEM (LIGHT + DARK)
+====================================================== */
 
 :root {
   --primary: #7b2cbf;
   --primary-dark: #5a189a;
-  --bg-light: #f6f2fb;
-  --white: #ffffff;
-  --text-dark: #111;
-  --text-muted: #6b7280;
-  --border: #ece3f8;
+  --bg: #f6f2ff;
+  --card: #ffffff;
+  --text: #111;
+  --muted: #6b7280;
+  --border: rgba(123,44,191,0.12);
 }
 
-/* =========================
-   GLOBAL RESET
-========================= */
+[data-theme="dark"] {
+  --bg: #0f0f14;
+  --card: #1a1a22;
+  --text: #f5f5f7;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.08);
+}
 
-*,
-*::before,
-*::after { box-sizing: border-box; }
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Inter', sans-serif;
-  background: var(--bg-light);
-  color: var(--text-dark);
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
-.app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* =========================
+/* ======================================================
    HEADER
-========================= */
+====================================================== */
 
-.app-header {
+.header {
+  position: sticky;
+  top: 0;
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
-  background: var(--white);
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.7);
   border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
   z-index: 1000;
 }
 
-/* Animated Logo */
+[data-theme="dark"] .header {
+  background: rgba(20,20,25,0.8);
+}
 
 .logo {
+  font-size: 1.6rem;
   font-weight: 700;
-  font-size: 1.5rem;
   background: linear-gradient(90deg, var(--primary), var(--primary-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: logoPulse 3s ease-in-out infinite;
-  cursor: pointer;
+  animation: glow 3s infinite alternate;
 }
 
-@keyframes logoPulse {
-  0% { letter-spacing: 0px; }
-  50% { letter-spacing: 1px; }
-  100% { letter-spacing: 0px; }
+@keyframes glow {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.4); }
 }
 
-.menu-btn {
-  border: none;
-  background: none;
-  cursor: pointer;
-}
+/* ======================================================
+   PAGE TRANSITION SYSTEM
+====================================================== */
 
-/* =========================
-   SIDE NAV (RIGHT)
-========================= */
-
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(4px);
+.page {
   opacity: 0;
-  pointer-events: none;
-  transition: 0.3s ease;
-  z-index: 1500;
+  transform: translateY(10px);
+  transition: 0.4s ease;
+  padding: 20px;
+  min-height: calc(100vh - 120px);
 }
 
-.overlay.active {
+.page.active {
   opacity: 1;
-  pointer-events: all;
+  transform: translateY(0);
 }
 
-.side-nav {
+/* ======================================================
+   CARD + SKELETON
+====================================================== */
+
+.card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.skeleton {
+  height: 16px;
+  background: linear-gradient(90deg, #eee, #ddd, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ======================================================
+   FLOATING TOKEN ANIMATION
+====================================================== */
+
+.token {
   position: fixed;
-  top: 0;
-  right: -280px;
-  width: 280px;
-  height: 100vh;
-  background: var(--white);
-  box-shadow: -4px 0 12px rgba(0,0,0,0.08);
-  padding: 24px;
+  font-weight: bold;
+  color: var(--primary);
+  animation: floatUp 1.2s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-60px); }
+}
+
+/* ======================================================
+   BOTTOM NAVIGATION
+====================================================== */
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: var(--card);
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+
+.nav button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.7rem;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  transition: right 0.35s cubic-bezier(.4,0,.2,1);
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nav button.active {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.badge {
+  position: absolute;
+  font-size: 0.6rem;
+  background: var(--primary);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 12px;
+  top: 2px;
+  right: 10px;
+}
+
+/* ======================================================
+   NOTIFICATION DROPDOWN
+====================================================== */
+
+.notifications-panel {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 260px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  border: 1px solid var(--border);
+  display: none;
+  padding: 14px;
   z-index: 2000;
 }
 
-.side-nav.active { right: 0; }
+.notifications-panel.active {
+  display: block;
+}
 
-.side-nav button {
-  border: none;
-  background: none;
-  text-align: left;
-  font-weight: 600;
-  padding: 12px 0;
+.notification-item {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+/* ======================================================
+   DARK MODE TOGGLE
+====================================================== */
+
+.toggle {
   cursor: pointer;
-  color: var(--primary);
-  transition: 0.2s;
-}
-
-.side-nav button:hover {
-  color: var(--primary-dark);
-}
-
-/* =========================
-   WALLET BAR
-========================= */
-
-.wallet-bar {
-  background: var(--white);
-  padding: 10px 20px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  font-weight: 600;
-}
-
-/* =========================
-   SEARCH
-========================= */
-
-.search-wrapper {
-  background: var(--white);
-  padding: 12px 20px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  gap: 10px;
-}
-
-.search-wrapper input {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 22px;
+  padding: 8px;
+  border-radius: 8px;
   border: 1px solid var(--border);
-}
-
-.search-wrapper button {
-  padding: 10px 16px;
-  border-radius: 22px;
-  border: none;
-  background: var(--primary);
-  color: var(--white);
-  font-weight: 600;
-}
-
-/* =========================
-   FEED
-========================= */
-
-.feed {
-  flex: 1;
-  padding: 16px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.post {
-  background: var(--white);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(123,44,191,0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: transform 0.2s ease;
-}
-
-.post:hover {
-  transform: translateY(-2px);
-}
-
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-/* =========================
-   BOTTOM NAV
-========================= */
-
-.bottom-nav {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: var(--white);
-  border-top: 1px solid var(--border);
-  padding: 10px 0;
-  position: sticky;
-  bottom: 0;
-  z-index: 1000;
-}
-
-.bottom-nav button {
-  border: none;
-  background: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 0.7rem;
-  transition: 0.2s;
-}
-
-.bottom-nav button.active {
-  color: var(--primary);
-}
-
-.bottom-nav svg {
-  width: 22px;
-  height: 22px;
-}
-
-.chat-center {
-  transform: translateY(-6px);
 }
 
 </style>
@@ -269,88 +227,88 @@ html, body {
 
 <body>
 
-<div class="app-container">
-
-<header class="app-header">
+<header class="header">
   <div class="logo">TRIBERIUM</div>
-  <button class="menu-btn" onclick="toggleSideNav()">
-    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="3" y1="6" x2="21" y2="6"/>
-      <line x1="3" y1="12" x2="21" y2="12"/>
-      <line x1="3" y1="18" x2="21" y2="18"/>
-    </svg>
-  </button>
+  <div class="toggle" onclick="toggleTheme()">🌙</div>
 </header>
 
-<div class="overlay" id="overlay" onclick="toggleSideNav()"></div>
+<!-- HOME PAGE -->
+<section id="homePage" class="page active">
+  <div class="card">
+    Welcome to TRIBERIUM.
+    <div onclick="earnToken(event)">Like & Earn TBM</div>
+  </div>
+</section>
 
-<aside class="side-nav" id="sideNav">
-  <button>Metrics / Analytics</button>
-  <button>News</button>
-  <button>Access Zytherion</button>
-  <button>Live Stream</button>
-  <button>Saved Posts</button>
-  <button>Settings</button>
-  <button onclick="logout()">Logout</button>
-</aside>
+<!-- COMMUNITY PAGE -->
+<section id="communityPage" class="page">
+  <div class="card">Community Feed Section</div>
+</section>
 
-<div class="wallet-bar">
-  <span>Wallet Balance</span>
-  <span id="walletBalance">0.00 TBM</span>
+<!-- NOTIFICATION DROPDOWN -->
+<div id="notificationPanel" class="notifications-panel">
+  <div class="notification-item">Alice liked your post</div>
+  <div class="notification-item">You earned 5 TBM</div>
 </div>
 
-<main class="feed">
-  <article class="post">
-    <div>Welcome to TRIBERIUM! Start exploring posts and earning TBM.</div>
-    <div class="post-actions">
-      <span>Like</span>
-      <span>Retribe</span>
-      <span>Save</span>
-      <span>Share</span>
-    </div>
-  </article>
-</main>
-
-<nav class="bottom-nav">
-  <button class="active">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M3 12L12 3l9 9"/>
-      <path d="M9 21V12h6v9"/>
-    </svg>
-    Home
-  </button>
-
-  <button>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M8 12h8M12 8v8"/>
-    </svg>
-    Community
-  </button>
-
-  <button class="chat-center">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
-    </svg>
-    Chat
-  </button>
-
-  <button>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M18 8a6 6 0 0 0-12 0v5l-2 2h16l-2-2z"/>
-    </svg>
-    Notifications
-  </button>
+<!-- NAVIGATION -->
+<nav class="nav">
+  <button class="active" onclick="switchPage('homePage')">Home</button>
+  <button onclick="switchPage('communityPage')">Community</button>
+  <button onclick="alert('Chat')">Chat</button>
+  <button onclick="toggleNotifications()">Notifications</button>
 </nav>
 
-</div>
-
 <script>
-function toggleSideNav(){
-  document.getElementById("sideNav").classList.toggle("active");
-  document.getElementById("overlay").classList.toggle("active");
+
+/* ======================================================
+   PAGE SWITCHING
+====================================================== */
+
+function switchPage(pageId){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
 }
-function logout(){ alert("Logged out"); }
+
+/* ======================================================
+   DARK MODE
+====================================================== */
+
+function toggleTheme(){
+  const root = document.documentElement;
+  const current = root.getAttribute("data-theme");
+  root.setAttribute("data-theme", current === "dark" ? "light" : "dark");
+  localStorage.setItem("theme", root.getAttribute("data-theme"));
+}
+
+if(localStorage.getItem("theme")){
+  document.documentElement.setAttribute("data-theme", localStorage.getItem("theme"));
+}
+
+/* ======================================================
+   NOTIFICATIONS
+====================================================== */
+
+let notificationCount = 2;
+
+function toggleNotifications(){
+  document.getElementById("notificationPanel").classList.toggle("active");
+}
+
+/* ======================================================
+   TOKEN EARN ANIMATION
+====================================================== */
+
+function earnToken(e){
+  const token = document.createElement("div");
+  token.className = "token";
+  token.innerText = "+5 TBM";
+  token.style.left = e.clientX + "px";
+  token.style.top = e.clientY + "px";
+  document.body.appendChild(token);
+  setTimeout(() => token.remove(), 1200);
+}
+
 </script>
 
 </body>
