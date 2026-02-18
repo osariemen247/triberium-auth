@@ -21,6 +21,7 @@
   --text: #111;
   --muted: #6b7280;
   --border: rgba(123,44,191,0.15);
+  --action-color: #7b2cbf; /* purple for icons */
 }
 
 [data-theme="dark"] {
@@ -29,6 +30,7 @@
   --text: #f5f5f7;
   --muted: #9ca3af;
   --border: rgba(255,255,255,0.08);
+  --action-color: #a855f7;
 }
 
 * { box-sizing: border-box; }
@@ -44,7 +46,7 @@ html, body {
 }
 
 /* ======================================================
-   HEADER SYSTEM (RESTRUCTURED)
+   HEADER SYSTEM
 ====================================================== */
 
 .header {
@@ -52,19 +54,15 @@ html, body {
   top: 0;
   z-index: 1000;
   backdrop-filter: blur(14px);
-  background: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.9);
   border-bottom: 1px solid var(--border);
   padding: 14px 16px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
 }
 
-[data-theme="dark"] .header {
-  background: rgba(20,20,25,0.9);
-}
-
-/* Hamburger Button */
+/* Hamburger Button LEFT */
 
 .menu-btn {
   width: 36px;
@@ -82,7 +80,9 @@ html, body {
 .brand-container {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
+  flex: 1;
 }
 
 /* Animated Gradient Logo */
@@ -103,8 +103,6 @@ html, body {
   animation: gradientFlow 6s ease infinite;
 }
 
-/* Advanced Gradient Animation */
-
 @keyframes gradientFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -121,6 +119,29 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+/* Night/Day Mode Button */
+
+.theme-toggle {
+  background: none;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--primary);
+  transition: 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: var(--primary-dark);
+  color: var(--primary-dark);
 }
 
 /* ======================================================
@@ -183,8 +204,6 @@ html, body {
   border: 1px solid var(--border);
 }
 
-/* Post Header */
-
 .post-header {
   display: flex;
   justify-content: space-between;
@@ -226,21 +245,53 @@ html, body {
   background: var(--primary-dark);
 }
 
-/* Post Content */
-
 .post-content {
   font-size: 0.95rem;
   margin-bottom: 14px;
 }
-
-/* Post Actions */
 
 .post-actions {
   display: flex;
   justify-content: space-between;
   font-weight: 600;
   font-size: 0.8rem;
-  color: var(--primary);
+  color: var(--action-color);
+}
+
+/* SVG BUTTONS */
+.post-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  fill: var(--action-color);
+  transition: transform 0.2s ease, fill 0.2s ease;
+}
+
+.post-actions button:hover {
+  transform: scale(1.2);
+  fill: var(--primary-dark);
+}
+
+/* ======================================================
+   HEART ANIMATION FOR LIKE
+====================================================== */
+
+.heart-animation {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: url('svg/heart.svg') no-repeat center center;
+  background-size: contain;
+  pointer-events: none;
+  animation: heartFloat 1s ease forwards;
+}
+
+@keyframes heartFloat {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
 }
 
 /* ======================================================
@@ -272,43 +323,27 @@ html, body {
   transform: scale(1.1);
 }
 
-/* ======================================================
-   TOKEN FLOAT ANIMATION
-====================================================== */
-
-.token {
-  position: fixed;
-  font-weight: bold;
-  color: var(--primary);
-  animation: floatUp 1.2s ease forwards;
-  pointer-events: none;
-}
-
-@keyframes floatUp {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-60px); }
-}
-
 </style>
 </head>
 
-<body>
+<body data-theme="light">
 
 <!-- HEADER -->
 <header class="header">
 
   <!-- Hamburger LEFT -->
-  <button class="menu-btn" onclick="toggleSidebar()">
-    ☰
-  </button>
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
 
   <!-- Logo + Wallet -->
   <div class="brand-container">
     <div class="logo">TRIBERIUM</div>
     <div class="wallet-balance">
-      TBM Balance: <span id="walletAmount">1,250</span>
+      TBM Balance: <span id="walletAmount">0.00</span>
     </div>
   </div>
+
+  <!-- Night/Day Toggle RIGHT -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
 </header>
 
@@ -338,14 +373,31 @@ html, body {
     </div>
 
     <div class="post-content">
-      Welcome to TRIBERIUM SocialFi evolution. Earn, connect, build.
+      Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
     </div>
 
     <div class="post-actions">
-      <span onclick="earnToken(event)">Like</span>
-      <span>Retribe</span>
-      <span>Save</span>
-      <span>Share</span>
+      <!-- SVG Buttons -->
+      <button class="like-btn" onclick="animateHeart(event)">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+        </svg>
+      </button>
+      <button>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 4.44L15.56 8h-3.11v8H8.55V8H5l7-3.56z"></path>
+        </svg>
+      </button>
+      <button>
+        <svg viewBox="0 0 24 24">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8 19l-3-3 1.41-1.41L8 16.17l7.59-7.59L17 10l-9 9z"></path>
+        </svg>
+      </button>
+      <button>
+        <svg viewBox="0 0 24 24">
+          <path d="M18 16.08c-.76 0-1.44.3-1.96.77l-7.13-4.07V7.19l7.13-4.08c.52.48 1.2.77 1.96.77 1.66 0 3-1.34 3-3s-1.34-3-3-3c-.76 0-1.44.3-1.96.77l-7.13-4.07V7.19l7.13 4.07c.52-.48 1.2-.77 1.96-.77 1.66 0 3 1.34 3 3s-1.34 3-3 3z"></path>
+        </svg>
+      </button>
     </div>
 
   </div>
@@ -365,28 +417,35 @@ html, body {
 /* ======================================================
    SIDEBAR TOGGLE
 ====================================================== */
-
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("active");
 }
 
 /* ======================================================
-   TOKEN EARN ANIMATION + WALLET UPDATE
+   HEART ANIMATION FOR LIKE
 ====================================================== */
+function animateHeart(e){
+  const heart = document.createElement("div");
+  heart.className = "heart-animation";
+  heart.style.left = e.clientX - 16 + "px";
+  heart.style.top = e.clientY - 16 + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 1000);
+}
 
-function earnToken(e){
-  const token = document.createElement("div");
-  token.className = "token";
-  token.innerText = "+5 TBM";
-  token.style.left = e.clientX + "px";
-  token.style.top = e.clientY + "px";
-  document.body.appendChild(token);
-
-  setTimeout(() => token.remove(), 1200);
-
-  // Update wallet balance dynamically
-  const wallet = document.getElementById("walletAmount");
-  wallet.innerText = parseInt(wallet.innerText.replace(/,/g,'')) + 5;
+/* ======================================================
+   NIGHT/DAY THEME TOGGLE
+====================================================== */
+function toggleTheme(){
+  const body = document.body;
+  const toggle = document.querySelector(".theme-toggle");
+  if(body.getAttribute("data-theme") === "light"){
+    body.setAttribute("data-theme","dark");
+    toggle.innerText = "☀️";
+  } else {
+    body.setAttribute("data-theme","light");
+    toggle.innerText = "🌙";
+  }
 }
 
 </script>
