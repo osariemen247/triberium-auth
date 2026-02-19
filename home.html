@@ -5,203 +5,374 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TRIBERIUM — SocialFi</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= ROOT ================= */
+/* ======================================================
+   GLOBAL DESIGN SYSTEM
+====================================================== */
 
-:root{
-  --primary:#7b2cbf;
-  --primary-dark:#5a189a;
-  --bg:#f6f2ff;
-  --card:#ffffff;
-  --border:rgba(123,44,191,0.15);
-  --nav-bg:#ffffff;
+:root {
+  --primary: #7b2cbf;
+  --primary-dark: #5a189a;
+  --bg: #f6f2ff;
+  --card: #ffffff;
+  --text: #111;
+  --muted: #6b7280;
+  --border: rgba(123,44,191,0.15);
+  --action-color: #7b2cbf; /* purple for all icons */
 }
 
-[data-theme="dark"]{
-  --bg:#0f0f14;
-  --card:#1a1a22;
-  --border:rgba(255,255,255,0.08);
-  --nav-bg:#1a1a22;
+[data-theme="dark"] {
+  --bg: #0f0f14;
+  --card: #1a1a22;
+  --text: #f5f5f7;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.08);
+  --action-color: #a855f7;
 }
 
-*{box-sizing:border-box;}
+* { box-sizing: border-box; }
 
-html,body{
-  margin:0;
-  padding:0;
-  font-family:'Inter',sans-serif;
-  background:var(--bg);
-  color:var(--primary);
-  transition:background .3s ease,color .3s ease;
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
-/* ================= HEADER ================= */
+/* ======================================================
+   HEADER SYSTEM
+====================================================== */
 
-.header{
-  position:sticky;
-  top:0;
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-  padding:14px 16px;
-  z-index:1000;
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.9);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.header-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+/* HEADER TOP ROW */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.logo{
-  font-weight:800;
-  font-size:1.8rem;
-  letter-spacing:1px;
+.menu-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--primary);
 }
 
-/* ================= SEARCH ================= */
-
-.search-bar{
-  margin-top:12px;
+/* Logo + Wallet Container */
+.brand-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
 }
 
-.search-bar input{
-  width:100%;
-  padding:10px 14px;
-  border-radius:20px;
-  border:1px solid var(--border);
-  background:var(--bg);
-  color:var(--primary);
-  outline:none;
+.logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(
+      90deg,
+      var(--primary),
+      #a855f7,
+      var(--primary-dark),
+      var(--primary)
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 5s ease infinite;
 }
 
-/* ================= PROFILE SECTION ================= */
-
-.profile-section{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  margin:20px;
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.profile-pic{
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid var(--primary);
+.wallet-balance {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.user-info{flex:1;}
-
-.username{
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  gap:6px;
+.header-search {
+  margin-top: 6px;
+  width: 100%;
 }
 
-.verified{
-  width:16px;
-  height:16px;
-  background:var(--primary);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-size:11px;
+.header-search input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  outline: none;
+  color: var(--text);
+  background: var(--card);
+  transition: 0.3s;
 }
 
-.wallet{
-  font-size:.85rem;
-  margin-top:4px;
+.header-search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(123,44,191,0.25);
 }
 
-.follow-btn{
-  background:var(--primary);
-  border:none;
-  color:white;
-  padding:6px 14px;
-  border-radius:20px;
-  font-size:.75rem;
-  cursor:pointer;
-  transition:.3s ease;
+.theme-toggle {
+  background: none;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--primary);
+  transition: 0.3s ease;
 }
 
-.follow-btn.following{
-  background:var(--primary-dark);
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: var(--primary-dark);
+  color: var(--primary-dark);
 }
 
-/* ================= CONTENT ================= */
+/* ======================================================
+   SIDEBAR NAVIGATION
+====================================================== */
 
-.page{
-  padding:20px;
-  padding-bottom:90px;
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 280px;
+  height: 100vh;
+  background: var(--card);
+  border-left: 1px solid var(--border);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: right 0.4s ease;
+  z-index: 2000;
 }
 
-.card{
-  background:var(--card);
-  border-radius:18px;
-  border:1px solid var(--border);
-  padding:18px;
-  margin-bottom:20px;
+.sidebar.active { right: 0; }
+
+.sidebar button {
+  background: none;
+  border: none;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px 0;
+  color: var(--primary);
+  transition: 0.3s;
 }
 
-/* ================= SIDEBAR ================= */
-
-.sidebar{
-  position:fixed;
-  right:-280px;
-  top:0;
-  width:260px;
-  height:100vh;
-  background:var(--card);
-  border-left:1px solid var(--border);
-  padding:30px 20px;
-  transition:.4s ease;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  z-index:2000;
+.sidebar button:hover {
+  transform: translateX(6px);
+  color: var(--primary-dark);
 }
 
-.sidebar.active{right:0;}
+/* ======================================================
+   PAGE CONTAINER
+====================================================== */
 
-.sidebar button{
-  background:none;
-  border:none;
-  text-align:left;
-  font-size:.9rem;
-  cursor:pointer;
+.page {
+  padding: 20px;
+  min-height: calc(100vh - 160px);
 }
 
-/* ================= NAV ================= */
+/* ======================================================
+   POST CARD SYSTEM
+====================================================== */
 
-.nav{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  background:var(--nav-bg);
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
+.card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
 }
 
-/* DARK MODE FULL COVERAGE */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
 
-[data-theme="dark"] .header,
-[data-theme="dark"] .sidebar,
-[data-theme="dark"] .nav,
-[data-theme="dark"] .card{
-  background:var(--card);
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e9d5ff, #c084fc);
+  border: 2px solid var(--primary);
+}
+
+.username {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.follow-btn {
+  background: var(--primary);
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.follow-btn:hover {
+  background: var(--primary-dark);
+}
+
+.post-content {
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+/* ======================================================
+   LIKE / RETRIBE / SAVE / SHARE BUTTONS - REPLACED
+====================================================== */
+
+.post-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--action-color);
+}
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.action-group svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--action-color);
+  stroke-width: 2;
+  fill: none;
+  transition: 0.3s ease;
+}
+
+.action-group:hover {
+  background: rgba(123,44,191,0.1);
+}
+
+/* LIKE */
+.like-action.active svg {
+  fill: var(--action-color);
+  animation: heartPop 0.4s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* RETRIBE */
+.retribe-action.active svg {
+  animation: rotateLoop 0.6s ease;
+}
+
+@keyframes rotateLoop {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* SAVE */
+.save-action.active rect {
+  fill: var(--action-color);
+}
+
+.save-action.active path {
+  stroke: white;
+}
+
+/* SHARE */
+.share-action.active svg {
+  transform: scale(1.2);
+}
+
+/* ======================================================
+   BOTTOM NAVIGATION
+====================================================== */
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nav button.active {
+  color: var(--primary);
+  transform: scale(1.2);
 }
 
 </style>
@@ -209,108 +380,127 @@ html,body{
 
 <body data-theme="light">
 
+<!-- HEADER -->
 <header class="header">
+
   <div class="header-top">
-    <button onclick="toggleSidebar()">☰</button>
-    <div class="logo">TRIBERIUM</div>
-    <button onclick="toggleTheme()" id="themeBtn">🌙</button>
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+    <div class="brand-container">
+      <div class="logo">TRIBERIUM</div>
+      <div class="wallet-balance">
+        TBM Balance: <span id="walletAmount">0.00</span>
+      </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
   </div>
 
-  <div class="search-bar">
+  <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
   </div>
+
 </header>
 
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <button>Profile</button>
+  <button>Metrics / Analytics</button>
+  <button>News</button>
+  <button>Access Zytherion</button>
+  <button>Live Stream</button>
+  <button>Saved Posts</button>
   <button>Wallet</button>
   <button>Settings</button>
   <button>Logout</button>
 </div>
 
-<div class="profile-section">
-  <img src="https://via.placeholder.com/150" class="profile-pic" id="profilePic">
-
-  <div class="user-info">
-    <div class="username">
-      <span id="username">Loading...</span>
-      <div class="verified">✓</div>
-    </div>
-    <div class="wallet">
-      TBM Balance: <strong id="walletBalance">0</strong>
-    </div>
-  </div>
-
-  <button class="follow-btn" id="followBtn" onclick="toggleFollow(this)">Follow</button>
-</div>
-
+<!-- MAIN CONTENT -->
 <section class="page">
   <div class="card">
-    Welcome to TRIBERIUM SocialFi evolution.
+
+    <div class="post-header">
+      <div class="post-user">
+        <div class="profile-placeholder"></div>
+        <div class="username">@TriberiumUser</div>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+
+    <div class="post-content">
+      Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
+    </div>
+
+    <div class="post-actions">
+      <!-- LIKE -->
+      <div class="action-group like-action" onclick="toggleAction(this)">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 21s-6.7-4.35-9.33-8.33C.68 9.3 2.8 6 6 6c2.04 0 3.17 1.2 4 2.09C10.83 7.2 11.96 6 14 6c3.2 0 5.32 3.3 3.33 6.67C18.7 16.65 12 21 12 21z"/>
+        </svg>
+        <span>24</span>
+      </div>
+
+      <!-- RETRIBE -->
+      <div class="action-group retribe-action" onclick="toggleAction(this)">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 7h11l-3-3m8 13H9l3 3"/>
+        </svg>
+        <span>8</span>
+      </div>
+
+      <!-- SAVE -->
+      <div class="action-group save-action" onclick="toggleAction(this)">
+        <svg viewBox="0 0 24 24">
+          <rect x="4" y="4" width="16" height="16" rx="3"></rect>
+          <path d="M8 12l3 3 5-6"></path>
+        </svg>
+        <span>12</span>
+      </div>
+
+      <!-- SHARE -->
+      <div class="action-group share-action" onclick="toggleAction(this)">
+        <svg viewBox="0 0 24 24">
+          <circle cx="18" cy="5" r="3"></circle>
+          <circle cx="6" cy="12" r="3"></circle>
+          <circle cx="18" cy="19" r="3"></circle>
+          <path d="M8.7 13.4l6.6 3.2M15.3 7.4L8.7 10.6"></path>
+        </svg>
+        <span>3</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <nav class="nav">
-  <button>Home</button>
+  <button class="active">Home</button>
   <button>Community</button>
   <button>Chat</button>
   <button>Notifications</button>
 </nav>
 
 <script>
-
-/* ================= FIREBASE CONFIG (YOUR EXACT CONFIG) ================= */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
-  authDomain: "triberium-mvp.firebaseapp.com",
-  projectId: "triberium-mvp",
-  storageBucket: "triberium-mvp.firebasestorage.app",
-  messagingSenderId: "519861052514",
-  appId: "1:519861052514:web:56348e80320066cd311d3b",
-  databaseURL: "https://triberium-mvp-default-rtdb.firebaseio.com"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-/* ================= LOAD USER DATA ================= */
-
-const userId = "user001";
-
-db.ref("users/" + userId).on("value", snapshot => {
-  const data = snapshot.val();
-  if(data){
-    document.getElementById("username").textContent = data.username || "Unknown";
-    document.getElementById("walletBalance").textContent = data.wallet || 0;
-    document.getElementById("profilePic").src = data.profilePic || "https://via.placeholder.com/150";
-  }
-});
-
-/* ================= UI FUNCTIONS ================= */
-
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("active");
 }
 
+/* LIKE / RETRIBE / SAVE / SHARE FUNCTIONS */
+function toggleAction(el){
+  el.classList.toggle("active");
+}
+
+/* THEME TOGGLE */
 function toggleTheme(){
-  const body=document.body;
-  const btn=document.getElementById("themeBtn");
-  if(body.dataset.theme==="light"){
-    body.dataset.theme="dark";
-    btn.textContent="☀️";
-  }else{
-    body.dataset.theme="light";
-    btn.textContent="🌙";
+  const body = document.body;
+  const toggle = document.querySelector(".theme-toggle");
+  if(body.getAttribute("data-theme") === "light"){
+    body.setAttribute("data-theme","dark");
+    toggle.innerText = "☀️";
+  } else {
+    body.setAttribute("data-theme","light");
+    toggle.innerText = "🌙";
   }
 }
-
-function toggleFollow(btn){
-  btn.classList.toggle("following");
-  btn.textContent = btn.classList.contains("following") ? "Following" : "Follow";
-}
-
 </script>
 
 </body>
-  </html>
+      </html>
