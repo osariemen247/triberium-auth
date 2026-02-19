@@ -26,7 +26,7 @@
   --muted: #6b7280;
   --border: rgba(123,44,191,0.15);
   --action-color: #7b2cbf;
-  --verification-color: #3b82f6;
+  --verification-color: #1da1f2; /* Twitter Blue */
 }
 
 [data-theme="dark"] {
@@ -36,7 +36,7 @@
   --muted: #9ca3af;
   --border: rgba(255,255,255,0.08);
   --action-color: #a855f7;
-  --verification-color: #60a5fa;
+  --verification-color: #1da1f2;
 }
 
 * { box-sizing: border-box; }
@@ -253,25 +253,24 @@ html, body {
   position: relative;
 }
 
-/* VERIFIED BADGE */
+/* ======================================================
+   VERIFIED BADGE (Twitter Style)
+====================================================== */
+
 .profile-placeholder::after {
-  content: "✔";
+  content: "";
   position: absolute;
   bottom: -2px;
   right: -2px;
+  width: 18px;
+  height: 18px;
   background: var(--verification-color);
-  color: white;
-  font-size: 0.65rem;
-  width: 16px;
-  height: 16px;
+  mask: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.25 12c0 5.65-4.6 10.25-10.25 10.25S1.75 17.65 1.75 12 6.35 1.75 12 1.75 22.25 6.35 22.25 12zm-11-1.5l-3 3 1.06 1.06L11.25 13l5.44 5.44L18.75 17.5 11.25 10.5z"/></svg>') center/contain no-repeat;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.25 12c0 5.65-4.6 10.25-10.25 10.25S1.75 17.65 1.75 12 6.35 1.75 12 1.75 22.25 6.35 22.25 12zm-11-1.5l-3 3 1.06 1.06L11.25 13l5.44 5.44L18.75 17.5 11.25 10.5z"/></svg>') center/contain no-repeat;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border: 2px solid var(--card);
 }
 
-/* Username */
 .username {
   font-weight: 600;
   font-size: 0.95rem;
@@ -302,96 +301,24 @@ html, body {
   font-size: 0.8rem;
   color: var(--action-color);
   position: relative;
+  gap: 12px;
 }
 
 /* ======================================================
-   SVG BUTTONS WITH ANIMATION
+   SVG BUTTONS - SMALLER & ANIMATED
 ====================================================== */
 
 .post-actions button {
+  width: 28px;
+  height: 28px;
   background: none;
   border: none;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
-  fill: var(--action-color);
-  transition: transform 0.2s ease, fill 0.2s ease;
+  transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-.post-actions button:hover { fill: var(--primary-dark); }
-
-.post-actions button:active { fill: var(--primary-dark); }
-
-/* LIKE BUTTON */
-.like-btn svg path { stroke: var(--action-color); stroke-width: 2; fill: var(--action-color); }
-
-/* SAVE BUTTON */
-.save-btn svg rect { stroke: var(--action-color); stroke-width: 2.5; fill: var(--action-color); }
-.save-btn svg path { stroke-width: 3; }
-
-/* SHARE BUTTON */
-.share-btn svg circle { stroke: var(--action-color); stroke-width: 2.5; fill: var(--action-color); }
-.share-btn svg path { stroke-width: 3; }
-
-/* RETRIBE BUTTON - CLOCKWISE VERTICAL ARROWS + ROTATION */
-.retribe-btn svg {
-  width: 32px;
-  height: 32px;
-  transition: transform 0.6s ease;
-}
-
-.retribe-btn:hover svg { transform: rotate(360deg); }
-
-.retribe-btn svg path {
-  stroke: var(--action-color);
-  stroke-width: 3;
-  fill: var(--action-color);
-}
-
-.retribe-btn svg line {
-  stroke: var(--action-color);
-  stroke-width: 3;
-}
-
-/* HEART ANIMATION */
-.heart-animation {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  background: url('svg/heart.svg') no-repeat center center;
-  background-size: contain;
-  pointer-events: none;
-  animation: heartFloat 1s ease forwards;
-}
-
-@keyframes heartFloat {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  50% { opacity: 1; transform: translateY(-30px) scale(1.4); }
-  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
-}
-
-/* BOTTOM NAVIGATION */
-.nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: var(--card);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-around;
-  padding: 12px 0;
-}
-
-.nav button {
-  background: none;
-  border: none;
-  color: var(--muted);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.nav button.active { color: var(--primary); transform: scale(1.2); }
+.post-actions button:hover { transform: scale(1.4) rotate(-10deg); fill: var(--primary-dark); }
+.post-actions button:active { transform: scale(1.6) rotate(10deg); fill: var(--primary-dark); }
 
 </style>
 </head>
@@ -410,7 +337,6 @@ html, body {
     </div>
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
   </div>
-
   <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
   </div>
@@ -419,9 +345,9 @@ html, body {
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <button>Profile</button>
+  <button>Access Zytherion</button>
   <button>Metrics / Analytics</button>
   <button>News</button>
-  <button>Access Zytherion</button>
   <button>Live Stream</button>
   <button>Saved Posts</button>
   <button>Wallet</button>
@@ -439,44 +365,25 @@ html, body {
       </div>
       <button class="follow-btn">Follow</button>
     </div>
-
     <div class="post-content">
       Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
     </div>
-
     <div class="post-actions">
       <!-- LIKE -->
       <button class="like-btn" onclick="animateHeart(event)">
         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       </button>
-
       <!-- RETRIBE -->
       <button class="retribe-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 2v6h6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/>
-          <path d="M12 22v-6H6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/>
-          <polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3"/>
-          <polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2v6h6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><path d="M12 22v-6H6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3"/><polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3"/></svg>
       </button>
-
       <!-- SAVE -->
       <button class="save-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24" fill="var(--action-color)">
-          <rect x="4" y="4" width="16" height="16" rx="3" ry="3"/>
-          <path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="var(--action-color)"><rect x="4" y="4" width="16" height="16" rx="3" ry="3"/><path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/></svg>
       </button>
-
       <!-- SHARE -->
       <button class="share-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24" fill="var(--action-color)">
-          <circle cx="18" cy="5" r="3"/>
-          <circle cx="6" cy="12" r="3"/>
-          <circle cx="18" cy="19" r="3"/>
-          <path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3" fill="none"/>
-          <path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3" fill="none"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="var(--action-color)"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3" fill="none"/><path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3" fill="none"/></svg>
       </button>
     </div>
   </div>
@@ -493,55 +400,55 @@ html, body {
 /* =============================
    FIREBASE CONFIGURATION
 ============================= */
-const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_FIREBASE_PROJECT.firebaseio.com",
-  projectId: "YOUR_FIREBASE_PROJECT",
-  storageBucket: "YOUR_FIREBASE_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+const firebaseConfig = { 
+  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs", 
+  authDomain: "triberium-mvp.firebaseapp.com", 
+  projectId: "triberium-mvp", 
+  storageBucket: "triberium-mvp.firebasestorage.app", 
+  messagingSenderId: "519861052514", 
+  appId: "1:519861052514:web:56348e80320066cd311d3b" 
+}; 
 
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const walletAmountEl = document.getElementById("walletAmount");
 
 /* Real-time TBM balance sync */
-db.ref('users/TriberiumUser/TBM').on('value', snapshot => {
-  walletAmountEl.innerText = parseFloat(snapshot.val()).toFixed(2);
+db.ref('users/TriberiumUser/TBM_balance').on('value', snapshot => {
+  walletAmountEl.textContent = parseFloat(snapshot.val()).toFixed(2);
 });
 
-/* =============================
-   INTERACTIONS
-============================= */
-function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("active"); }
+/* ======================================================
+   SIDEBAR TOGGLE
+====================================================== */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('active');
+}
 
-function animateHeart(e){
-  const heart = document.createElement("div");
-  heart.className = "heart-animation";
-  heart.style.left = e.clientX - 16 + "px";
-  heart.style.top = e.clientY - 16 + "px";
+/* ======================================================
+   THEME TOGGLE
+====================================================== */
+function toggleTheme() {
+  document.body.dataset.theme = document.body.dataset.theme === 'light' ? 'dark' : 'light';
+}
+
+/* ======================================================
+   ACTION BUTTON ANIMATIONS
+====================================================== */
+function animateHeart(event) {
+  const heart = document.createElement('div');
+  heart.className = 'heart-animation';
+  heart.style.left = event.clientX + 'px';
+  heart.style.top = event.clientY + 'px';
   document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),1000);
+  setTimeout(() => heart.remove(), 1000);
 }
 
-function animateBounce(e){
-  const bounce = document.createElement("div");
-  bounce.className = "heart-animation";
-  bounce.style.left = e.clientX - 16 + "px";
-  bounce.style.top = e.clientY - 16 + "px";
-  document.body.appendChild(bounce);
-  bounce.animate([{transform:'scale(1)',opacity:1},{transform:'scale(1.4)',opacity:0.8},{transform:'scale(1)',opacity:1}],{duration:500,easing:'ease-out'});
-  setTimeout(()=>bounce.remove(),500);
-}
-
-function toggleTheme(){
-  const body=document.body,toggle=document.querySelector(".theme-toggle");
-  if(body.getAttribute("data-theme")==="light"){body.setAttribute("data-theme","dark"); toggle.innerText="☀️";} 
-  else{body.setAttribute("data-theme","light"); toggle.innerText="🌙";}
+function animateBounce(event) {
+  const btn = event.currentTarget;
+  btn.style.transform = 'scale(1.6) rotate(10deg)';
+  setTimeout(() => btn.style.transform = '', 400);
 }
 </script>
-
 </body>
-   </html>
+     </html>
