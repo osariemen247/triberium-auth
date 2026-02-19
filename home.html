@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TRIBERIUM — SocialFi</title>
 
-<!-- GOOGLE FONT INTER -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<!-- FIREBASE SDKS -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -17,7 +15,7 @@
    GLOBAL DESIGN SYSTEM
 ====================================================== */
 :root {
-  --primary: #7b2cbf; /* Purple main */
+  --primary: #7b2cbf;
   --primary-dark: #5a189a;
   --bg: #f6f2ff;
   --card: #ffffff;
@@ -25,7 +23,8 @@
   --muted: #6b7280;
   --border: rgba(123,44,191,0.15);
   --action-color: #7b2cbf;
-  --verification-color: #1da1f2; /* Twitter/X Blue */
+  --verification-color: #1da1f2;
+  --nav-bg: var(--card);
 }
 
 [data-theme="dark"] {
@@ -36,6 +35,7 @@
   --border: rgba(255,255,255,0.08);
   --action-color: #a855f7;
   --verification-color: #1da1f2;
+  --nav-bg: #1a1a22;
 }
 
 * { box-sizing: border-box; }
@@ -47,7 +47,6 @@ html, body {
   color: var(--text);
   font-family: 'Inter', sans-serif;
   transition: background 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
   min-height: 100%;
 }
 
@@ -148,22 +147,27 @@ html, body {
   box-shadow: 0 0 8px rgba(123,44,191,0.25);
 }
 
-/* NIGHT/DAY MODE FULL EFFECT */
+/* ======================================================
+   NIGHT/DAY MODE ICON BUTTON
+====================================================== */
 .theme-toggle {
   background: none;
   border: 2px solid var(--primary);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--primary);
   transition: 0.3s ease;
 }
-
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
 .theme-toggle:hover {
   transform: scale(1.1);
   border-color: var(--primary-dark);
@@ -188,9 +192,7 @@ html, body {
   transition: right 0.4s ease;
   z-index: 2000;
 }
-
 .sidebar.active { right: 0; }
-
 .sidebar button {
   background: none;
   border: none;
@@ -201,7 +203,6 @@ html, body {
   color: var(--primary);
   transition: 0.3s;
 }
-
 .sidebar button:hover {
   transform: translateX(6px);
   color: var(--primary-dark);
@@ -212,6 +213,7 @@ html, body {
 ====================================================== */
 .page {
   padding: 20px;
+  padding-bottom: 80px; /* space for nav */
   min-height: calc(100vh - 160px);
 }
 
@@ -250,9 +252,7 @@ html, body {
   position: relative;
 }
 
-/* ======================================================
-   VERIFIED BADGE (Twitter/X Exact)
-====================================================== */
+/* VERIFIED BADGE */
 .profile-placeholder::after {
   content: "";
   position: absolute;
@@ -293,31 +293,48 @@ html, body {
   gap: 16px;
 }
 
-/* ======================================================
-   SVG BUTTONS - BIGGER & ANIMATED
-====================================================== */
 .post-actions button {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, fill 0.3s ease;
 }
+.post-actions button:hover { transform: scale(1.5) rotate(-10deg); }
+.post-actions button:active { transform: scale(1.7) rotate(10deg); }
+.like-btn svg path { stroke: var(--primary); fill: var(--primary); }
 
-.post-actions button:hover {
-  transform: scale(1.5) rotate(-10deg);
+/* ======================================================
+   BOTTOM NAVIGATION FIXED
+====================================================== */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0;
+  z-index: 1000;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.post-actions button:active {
-  transform: scale(1.7) rotate(10deg);
+.nav button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease;
 }
-
-/* Purple Like Button */
-.like-btn svg path {
-  stroke: var(--primary);
-  fill: var(--primary);
-}
+.nav button.active { color: var(--primary); transform: scale(1.2); }
 
 </style>
 </head>
@@ -333,7 +350,16 @@ html, body {
         TBM Balance: <span id="walletAmount">0.00</span>
       </div>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <!-- NIGHT (MOON) ICON -->
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+      <!-- DAY (SUN) ICON -->
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+        <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </button>
   </div>
   <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
@@ -353,7 +379,6 @@ html, body {
   <button>Logout</button>
 </div>
 
-<!-- MAIN CONTENT -->
 <section class="page">
   <div class="card">
     <div class="post-header">
@@ -391,9 +416,7 @@ html, body {
 </nav>
 
 <script>
-/* =============================
-   FIREBASE CONFIG
-============================= */
+/* FIREBASE CONFIG */
 const firebaseConfig = { 
   apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs", 
   authDomain: "triberium-mvp.firebaseapp.com", 
@@ -402,47 +425,26 @@ const firebaseConfig = {
   messagingSenderId: "519861052514", 
   appId: "1:519861052514:web:56348e80320066cd311d3b" 
 }; 
-
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const walletAmountEl = document.getElementById("walletAmount");
-
-/* Real-time TBM balance sync */
 db.ref('users/TriberiumUser/TBM_balance').on('value', snapshot => {
   walletAmountEl.textContent = parseFloat(snapshot.val()).toFixed(2);
 });
 
-/* ======================================================
-   SIDEBAR TOGGLE
-====================================================== */
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('active');
-}
+/* SIDEBAR TOGGLE */
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
 
-/* ======================================================
-   THEME TOGGLE (FULL BACKGROUND)
-====================================================== */
+/* THEME TOGGLE WITH ICON SWITCH */
 function toggleTheme() {
-  document.body.dataset.theme = document.body.dataset.theme === 'light' ? 'dark' : 'light';
-}
-
-/* ======================================================
-   BUTTON ANIMATIONS
-====================================================== */
-function animateHeart(event) {
-  const heart = document.createElement('div');
-  heart.className = 'heart-animation';
-  heart.style.left = event.clientX + 'px';
-  heart.style.top = event.clientY + 'px';
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 1000);
-}
-
-function animateBounce(event) {
-  const btn = event.currentTarget;
-  btn.style.transform = 'scale(1.7) rotate(10deg)';
-  setTimeout(() => btn.style.transform = '', 400);
-}
-</script>
-</body>
-   </html>
+  const body = document.body;
+  const moon = document.querySelector('.moon-icon');
+  const sun = document.querySelector('.sun-icon');
+  if(body.dataset.theme === 'light'){
+    body.dataset.theme = 'dark';
+    moon.style.display = 'none';
+    sun.style.display = 'block';
+  } else {
+    body.dataset.theme = 'light';
+    moon.style.display = 'block';
+    sun.style.display = 'none
