@@ -7,6 +7,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
@@ -83,7 +84,9 @@ html, body {
   justify-content: center;
   font-size: 1.3rem;
   color: var(--primary);
+  transition: 0.2s ease;
 }
+.menu-btn:hover { transform: scale(1.1); color: var(--primary-dark); }
 
 .brand-container {
   display: flex;
@@ -164,14 +167,14 @@ html, body {
   color: var(--primary);
   transition: 0.3s ease;
 }
-.theme-toggle svg {
-  width: 20px;
-  height: 20px;
-}
 .theme-toggle:hover {
   transform: scale(1.1);
   border-color: var(--primary-dark);
   color: var(--primary-dark);
+}
+.theme-toggle svg {
+  width: 22px;
+  height: 22px;
 }
 
 /* ======================================================
@@ -203,10 +206,7 @@ html, body {
   color: var(--primary);
   transition: 0.3s;
 }
-.sidebar button:hover {
-  transform: translateX(6px);
-  color: var(--primary-dark);
-}
+.sidebar button:hover { transform: translateX(6px); color: var(--primary-dark); }
 
 /* ======================================================
    PAGE CONTAINER
@@ -239,7 +239,7 @@ html, body {
 .post-user {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   position: relative;
 }
 
@@ -252,55 +252,53 @@ html, body {
   position: relative;
 }
 
-/* VERIFIED BADGE */
+/* VERIFIED BADGE EXACT LIKE TWITTER */
 .profile-placeholder::after {
   content: "";
   position: absolute;
   bottom: -2px;
   right: -2px;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   background: var(--verification-color);
-  mask: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.25 12c0 5.65-4.6 10.25-10.25 10.25S1.75 17.65 1.75 12 6.35 1.75 12 1.75 22.25 6.35 22.25 12zm-11-1.5l-3 3 1.06 1.06L11.25 13l5.44 5.44L18.75 17.5 11.25 10.5z"/></svg>') center/contain no-repeat;
-  -webkit-mask: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22.25 12c0 5.65-4.6 10.25-10.25 10.25S1.75 17.65 1.75 12 6.35 1.75 12 1.75 22.25 6.35 22.25 12zm-11-1.5l-3 3 1.06 1.06L11.25 13l5.44 5.44L18.75 17.5 11.25 10.5z"/></svg>') center/contain no-repeat;
   border-radius: 50%;
   border: 2px solid var(--card);
 }
-
-.username { font-weight: 600; font-size: 0.95rem; }
-
-.follow-btn {
-  background: var(--primary);
-  border: none;
+.profile-placeholder::before {
+  content: "✔";
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  font-size: 10px;
   color: white;
-  padding: 6px 14px;
-  border-radius: 18px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
-.follow-btn:hover { background: var(--primary-dark); }
 
-.post-content { font-size: 0.95rem; margin-bottom: 14px; }
-
+/* ======================================================
+   POST ACTIONS
+====================================================== */
 .post-actions {
   display: flex;
-  justify-content: space-between;
+  gap: 16px;
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--action-color);
-  position: relative;
-  gap: 16px;
 }
 
 .post-actions button {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   background: none;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, fill 0.3s ease;
 }
+
 .post-actions button:hover { transform: scale(1.5) rotate(-10deg); }
 .post-actions button:active { transform: scale(1.7) rotate(10deg); }
 .like-btn svg path { stroke: var(--primary); fill: var(--primary); }
@@ -320,9 +318,7 @@ html, body {
   align-items: center;
   padding: 12px 0;
   z-index: 1000;
-  transition: background 0.3s ease, color 0.3s ease;
 }
-
 .nav button {
   background: none;
   border: none;
@@ -338,7 +334,6 @@ html, body {
 
 </style>
 </head>
-
 <body data-theme="light">
 
 <header class="header">
@@ -351,13 +346,14 @@ html, body {
       </div>
     </div>
     <button class="theme-toggle" onclick="toggleTheme()">
-      <!-- NIGHT (MOON) ICON -->
+      <!-- MOON -->
       <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
       </svg>
-      <!-- DAY (SUN) ICON -->
+      <!-- SUN -->
       <svg class="sun-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
-        <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        <circle cx="12" cy="12" r="5"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
       </svg>
     </button>
   </div>
@@ -368,15 +364,15 @@ html, body {
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-  <button>Profile</button>
-  <button>Live Stream</button>
-  <button>Saved Posts</button>
-  <button>Metrics / Analytics</button>
-  <button>Access Zytherion</button>
-  <button>News</button>
-  <button>Wallet</button>
-  <button>Settings</button>
-  <button>Logout</button>
+  <button onclick="alert('Profile clicked')">Profile</button>
+  <button onclick="alert('Metrics clicked')">Metrics / Analytics</button>
+  <button onclick="alert('News clicked')">News</button>
+  <button onclick="alert('Zytherion clicked')">Access Zytherion</button>
+  <button onclick="alert('Live Stream clicked')">Live Stream</button>
+  <button onclick="alert('Saved Posts clicked')">Saved Posts</button>
+  <button onclick="alert('Wallet clicked')">Wallet</button>
+  <button onclick="alert('Settings clicked')">Settings</button>
+  <button onclick="alert('Logout clicked')">Logout</button>
 </div>
 
 <section class="page">
@@ -392,18 +388,10 @@ html, body {
       Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
     </div>
     <div class="post-actions">
-      <button class="like-btn" onclick="animateHeart(event)">
-        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      </button>
-      <button class="retribe-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24"><path d="M12 2v6h6M12 22v-6H6" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3"/><polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3"/></svg>
-      </button>
-      <button class="save-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" ry="3" fill="var(--action-color)"/><path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/></svg>
-      </button>
-      <button class="share-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3"/><path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3"/></svg>
-      </button>
+      <button class="like-btn"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
+      <button class="retribe-btn"><svg viewBox="0 0 24 24"><path d="M12 2v6h6M12 22v-6H6" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3"/><polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3"/></svg></button>
+      <button class="save-btn"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" ry="3" fill="var(--action-color)"/><path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/></svg></button>
+      <button class="share-btn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3"/><path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3"/></svg></button>
     </div>
   </div>
 </section>
@@ -433,10 +421,10 @@ db.ref('users/TriberiumUser/TBM_balance').on('value', snapshot => {
 });
 
 /* SIDEBAR TOGGLE */
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('active'); }
 
-/* THEME TOGGLE WITH ICON SWITCH */
-function toggleTheme() {
+/* THEME TOGGLE */
+function toggleTheme(){
   const body = document.body;
   const moon = document.querySelector('.moon-icon');
   const sun = document.querySelector('.sun-icon');
@@ -447,4 +435,9 @@ function toggleTheme() {
   } else {
     body.dataset.theme = 'light';
     moon.style.display = 'block';
-    sun.style.display = 'none
+    sun.style.display = 'none';
+  }
+}
+</script>
+</body>
+   </html>
