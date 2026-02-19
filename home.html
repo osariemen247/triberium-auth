@@ -172,10 +172,6 @@ html, body {
   border-color: var(--primary-dark);
   color: var(--primary-dark);
 }
-.theme-toggle svg {
-  width: 22px;
-  height: 22px;
-}
 
 /* ======================================================
    SIDEBAR NAVIGATION
@@ -279,6 +275,22 @@ html, body {
   pointer-events: none;
 }
 
+/* FOLLOW BUTTON FIX */
+.follow-btn {
+  background: var(--primary);
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.follow-btn.following {
+  background: var(--primary-dark);
+  color: #fff;
+}
+
 /* ======================================================
    POST ACTIONS
 ====================================================== */
@@ -291,16 +303,16 @@ html, body {
 }
 
 .post-actions button {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   background: none;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-.post-actions button:hover { transform: scale(1.5) rotate(-10deg); }
-.post-actions button:active { transform: scale(1.7) rotate(10deg); }
+.post-actions button:hover { transform: scale(1.4) rotate(-10deg); }
+.post-actions button:active { transform: scale(1.6) rotate(10deg); }
 .like-btn svg path { stroke: var(--primary); fill: var(--primary); }
 
 /* ======================================================
@@ -345,17 +357,7 @@ html, body {
         TBM Balance: <span id="walletAmount">0.00</span>
       </div>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()">
-      <!-- MOON -->
-      <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-      </svg>
-      <!-- SUN -->
-      <svg class="sun-icon" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
-        <circle cx="12" cy="12" r="5"/>
-        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-      </svg>
-    </button>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙</button>
   </div>
   <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
@@ -382,16 +384,10 @@ html, body {
         <div class="profile-placeholder"></div>
         <div class="username">@TriberiumUser</div>
       </div>
-      <button class="follow-btn">Follow</button>
+      <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
     </div>
     <div class="post-content">
       Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
-    </div>
-    <div class="post-actions">
-      <button class="like-btn"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
-      <button class="retribe-btn"><svg viewBox="0 0 24 24"><path d="M12 2v6h6M12 22v-6H6" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3"/><polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3"/></svg></button>
-      <button class="save-btn"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" ry="3" fill="var(--action-color)"/><path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/></svg></button>
-      <button class="share-btn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3"/><path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3"/></svg></button>
     </div>
   </div>
 </section>
@@ -426,16 +422,24 @@ function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('a
 /* THEME TOGGLE */
 function toggleTheme(){
   const body = document.body;
-  const moon = document.querySelector('.moon-icon');
-  const sun = document.querySelector('.sun-icon');
+  const btn = document.getElementById('themeBtn');
   if(body.dataset.theme === 'light'){
     body.dataset.theme = 'dark';
-    moon.style.display = 'none';
-    sun.style.display = 'block';
+    btn.textContent = "☀️";
   } else {
     body.dataset.theme = 'light';
-    moon.style.display = 'block';
-    sun.style.display = 'none';
+    btn.textContent = "🌙";
+  }
+}
+
+/* FOLLOW BUTTON TOGGLE */
+function toggleFollow(btn){
+  if(btn.classList.contains('following')){
+    btn.classList.remove('following');
+    btn.textContent = 'Follow';
+  } else {
+    btn.classList.add('following');
+    btn.textContent = 'Following';
   }
 }
 </script>
