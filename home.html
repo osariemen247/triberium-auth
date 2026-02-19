@@ -209,7 +209,7 @@ html, body {
 ====================================================== */
 .page {
   padding: 20px;
-  padding-bottom: 80px; /* space for nav */
+  padding-bottom: 100px; /* space for nav */
   min-height: calc(100vh - 160px);
 }
 
@@ -300,20 +300,40 @@ html, body {
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--action-color);
+  margin-top: 12px;
 }
 
+/* BUTTONS */
 .post-actions button {
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   background: none;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-.post-actions button:hover { transform: scale(1.4) rotate(-10deg); }
-.post-actions button:active { transform: scale(1.6) rotate(10deg); }
+/* LIKE BUTTON PURPLE */
 .like-btn svg path { stroke: var(--primary); fill: var(--primary); }
+
+.post-actions button:hover { transform: scale(1.3) rotate(-10deg); }
+.post-actions button:active { transform: scale(1.6) rotate(10deg); }
+
+/* HEART ANIMATION */
+.heart-animation {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: url('svg/heart.svg') no-repeat center center;
+  background-size: contain;
+  pointer-events: none;
+  animation: heartFloat 1s ease forwards;
+}
+@keyframes heartFloat {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  50% { opacity: 1; transform: translateY(-30px) scale(1.4); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+}
 
 /* ======================================================
    BOTTOM NAVIGATION FIXED
@@ -389,6 +409,22 @@ html, body {
     <div class="post-content">
       Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
     </div>
+
+    <!-- POST ACTIONS -->
+    <div class="post-actions">
+      <button class="like-btn" onclick="animateHeart(event)">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </button>
+      <button class="retribe-btn" onclick="animateBounce(event)">
+        <svg viewBox="0 0 24 24"><path d="M12 2L16 8H8L12 2Z"/><path d="M12 22L8 16H16L12 22Z"/></svg>
+      </button>
+      <button class="save-btn" onclick="animateBounce(event)">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" ry="3"/><path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/></svg>
+      </button>
+      <button class="share-btn" onclick="animateBounce(event)">
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3" fill="none"/><path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3" fill="none"/></svg>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -441,6 +477,31 @@ function toggleFollow(btn){
     btn.classList.add('following');
     btn.textContent = 'Following';
   }
+}
+
+/* LIKE ANIMATION */
+function animateHeart(e){
+  const heart = document.createElement("div");
+  heart.className = "heart-animation";
+  heart.style.left = e.clientX - 16 + "px";
+  heart.style.top = e.clientY - 16 + "px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),1000);
+}
+
+/* BOUNCE FOR OTHER BUTTONS */
+function animateBounce(e){
+  const bounce = document.createElement("div");
+  bounce.className = "heart-animation";
+  bounce.style.left = e.clientX - 16 + "px";
+  bounce.style.top = e.clientY - 16 + "px";
+  document.body.appendChild(bounce);
+  bounce.animate([
+    { transform: 'scale(1)', opacity: 1 },
+    { transform: 'scale(1.4)', opacity: 0.8 },
+    { transform: 'scale(1)', opacity: 1 }
+  ], { duration: 500, easing: 'ease-out' });
+  setTimeout(()=>bounce.remove(),500);
 }
 </script>
 </body>
