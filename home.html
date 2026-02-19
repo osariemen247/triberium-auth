@@ -16,9 +16,8 @@
 /* ======================================================
    GLOBAL DESIGN SYSTEM
 ====================================================== */
-
 :root {
-  --primary: #7b2cbf;
+  --primary: #7b2cbf; /* Purple main */
   --primary-dark: #5a189a;
   --bg: #f6f2ff;
   --card: #ffffff;
@@ -26,7 +25,7 @@
   --muted: #6b7280;
   --border: rgba(123,44,191,0.15);
   --action-color: #7b2cbf;
-  --verification-color: #1da1f2; /* Twitter Blue */
+  --verification-color: #1da1f2; /* Twitter/X Blue */
 }
 
 [data-theme="dark"] {
@@ -49,12 +48,12 @@ html, body {
   font-family: 'Inter', sans-serif;
   transition: background 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
+  min-height: 100%;
 }
 
 /* ======================================================
    HEADER SYSTEM
 ====================================================== */
-
 .header {
   position: sticky;
   top: 0;
@@ -149,6 +148,7 @@ html, body {
   box-shadow: 0 0 8px rgba(123,44,191,0.25);
 }
 
+/* NIGHT/DAY MODE FULL EFFECT */
 .theme-toggle {
   background: none;
   border: 2px solid var(--primary);
@@ -173,7 +173,6 @@ html, body {
 /* ======================================================
    SIDEBAR NAVIGATION
 ====================================================== */
-
 .sidebar {
   position: fixed;
   top: 0;
@@ -211,7 +210,6 @@ html, body {
 /* ======================================================
    PAGE CONTAINER
 ====================================================== */
-
 .page {
   padding: 20px;
   min-height: calc(100vh - 160px);
@@ -220,7 +218,6 @@ html, body {
 /* ======================================================
    POST CARD SYSTEM
 ====================================================== */
-
 .card {
   background: var(--card);
   padding: 18px;
@@ -254,9 +251,8 @@ html, body {
 }
 
 /* ======================================================
-   VERIFIED BADGE (Twitter Style)
+   VERIFIED BADGE (Twitter/X Exact)
 ====================================================== */
-
 .profile-placeholder::after {
   content: "";
   position: absolute;
@@ -271,10 +267,7 @@ html, body {
   border: 2px solid var(--card);
 }
 
-.username {
-  font-weight: 600;
-  font-size: 0.95rem;
-}
+.username { font-weight: 600; font-size: 0.95rem; }
 
 .follow-btn {
   background: var(--primary);
@@ -286,46 +279,51 @@ html, body {
   cursor: pointer;
   transition: 0.2s;
 }
-
 .follow-btn:hover { background: var(--primary-dark); }
 
-.post-content {
-  font-size: 0.95rem;
-  margin-bottom: 14px;
-}
+.post-content { font-size: 0.95rem; margin-bottom: 14px; }
 
 .post-actions {
   display: flex;
   justify-content: space-between;
   font-weight: 600;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--action-color);
   position: relative;
-  gap: 12px;
+  gap: 16px;
 }
 
 /* ======================================================
-   SVG BUTTONS - SMALLER & ANIMATED
+   SVG BUTTONS - BIGGER & ANIMATED
 ====================================================== */
-
 .post-actions button {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   background: none;
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-.post-actions button:hover { transform: scale(1.4) rotate(-10deg); fill: var(--primary-dark); }
-.post-actions button:active { transform: scale(1.6) rotate(10deg); fill: var(--primary-dark); }
+.post-actions button:hover {
+  transform: scale(1.5) rotate(-10deg);
+}
+
+.post-actions button:active {
+  transform: scale(1.7) rotate(10deg);
+}
+
+/* Purple Like Button */
+.like-btn svg path {
+  stroke: var(--primary);
+  fill: var(--primary);
+}
 
 </style>
 </head>
 
 <body data-theme="light">
 
-<!-- HEADER -->
 <header class="header">
   <div class="header-top">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
@@ -345,11 +343,11 @@ html, body {
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <button>Profile</button>
-  <button>Access Zytherion</button>
-  <button>Metrics / Analytics</button>
-  <button>News</button>
   <button>Live Stream</button>
   <button>Saved Posts</button>
+  <button>Metrics / Analytics</button>
+  <button>Access Zytherion</button>
+  <button>News</button>
   <button>Wallet</button>
   <button>Settings</button>
   <button>Logout</button>
@@ -369,21 +367,17 @@ html, body {
       Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
     </div>
     <div class="post-actions">
-      <!-- LIKE -->
       <button class="like-btn" onclick="animateHeart(event)">
         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       </button>
-      <!-- RETRIBE -->
       <button class="retribe-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24"><path d="M12 2v6h6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><path d="M12 22v-6H6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3"/><polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2v6h6M12 22v-6H6" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round"/><polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3"/><polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3"/></svg>
       </button>
-      <!-- SAVE -->
       <button class="save-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24" fill="var(--action-color)"><rect x="4" y="4" width="16" height="16" rx="3" ry="3"/><path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/></svg>
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" ry="3" fill="var(--action-color)"/><path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/></svg>
       </button>
-      <!-- SHARE -->
       <button class="share-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24" fill="var(--action-color)"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3" fill="none"/><path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3" fill="none"/></svg>
+        <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3"/><path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3"/></svg>
       </button>
     </div>
   </div>
@@ -398,7 +392,7 @@ html, body {
 
 <script>
 /* =============================
-   FIREBASE CONFIGURATION
+   FIREBASE CONFIG
 ============================= */
 const firebaseConfig = { 
   apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs", 
@@ -426,14 +420,14 @@ function toggleSidebar() {
 }
 
 /* ======================================================
-   THEME TOGGLE
+   THEME TOGGLE (FULL BACKGROUND)
 ====================================================== */
 function toggleTheme() {
   document.body.dataset.theme = document.body.dataset.theme === 'light' ? 'dark' : 'light';
 }
 
 /* ======================================================
-   ACTION BUTTON ANIMATIONS
+   BUTTON ANIMATIONS
 ====================================================== */
 function animateHeart(event) {
   const heart = document.createElement('div');
@@ -446,9 +440,9 @@ function animateHeart(event) {
 
 function animateBounce(event) {
   const btn = event.currentTarget;
-  btn.style.transform = 'scale(1.6) rotate(10deg)';
+  btn.style.transform = 'scale(1.7) rotate(10deg)';
   setTimeout(() => btn.style.transform = '', 400);
 }
 </script>
 </body>
-     </html>
+   </html>
