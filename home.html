@@ -300,31 +300,62 @@ html, body {
   background: none;
   border: none;
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   fill: var(--action-color);
   transition: transform 0.2s ease, fill 0.2s ease;
 }
 
 .post-actions button:hover {
-  transform: scale(1.3) rotate(-10deg);
+  transform: scale(1.4) rotate(-10deg);
   fill: var(--primary-dark);
 }
 
 .post-actions button:active {
-  transform: scale(1.5) rotate(10deg);
+  transform: scale(1.6) rotate(10deg);
   fill: var(--primary-dark);
 }
 
 /* ======================================================
-   CUSTOM PURPLE SVG BUTTONS
+   BOLD & CUSTOM SVG ICONS
 ====================================================== */
 
-/* Bounce animation for all custom buttons */
-@keyframes bounceScale {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
+/* Like Heart Bigger & Bolder */
+.like-btn svg path {
+  stroke: var(--action-color);
+  stroke-width: 2;
+  fill: var(--action-color);
+}
+
+/* Save Button Bolder */
+.save-btn svg rect {
+  stroke: var(--action-color);
+  stroke-width: 2.5;
+  fill: var(--action-color);
+}
+.save-btn svg path {
+  stroke-width: 3;
+}
+
+/* Share Button Bolder */
+.share-btn svg circle {
+  stroke: var(--action-color);
+  stroke-width: 2.5;
+  fill: var(--action-color);
+}
+.share-btn svg path {
+  stroke-width: 3;
+}
+
+/* Retribe Button - Two Arrows Chasing Tail Upward */
+.retribe-btn svg {
+  width: 32px;
+  height: 32px;
+}
+.retribe-btn svg path {
+  stroke: var(--action-color);
+  stroke-width: 3;
+  fill: var(--action-color);
 }
 
 /* ======================================================
@@ -385,10 +416,8 @@ html, body {
 <header class="header">
 
   <div class="header-top">
-    <!-- Hamburger LEFT -->
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
 
-    <!-- Logo + Wallet -->
     <div class="brand-container">
       <div class="logo">TRIBERIUM</div>
       <div class="wallet-balance">
@@ -396,11 +425,9 @@ html, body {
       </div>
     </div>
 
-    <!-- Night/Day Toggle RIGHT -->
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
   </div>
 
-  <!-- SEARCH BAR -->
   <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
   </div>
@@ -422,7 +449,6 @@ html, body {
 
 <!-- MAIN CONTENT -->
 <section class="page">
-
   <div class="card">
 
     <div class="post-header">
@@ -444,41 +470,38 @@ html, body {
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
       </button>
-      
-      <!-- RETRIBE BUTTON - CUSTOM SVG -->
+
+      <!-- RETRIBE BUTTON - 2 ARROWS CHASING TAIL -->
       <button class="retribe-btn" onclick="animateBounce(event)">
         <svg viewBox="0 0 24 24" fill="var(--action-color)">
-          <path d="M12 2L15 8H9L12 2Z" />
-          <path d="M12 22L9 16H15L12 22Z" />
+          <path d="M12 2L16 8H8L12 2Z"/>
+          <path d="M12 22L8 16H16L12 22Z"/>
         </svg>
       </button>
 
-      <!-- SAVE BUTTON - CUSTOM SVG -->
+      <!-- SAVE BUTTON -->
       <button class="save-btn" onclick="animateBounce(event)">
         <svg viewBox="0 0 24 24" fill="var(--action-color)">
           <rect x="4" y="4" width="16" height="16" rx="3" ry="3"/>
-          <path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="2" fill="none"/>
+          <path d="M6 12l4 4 8-8" stroke="#fff" stroke-width="3" fill="none"/>
         </svg>
       </button>
 
-      <!-- SHARE BUTTON - CUSTOM SVG -->
+      <!-- SHARE BUTTON -->
       <button class="share-btn" onclick="animateBounce(event)">
         <svg viewBox="0 0 24 24" fill="var(--action-color)">
           <circle cx="18" cy="5" r="3"/>
           <circle cx="6" cy="12" r="3"/>
           <circle cx="18" cy="19" r="3"/>
-          <path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="2" fill="none"/>
-          <path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="2" fill="none"/>
+          <path d="M8.5 12.5L15.5 7.5" stroke="var(--action-color)" stroke-width="3" fill="none"/>
+          <path d="M8.5 11.5L15.5 16.5" stroke="var(--action-color)" stroke-width="3" fill="none"/>
         </svg>
       </button>
 
     </div>
-
   </div>
-
 </section>
 
-<!-- BOTTOM NAV -->
 <nav class="nav">
   <button class="active">Home</button>
   <button>Community</button>
@@ -487,17 +510,10 @@ html, body {
 </nav>
 
 <script>
-
-/* ======================================================
-   SIDEBAR TOGGLE
-====================================================== */
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("active");
 }
 
-/* ======================================================
-   HEART ANIMATION FOR LIKE
-====================================================== */
 function animateHeart(e){
   const heart = document.createElement("div");
   heart.className = "heart-animation";
@@ -507,12 +523,9 @@ function animateHeart(e){
   setTimeout(()=>heart.remove(),1000);
 }
 
-/* ======================================================
-   BOUNCE ANIMATION FOR CUSTOM BUTTONS
-====================================================== */
 function animateBounce(e){
   const bounce = document.createElement("div");
-  bounce.className = "heart-animation"; // reuse for simplicity
+  bounce.className = "heart-animation";
   bounce.style.left = e.clientX - 16 + "px";
   bounce.style.top = e.clientY - 16 + "px";
   document.body.appendChild(bounce);
@@ -524,9 +537,6 @@ function animateBounce(e){
   setTimeout(()=>bounce.remove(),500);
 }
 
-/* ======================================================
-   NIGHT/DAY THEME TOGGLE
-====================================================== */
 function toggleTheme(){
   const body = document.body;
   const toggle = document.querySelector(".theme-toggle");
@@ -538,8 +548,7 @@ function toggleTheme(){
     toggle.innerText = "🌙";
   }
 }
-
 </script>
 
 </body>
-   </html>
+           </html>
