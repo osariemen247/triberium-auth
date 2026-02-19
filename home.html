@@ -347,7 +347,7 @@ html, body {
   stroke-width: 3;
 }
 
-/* Retribe Button - Two Arrows Chasing Tail Upward */
+/* Retribe Button - Clockwise Vertical Arrows */
 .retribe-btn svg {
   width: 32px;
   height: 32px;
@@ -356,6 +356,10 @@ html, body {
   stroke: var(--action-color);
   stroke-width: 3;
   fill: var(--action-color);
+}
+.retribe-btn svg line {
+  stroke: var(--action-color);
+  stroke-width: 3;
 }
 
 /* ======================================================
@@ -471,11 +475,13 @@ html, body {
         </svg>
       </button>
 
-      <!-- RETRIBE BUTTON - 2 ARROWS CHASING TAIL -->
+      <!-- RETRIBE BUTTON - CLOCKWISE VERTICAL ARROWS -->
       <button class="retribe-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24" fill="var(--action-color)">
-          <path d="M12 2L16 8H8L12 2Z"/>
-          <path d="M12 22L8 16H16L12 22Z"/>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2v6h6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 22v-6H6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
 
@@ -551,4 +557,4 @@ function toggleTheme(){
 </script>
 
 </body>
-           </html>
+     </html>
