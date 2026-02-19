@@ -2,26 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TRIBERIUM — SocialFi</title>
 
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 /* ======================================================
-   DESIGN SYSTEM
+   GLOBAL DESIGN SYSTEM
 ====================================================== */
+
 :root {
-  --primary: #7b2cbf;        /* Purple primary color */
+  --primary: #7b2cbf;
   --primary-dark: #5a189a;
   --bg: #f6f2ff;
   --card: #ffffff;
   --text: #111;
   --muted: #6b7280;
   --border: rgba(123,44,191,0.15);
-  --action-color: #7b2cbf;
-  --verified-color: #22c55e;
+  --action-color: #7b2cbf; /* purple for icons */
 }
 
 [data-theme="dark"] {
@@ -33,57 +33,72 @@
   --action-color: #a855f7;
 }
 
-/* ======================================================
-   GLOBAL RESET
-====================================================== */
-* { box-sizing: border-box; margin:0; padding:0; }
+* { box-sizing: border-box; }
+
 html, body {
-  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
   background: var(--bg);
   color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
-  transition: 0.3s;
 }
 
 /* ======================================================
-   HEADER
+   HEADER SYSTEM
 ====================================================== */
+
 .header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px;
   backdrop-filter: blur(14px);
   background: rgba(255,255,255,0.9);
   border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* Hamburger Button */
+/* Hamburger Button LEFT */
+
 .menu-btn {
-  width: 36px; height: 36px;
+  width: 36px;
+  height: 36px;
   border: none;
   background: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.3rem;
   color: var(--primary);
 }
 
 /* Logo + Wallet Container */
+
 .brand-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   flex: 1;
 }
 
-/* Animated Logo */
+/* Animated Gradient Logo */
+
 .logo {
   font-size: 1.8rem;
   font-weight: 800;
-  background: linear-gradient(90deg, var(--primary), #a855f7, var(--primary-dark), var(--primary));
+  background: linear-gradient(
+      90deg,
+      var(--primary),
+      #a855f7,
+      var(--primary-dark),
+      var(--primary)
+  );
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -96,55 +111,45 @@ html, body {
   100% { background-position: 0% 50%; }
 }
 
-/* Wallet Balance + Mini Dropdown */
+/* Wallet Balance */
+
 .wallet-balance {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   margin-top: 4px;
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
-  position: relative;
 }
 
-.wallet-dropdown {
-  display: none;
-  position: absolute;
-  top: 30px;
-  left: 0;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  width: 160px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  flex-direction: column;
-  padding: 10px;
-  gap: 6px;
-  z-index: 500;
-}
+/* Night/Day Mode Button */
 
-.wallet-dropdown.show { display: flex; }
-
-/* Theme Toggle */
 .theme-toggle {
   background: none;
   border: 2px solid var(--primary);
   border-radius: 50%;
-  width: 36px; height: 36px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.1rem;
   color: var(--primary);
   transition: 0.3s ease;
 }
 
-.theme-toggle:hover { transform: scale(1.1); border-color: var(--primary-dark); color: var(--primary-dark); }
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: var(--primary-dark);
+  color: var(--primary-dark);
+}
 
 /* ======================================================
-   SIDEBAR
+   SIDEBAR NAVIGATION
 ====================================================== */
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -157,9 +162,8 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 18px;
-  transition: right 0.5s ease;
+  transition: right 0.4s ease;
   z-index: 2000;
-  overflow-y: auto;
 }
 
 .sidebar.active { right: 0; }
@@ -175,16 +179,24 @@ html, body {
   transition: 0.3s;
 }
 
-.sidebar button:hover { transform: translateX(6px); color: var(--primary-dark); }
+.sidebar button:hover {
+  transform: translateX(6px);
+  color: var(--primary-dark);
+}
 
 /* ======================================================
-   PAGE CONTENT
+   PAGE CONTAINER
 ====================================================== */
-.page { padding: 20px; min-height: calc(100vh - 120px); }
+
+.page {
+  padding: 20px;
+  min-height: calc(100vh - 120px);
+}
 
 /* ======================================================
-   POST CARD
+   POST CARD SYSTEM
 ====================================================== */
+
 .card {
   background: var(--card);
   padding: 18px;
@@ -194,12 +206,22 @@ html, body {
   border: 1px solid var(--border);
 }
 
-.post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
 
-.post-user { display: flex; align-items: center; gap: 12px; }
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
 .profile-placeholder {
-  width: 42px; height: 42px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: linear-gradient(135deg, #e9d5ff, #c084fc);
   border: 2px solid var(--primary);
@@ -208,21 +230,8 @@ html, body {
 .username {
   font-weight: 600;
   font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
-.verified-badge {
-  width: 16px; height: 16px;
-  background: var(--verified-color);
-  mask: url('svg/verified.svg') no-repeat center center;
-  -webkit-mask: url('svg/verified.svg') no-repeat center center;
-  mask-size: contain;
-  -webkit-mask-size: contain;
-}
-
-/* Follow Button Toggle */
 .follow-btn {
   background: var(--primary);
   border: none;
@@ -233,14 +242,16 @@ html, body {
   cursor: pointer;
   transition: 0.2s;
 }
-.follow-btn.following { background: var(--muted); }
 
-/* Post Content */
-.post-content { font-size: 0.95rem; margin-bottom: 14px; }
+.follow-btn:hover {
+  background: var(--primary-dark);
+}
 
-/* ======================================================
-   SVG POST ACTIONS
-====================================================== */
+.post-content {
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
 .post-actions {
   display: flex;
   justify-content: space-between;
@@ -250,33 +261,54 @@ html, body {
   position: relative;
 }
 
+/* ======================================================
+   SVG BUTTONS WITH ANIMATION
+====================================================== */
+
 .post-actions button {
   background: none;
   border: none;
   cursor: pointer;
-  width: 36px; height: 36px;
+  width: 36px;
+  height: 36px;
   fill: var(--action-color);
-  transition: transform 0.3s ease, fill 0.3s ease;
+  transition: transform 0.2s ease, fill 0.2s ease;
 }
 
-.post-actions button:hover { transform: scale(1.3) rotate(-10deg); fill: var(--primary-dark); }
-.post-actions button:active { transform: scale(1.5) rotate(10deg); fill: var(--primary-dark); }
+.post-actions button:hover {
+  transform: scale(1.3) rotate(-10deg);
+  fill: var(--primary-dark);
+}
 
-/* LIKE HEART & BOUNCE ANIMATIONS */
-.heart-animation, .bounce-animation {
+.post-actions button:active {
+  transform: scale(1.5) rotate(10deg);
+  fill: var(--primary-dark);
+}
+
+/* ======================================================
+   HEART ANIMATION FOR LIKE
+====================================================== */
+
+.heart-animation {
   position: absolute;
-  width: 32px; height: 32px;
+  width: 32px;
+  height: 32px;
+  background: url('svg/heart.svg') no-repeat center center;
+  background-size: contain;
   pointer-events: none;
-  animation: floatUp 1s ease forwards;
+  animation: heartFloat 1s ease forwards;
 }
 
-@keyframes floatUp {
+@keyframes heartFloat {
   0% { opacity: 1; transform: translateY(0) scale(1); }
   50% { opacity: 1; transform: translateY(-30px) scale(1.4); }
   100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
 }
 
-/* BOTTOM NAVIGATION */
+/* ======================================================
+   BOTTOM NAVIGATION
+====================================================== */
+
 .nav {
   position: fixed;
   bottom: 0;
@@ -296,7 +328,11 @@ html, body {
   cursor: pointer;
   transition: 0.2s;
 }
-.nav button.active { color: var(--primary); transform: scale(1.2); }
+
+.nav button.active {
+  color: var(--primary);
+  transform: scale(1.2);
+}
 
 </style>
 </head>
@@ -305,18 +341,21 @@ html, body {
 
 <!-- HEADER -->
 <header class="header">
+
+  <!-- Hamburger LEFT -->
   <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+  <!-- Logo + Wallet -->
   <div class="brand-container">
     <div class="logo">TRIBERIUM</div>
-    <div class="wallet-balance" onclick="toggleWalletDropdown()">TBM Balance: <span id="walletAmount">0.00</span>
-      <div class="wallet-dropdown" id="walletDropdown">
-        <div>Deposit</div>
-        <div>Withdraw</div>
-        <div>Transactions</div>
-      </div>
+    <div class="wallet-balance">
+      TBM Balance: <span id="walletAmount">0.00</span>
     </div>
   </div>
+
+  <!-- Night/Day Toggle RIGHT -->
   <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
 </header>
 
 <!-- SIDEBAR -->
@@ -332,7 +371,7 @@ html, body {
   <button>Logout</button>
 </div>
 
-<!-- MAIN PAGE -->
+<!-- MAIN CONTENT -->
 <section class="page">
 
   <div class="card">
@@ -340,11 +379,9 @@ html, body {
     <div class="post-header">
       <div class="post-user">
         <div class="profile-placeholder"></div>
-        <div class="username">
-          @TriberiumUser <span class="verified-badge"></span>
-        </div>
+        <div class="username">@TriberiumUser</div>
       </div>
-      <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+      <button class="follow-btn">Follow</button>
     </div>
 
     <div class="post-content">
@@ -352,21 +389,29 @@ html, body {
     </div>
 
     <div class="post-actions">
-      <!-- Like Heart -->
-      <button onclick="animateHeart(event)">
-        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+      <!-- LIKE BUTTON -->
+      <button class="like-btn" onclick="animateHeart(event)">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
       </button>
-      <!-- Retribe -->
-      <button onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24"><text x="2" y="18" font-size="18" fill="var(--action-color)">🔃</text></svg>
+      <!-- RETRIBE BUTTON 🔃 -->
+      <button class="retribe-btn" onclick="animateBounce(event)">
+        <svg viewBox="0 0 24 24">
+          <text x="0" y="18" font-size="18" fill="var(--action-color)">🔃</text>
+        </svg>
       </button>
-      <!-- Save -->
-      <button onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24"><text x="2" y="18" font-size="18" fill="var(--action-color)">☑️</text></svg>
+      <!-- SAVE BUTTON ☑️ -->
+      <button class="save-btn" onclick="animateBounce(event)">
+        <svg viewBox="0 0 24 24">
+          <text x="0" y="18" font-size="18" fill="var(--action-color)">☑️</text>
+        </svg>
       </button>
-      <!-- Share -->
-      <button onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24"><text x="2" y="18" font-size="18" fill="var(--action-color)">🔄</text></svg>
+      <!-- SHARE BUTTON 🔄 -->
+      <button class="share-btn" onclick="animateBounce(event)">
+        <svg viewBox="0 0 24 24">
+          <text x="0" y="18" font-size="18" fill="var(--action-color)">🔄</text>
+        </svg>
       </button>
     </div>
 
@@ -382,78 +427,54 @@ html, body {
   <button>Notifications</button>
 </nav>
 
-<!-- MODULES -->
-<script type="module" src="js/firebaseModule.js"></script>
-<script type="module" src="js/feedModule.js"></script>
-<script type="module" src="js/profileModule.js"></script>
-<script type="module" src="js/followModule.js"></script>
-<script type="module" src="js/walletModule.js"></script>
-<script type="module" src="js/notificationsModule.js"></script>
-<script type="module" src="js/searchModule.js"></script>
-
 <script>
+
 /* ======================================================
    SIDEBAR TOGGLE
 ====================================================== */
-function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("active"); }
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("active");
+}
 
 /* ======================================================
-   WALLET DROPDOWN
-====================================================== */
-function toggleWalletDropdown(){ document.getElementById("walletDropdown").classList.toggle("show"); }
-
-/* ======================================================
-   LIKE HEART ANIMATION
+   HEART ANIMATION FOR LIKE
 ====================================================== */
 function animateHeart(e){
   const heart = document.createElement("div");
-  heart.className="heart-animation";
-  heart.style.left = e.clientX-16+"px";
-  heart.style.top = e.clientY-16+"px";
+  heart.className = "heart-animation";
+  heart.style.left = e.clientX - 16 + "px";
+  heart.style.top = e.clientY - 16 + "px";
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),1000);
 }
 
 /* ======================================================
-   BOUNCE ANIMATION (Retribe, Save, Share)
+   BOUNCE ANIMATION FOR RETRIBE, SAVE, SHARE
 ====================================================== */
 function animateBounce(e){
   const bounce = document.createElement("div");
-  bounce.className="bounce-animation";
-  bounce.style.left = e.clientX-16+"px";
-  bounce.style.top = e.clientY-16+"px";
+  bounce.className = "heart-animation"; // reuse heart animation for simplicity
+  bounce.style.left = e.clientX - 16 + "px";
+  bounce.style.top = e.clientY - 16 + "px";
   document.body.appendChild(bounce);
   setTimeout(()=>bounce.remove(),1000);
 }
 
 /* ======================================================
-   THEME TOGGLE
+   NIGHT/DAY THEME TOGGLE
 ====================================================== */
 function toggleTheme(){
-  const body=document.body;
-  const toggle=document.querySelector(".theme-toggle");
-  if(body.getAttribute("data-theme")==="light"){ body.setAttribute("data-theme","dark"); toggle.innerText="☀️"; }
-  else{ body.setAttribute("data-theme","light"); toggle.innerText="🌙"; }
+  const body = document.body;
+  const toggle = document.querySelector(".theme-toggle");
+  if(body.getAttribute("data-theme") === "light"){
+    body.setAttribute("data-theme","dark");
+    toggle.innerText = "☀️";
+  } else {
+    body.setAttribute("data-theme","light");
+    toggle.innerText = "🌙";
+  }
 }
 
-/* ======================================================
-   FOLLOW TOGGLE
-====================================================== */
-function toggleFollow(btn){
-  btn.classList.toggle("following");
-  btn.innerText = btn.classList.contains("following")?"Following":"Follow";
-}
-
-/* ======================================================
-   FIREBASE WALLET SYNC PLACEHOLDER
-====================================================== */
-const walletAmount = document.getElementById("walletAmount");
-import { getWalletBalance } from './js/walletModule.js'; // implement Firebase logic inside walletModule.js
-async function updateWalletBalance(){
-  const balance = await getWalletBalance(); // fetch from Firebase
-  walletAmount.innerText = balance.toFixed(2);
-}
-setInterval(updateWalletBalance,3000); // live sync every 3s
 </script>
 
 </body>
