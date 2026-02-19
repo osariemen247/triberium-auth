@@ -7,6 +7,10 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
 <style>
 
 /* ======================================================
@@ -14,15 +18,15 @@
 ====================================================== */
 
 :root {
-  --primary: #7b2cbf;
+  --primary: #7b2cbf; /* purple buttons */
   --primary-dark: #5a189a;
   --bg: #f6f2ff;
   --card: #ffffff;
   --text: #111;
   --muted: #6b7280;
   --border: rgba(123,44,191,0.15);
-  --action-color: #7b2cbf; /* purple for all icons */
-  --icon-inner: #000000; /* inner color for light mode */
+  --action-color: #7b2cbf; /* purple for action buttons */
+  --icon-inner: #000000; /* default for day mode */
 }
 
 [data-theme="dark"] {
@@ -31,8 +35,8 @@
   --text: #f5f5f7;
   --muted: #9ca3af;
   --border: rgba(255,255,255,0.08);
-  --action-color: #a855f7;
-  --icon-inner: #ffffff; /* inner color for dark mode */
+  --action-color: #a855f7; /* slightly brighter purple in dark mode */
+  --icon-inner: #ffffff; /* white inner icons in dark mode */
 }
 
 * { box-sizing: border-box; }
@@ -51,413 +55,131 @@ html, body {
    HEADER SYSTEM
 ====================================================== */
 
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  backdrop-filter: blur(14px);
-  background: rgba(255,255,255,0.9);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.header { position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(14px); background: rgba(255,255,255,0.9); border-bottom: 1px solid var(--border); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
 
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+.header-top { display: flex; align-items: center; justify-content: space-between; }
 
-/* Hamburger Button LEFT */
+.menu-btn { width: 36px; height: 36px; border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--primary); }
 
-.menu-btn {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  color: var(--primary);
-}
+.brand-container { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; flex: 1; position: relative; }
 
-/* Logo + Wallet Container */
+.logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(90deg,var(--primary),#a855f7,var(--primary-dark),var(--primary)); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientFlow 5s ease infinite; }
 
-.brand-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  flex: 1;
-  position: relative;
-}
+@keyframes gradientFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-/* Animated Gradient Logo */
+.wallet-balance { font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-top: 4px; display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative; }
 
-.logo {
-  font-size: 1.8rem;
-  font-weight: 800;
-  background: linear-gradient(
-      90deg,
-      var(--primary),
-      #a855f7,
-      var(--primary-dark),
-      var(--primary)
-  );
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientFlow 5s ease infinite;
-}
+.wallet-dropdown { display: none; position: absolute; top: 26px; left: 0; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px; width: 140px; box-shadow: 0 8px 18px rgba(0,0,0,0.1); font-size: 0.8rem; z-index: 1500; }
 
-@keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+.header-search { margin-top: 6px; width: 100%; }
 
-/* Wallet Balance + Mini Dropdown */
+.header-search input { width: 100%; padding: 8px 12px; border-radius: 14px; border: 1px solid var(--border); font-size: 0.9rem; outline: none; color: var(--text); background: var(--card); transition: 0.3s; }
 
-.wallet-balance {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--primary);
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  position: relative;
-}
+.header-search input:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(123,44,191,0.25); }
 
-/* Dropdown Menu */
+.theme-toggle { background: none; border: 2px solid var(--primary); border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--primary); transition: 0.3s ease; }
 
-.wallet-dropdown {
-  display: none;
-  position: absolute;
-  top: 26px;
-  left: 0;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px;
-  width: 140px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
-  font-size: 0.8rem;
-  z-index: 1500;
-}
-
-.wallet-balance:hover .wallet-dropdown {
-  display: block;
-}
-
-/* SEARCH BAR BELOW LOGO */
-
-.header-search {
-  margin-top: 6px;
-  width: 100%;
-}
-
-.header-search input {
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  font-size: 0.9rem;
-  outline: none;
-  color: var(--text);
-  background: var(--card);
-  transition: 0.3s;
-}
-
-.header-search input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 8px rgba(123,44,191,0.25);
-}
-
-/* Night/Day Mode Button */
-
-.theme-toggle {
-  background: none;
-  border: 2px solid var(--primary);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  color: var(--primary);
-  transition: 0.3s ease;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.1);
-  border-color: var(--primary-dark);
-  color: var(--primary-dark);
-}
+.theme-toggle:hover { transform: scale(1.1); border-color: var(--primary-dark); color: var(--primary-dark); }
 
 /* ======================================================
    SIDEBAR NAVIGATION
 ====================================================== */
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  right: -300px;
-  width: 280px;
-  height: 100vh;
-  background: var(--card);
-  border-left: 1px solid var(--border);
-  padding: 30px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  transition: right 0.4s ease;
-  z-index: 2000;
-}
+.sidebar { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: var(--card); border-left: 1px solid var(--border); padding: 30px 20px; display: flex; flex-direction: column; gap: 18px; transition: right 0.4s ease; z-index: 2000; }
 
 .sidebar.active { right: 0; }
 
-.sidebar button {
-  background: none;
-  border: none;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-  padding: 10px 0;
-  color: var(--primary);
-  transition: 0.3s;
-}
+.sidebar button { background: none; border: none; font-weight: 600; text-align: left; cursor: pointer; padding: 10px 0; color: var(--primary); transition: 0.3s; }
 
-.sidebar button:hover {
-  transform: translateX(6px);
-  color: var(--primary-dark);
-}
+.sidebar button:hover { transform: translateX(6px); color: var(--primary-dark); }
 
 /* ======================================================
    PAGE CONTAINER
 ====================================================== */
 
-.page {
-  padding: 20px;
-  min-height: calc(100vh - 160px);
-}
+.page { padding: 20px; min-height: calc(100vh - 160px); }
 
 /* ======================================================
    POST CARD SYSTEM
 ====================================================== */
 
-.card {
-  background: var(--card);
-  padding: 18px;
-  border-radius: 18px;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.05);
-  margin-bottom: 20px;
-  border: 1px solid var(--border);
-}
+.card { background: var(--card); padding: 18px; border-radius: 18px; box-shadow: 0 12px 28px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border); }
 
-.post-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
+.post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 
-.post-user {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.post-user { display: flex; align-items: center; gap: 8px; }
 
-.profile-placeholder {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #e9d5ff, #c084fc);
-  border: 2px solid var(--primary);
-  position: relative;
-}
+.profile-placeholder { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #e9d5ff, #c084fc); border: 2px solid var(--primary); position: relative; }
 
-/* Verified Badge */
+.verified-badge { width: 16px; height: 16px; background: var(--primary); border-radius: 50%; position: absolute; bottom: 0; right: -4px; border: 2px solid var(--card); }
 
-.verified-badge {
-  width: 16px;
-  height: 16px;
-  background: var(--primary);
-  border-radius: 50%;
-  position: absolute;
-  bottom: 0;
-  right: -4px;
-  border: 2px solid var(--card);
-}
+.username { font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 4px; }
 
-/* Username + Verified */
+.follow-btn { background: var(--primary); border: none; color: white; padding: 6px 14px; border-radius: 18px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
 
-.username {
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+.follow-btn.following { background: var(--primary-dark); }
 
-.follow-btn {
-  background: var(--primary);
-  border: none;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 18px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
+.follow-btn:hover { opacity: 0.85; }
 
-.follow-btn.following {
-  background: var(--primary-dark);
-}
+.post-content { font-size: 0.95rem; margin-bottom: 14px; }
 
-.follow-btn:hover {
-  opacity: 0.85;
-}
+.post-actions { display: flex; justify-content: flex-start; font-weight: 600; font-size: 0.8rem; gap: 10px; }
 
-.post-content {
-  font-size: 0.95rem;
-  margin-bottom: 14px;
-}
+.post-actions button { width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer; background: var(--action-color); display: flex; align-items: center; justify-content: center; transition: transform 0.2s ease; }
 
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: var(--action-color);
-  position: relative;
-  gap: 10px;
-}
+.post-actions button svg path { fill: var(--icon-inner); transition: fill 0.3s ease; }
+
+.post-actions button:hover { transform: scale(1.3); }
+
+.post-actions button:active { transform: scale(1.5); }
 
 /* ======================================================
-   SVG BUTTONS WITH PURPLE BG & INNER COLOR
+   HEART ANIMATION
 ====================================================== */
 
-.post-actions button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: var(--action-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-}
+.heart-animation { position: absolute; width: 32px; height: 32px; background: url('svg/heart.svg') no-repeat center center; background-size: contain; pointer-events: none; animation: heartFloat 1s ease forwards; }
 
-.post-actions button svg path, 
-.post-actions button svg text {
-  fill: var(--icon-inner);
-  transition: fill 0.3s ease;
-}
-
-.post-actions button:hover {
-  transform: scale(1.3);
-}
-
-.post-actions button:active {
-  transform: scale(1.5);
-}
+@keyframes heartFloat { 0% { opacity: 1; transform: translateY(0) scale(1); } 50% { opacity: 1; transform: translateY(-30px) scale(1.4); } 100% { opacity: 0; transform: translateY(-60px) scale(0.8); } }
 
 /* ======================================================
-   HEART ANIMATION FOR LIKE
+   TOKEN BURN ANIMATION
 ====================================================== */
 
-.heart-animation {
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  background: url('svg/heart.svg') no-repeat center center;
-  background-size: contain;
-  pointer-events: none;
-  animation: heartFloat 1s ease forwards;
-}
+.token-burn { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: gold; pointer-events: none; animation: burnFloat 1s ease forwards; }
 
-@keyframes heartFloat {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  50% { opacity: 1; transform: translateY(-30px) scale(1.4); }
-  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
-}
+@keyframes burnFloat { 0% { opacity: 1; transform: translateY(0) scale(1); } 50% { opacity: 1; transform: translateY(-20px) scale(1.2); } 100% { opacity: 0; transform: translateY(-40px) scale(0); } }
 
 /* ======================================================
    BOTTOM NAVIGATION
 ====================================================== */
 
-.nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: var(--card);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-around;
-  padding: 12px 0;
-}
+.nav { position: fixed; bottom: 0; width: 100%; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 12px 0; }
 
-.nav button {
-  background: none;
-  border: none;
-  color: var(--muted);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
+.nav button { background: none; border: none; color: var(--muted); font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
 
-.nav button.active {
-  color: var(--primary);
-  transform: scale(1.2);
-}
+.nav button.active { color: var(--primary); transform: scale(1.2); }
 
 </style>
 </head>
-
 <body data-theme="light">
 
-<!-- HEADER -->
 <header class="header">
-
   <div class="header-top">
-    <!-- Hamburger LEFT -->
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-
-    <!-- Logo + Wallet -->
     <div class="brand-container">
       <div class="logo">TRIBERIUM</div>
-      <div class="wallet-balance" onclick="toggleWalletDropdown()">
+      <div class="wallet-balance" id="walletBalance" onclick="toggleWalletDropdown()">
         TBM Balance: <span id="walletAmount">0.00</span>
-        <div class="wallet-dropdown" id="walletDropdown">
-          <div>Receive</div>
-          <div>Send</div>
-          <div>Stake</div>
-        </div>
+        <div class="wallet-dropdown" id="walletDropdown"></div>
       </div>
     </div>
-
-    <!-- Night/Day Toggle RIGHT -->
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
   </div>
-
-  <!-- SEARCH BAR -->
   <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
   </div>
-
 </header>
 
-<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <button>Profile</button>
   <button>Metrics / Analytics</button>
@@ -470,62 +192,35 @@ html, body {
   <button>Logout</button>
 </div>
 
-<!-- MAIN CONTENT -->
 <section class="page">
-
   <div class="card">
-
     <div class="post-header">
       <div class="post-user">
-        <div class="profile-placeholder">
-          <div class="verified-badge"></div>
-        </div>
+        <div class="profile-placeholder"><div class="verified-badge"></div></div>
         <div class="username">@TriberiumUser</div>
       </div>
       <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
     </div>
-
     <div class="post-content">
       Welcome to TRIBERIUM SocialFi evolution. Earn, connect, and build.
     </div>
-
     <div class="post-actions">
-      <!-- LIKE BUTTON -->
       <button class="like-btn" onclick="animateHeart(event)">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       </button>
-
-      <!-- RETRIBE SVG -->
       <button class="retribe-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 4v7h7" stroke="var(--icon-inner)" stroke-width="2" fill="none"/>
-          <path d="M20 20h-7v-7" stroke="var(--icon-inner)" stroke-width="2" fill="none"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M4 4v7h7" stroke="var(--icon-inner)" stroke-width="2" fill="none"/><path d="M20 20h-7v-7" stroke="var(--icon-inner)" stroke-width="2" fill="none"/></svg>
       </button>
-
-      <!-- SAVE SVG -->
       <button class="save-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 12l6 6 10-10" stroke="var(--icon-inner)" stroke-width="2" fill="none"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M4 12l6 6 10-10" stroke="var(--icon-inner)" stroke-width="2" fill="none"/></svg>
       </button>
-
-      <!-- SHARE SVG -->
       <button class="share-btn" onclick="animateBounce(event)">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 12h16M12 4l8 8-8 8" stroke="var(--icon-inner)" stroke-width="2" fill="none"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M4 12h16M12 4l8 8-8 8" stroke="var(--icon-inner)" stroke-width="2" fill="none"/></svg>
       </button>
-
     </div>
-
   </div>
-
 </section>
 
-<!-- BOTTOM NAV -->
 <nav class="nav">
   <button class="active">Home</button>
   <button>Community</button>
@@ -534,75 +229,40 @@ html, body {
 </nav>
 
 <script>
+// Firebase initialization
+const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "YOUR_PROJECT_ID.firebaseapp.com", databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com", projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_PROJECT_ID.appspot.com", messagingSenderId: "SENDER_ID", appId: "APP_ID" };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const walletRef = db.ref("users/user1/wallet");
+walletRef.on("value", snapshot => { const value = snapshot.val() || 0; document.getElementById("walletAmount").innerText = parseFloat(value).toFixed(2); });
 
-/* ======================================================
-   SIDEBAR TOGGLE
-====================================================== */
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("active");
-}
+// Sidebar toggle
+function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("active"); }
 
-/* ======================================================
-   HEART ANIMATION FOR LIKE
-====================================================== */
-function animateHeart(e){
-  const heart = document.createElement("div");
-  heart.className = "heart-animation";
-  heart.style.left = e.clientX - 16 + "px";
-  heart.style.top = e.clientY - 16 + "px";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),1000);
-}
+// Heart animation
+function animateHeart(e){ const heart=document.createElement("div"); heart.className="heart-animation"; heart.style.left=e.clientX-16+"px"; heart.style.top=e.clientY-16+"px"; document.body.appendChild(heart); setTimeout(()=>heart.remove(),1000); tokenBurn(e.clientX,e.clientY); }
 
-/* ======================================================
-   BOUNCE ANIMATION FOR SVG ACTIONS
-====================================================== */
-function animateBounce(e){
-  const bounce = document.createElement("div");
-  bounce.className = "heart-animation"; // reuse heart animation
-  bounce.style.left = e.clientX - 16 + "px";
-  bounce.style.top = e.clientY - 16 + "px";
-  document.body.appendChild(bounce);
-  setTimeout(()=>bounce.remove(),1000);
-}
+// Bounce animation
+function animateBounce(e){ const bounce=document.createElement("div"); bounce.className="heart-animation"; bounce.style.left=e.clientX-16+"px"; bounce.style.top=e.clientY-16+"px"; document.body.appendChild(bounce); setTimeout(()=>bounce.remove(),1000); tokenBurn(e.clientX,e.clientY); }
 
-/* ======================================================
-   NIGHT/DAY THEME TOGGLE
-====================================================== */
+// Token burn
+function tokenBurn(x,y){ for(let i=0;i<5;i++){ const burn=document.createElement("div"); burn.className="token-burn"; burn.style.left=x+Math.random()*20-10+"px"; burn.style.top=y+Math.random()*20-10+"px"; document.body.appendChild(burn); setTimeout(()=>burn.remove(),1000); } }
+
+// Theme toggle
 function toggleTheme(){
-  const body = document.body;
-  const toggle = document.querySelector(".theme-toggle");
-  if(body.getAttribute("data-theme") === "light"){
-    body.setAttribute("data-theme","dark");
-    toggle.innerText = "☀️";
-  } else {
-    body.setAttribute("data-theme","light");
-    toggle.innerText = "🌙";
-  }
+  const body=document.body; const toggle=document.querySelector(".theme-toggle");
+  if(body.getAttribute("data-theme")==="light"){
+    body.setAttribute("data-theme","dark"); toggle.innerText="☀️";
+  } else { body.setAttribute("data-theme","light"); toggle.innerText="🌙"; }
 }
 
-/* ======================================================
-   FOLLOW BUTTON TOGGLE
-====================================================== */
-function toggleFollow(btn){
-  if(btn.classList.contains("following")){
-    btn.classList.remove("following");
-    btn.innerText = "Follow";
-  } else {
-    btn.classList.add("following");
-    btn.innerText = "Following";
-  }
-}
+// Follow toggle
+function toggleFollow(btn){ if(btn.classList.contains("following")){ btn.classList.remove("following"); btn.innerText="Follow"; } else { btn.classList.add("following"); btn.innerText="Following"; } }
 
-/* ======================================================
-   WALLET DROPDOWN
-====================================================== */
-function toggleWalletDropdown(){
-  const dropdown = document.getElementById("walletDropdown");
-  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-}
+// Wallet dropdown
+function toggleWalletDropdown(){ const dropdown=document.getElementById("walletDropdown"); dropdown.style.display=dropdown.style.display==="block"?"none":"block"; }
 
 </script>
 
 </body>
-     </html>
+   </html>
