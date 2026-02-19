@@ -73,6 +73,8 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.3rem;
+  color: var(--primary);
 }
 
 /* Logo + Wallet Container */
@@ -88,8 +90,8 @@ html, body {
 /* Animated Gradient Logo */
 
 .logo {
-  font-size: 1.7rem;
-  font-weight: 700;
+  font-size: 1.8rem;
+  font-weight: 800;
   background: linear-gradient(
       90deg,
       var(--primary),
@@ -100,7 +102,7 @@ html, body {
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientFlow 6s ease infinite;
+  animation: gradientFlow 5s ease infinite;
 }
 
 @keyframes gradientFlow {
@@ -174,7 +176,7 @@ html, body {
   cursor: pointer;
   padding: 10px 0;
   color: var(--primary);
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 .sidebar button:hover {
@@ -256,21 +258,30 @@ html, body {
   font-weight: 600;
   font-size: 0.8rem;
   color: var(--action-color);
+  position: relative;
 }
 
-/* SVG BUTTONS */
+/* ======================================================
+   SVG BUTTONS WITH ANIMATION
+====================================================== */
+
 .post-actions button {
   background: none;
   border: none;
   cursor: pointer;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   fill: var(--action-color);
   transition: transform 0.2s ease, fill 0.2s ease;
 }
 
 .post-actions button:hover {
-  transform: scale(1.2);
+  transform: scale(1.3) rotate(-10deg);
+  fill: var(--primary-dark);
+}
+
+.post-actions button:active {
+  transform: scale(1.5) rotate(10deg);
   fill: var(--primary-dark);
 }
 
@@ -290,7 +301,7 @@ html, body {
 
 @keyframes heartFloat {
   0% { opacity: 1; transform: translateY(0) scale(1); }
-  50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
+  50% { opacity: 1; transform: translateY(-30px) scale(1.4); }
   100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
 }
 
@@ -320,7 +331,7 @@ html, body {
 
 .nav button.active {
   color: var(--primary);
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 </style>
@@ -451,4 +462,4 @@ function toggleTheme(){
 </script>
 
 </body>
-   </html>
+                                            </html>
