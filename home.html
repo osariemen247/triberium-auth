@@ -292,7 +292,7 @@ html, body {
 }
 
 /* ======================================================
-   POST ACTIONS
+   POST ACTIONS - LIKE / RETRIBE / SAVE / SHARE
 ====================================================== */
 .post-actions {
   display: flex;
@@ -303,7 +303,6 @@ html, body {
   margin-top: 12px;
 }
 
-/* BUTTONS */
 .post-actions button {
   width: 48px;
   height: 48px;
@@ -313,21 +312,25 @@ html, body {
   transition: transform 0.3s ease, fill 0.3s ease;
 }
 
-/* ALL ACTION BUTTONS PURPLE */
-.post-actions button svg path {
+/* BUTTON COLORS */
+.post-actions button svg path,
+.post-actions button svg rect,
+.post-actions button svg circle,
+.post-actions button svg polyline {
   stroke: var(--action-color);
   fill: var(--action-color);
+  stroke-width: 2.5;
 }
 
-/* BUTTON ANIMATION */
+/* BUTTON HOVER/ACTIVE ANIMATION */
 .post-actions button:hover { transform: scale(1.3) rotate(-10deg); }
 .post-actions button:active { transform: scale(1.6) rotate(10deg); }
 
-/* HEART ANIMATION */
+/* LIKE HEART ANIMATION */
 .heart-animation {
   position: absolute;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   background: url('svg/heart.svg') no-repeat center center;
   background-size: contain;
   pointer-events: none;
@@ -335,8 +338,8 @@ html, body {
 }
 @keyframes heartFloat {
   0% { opacity: 1; transform: translateY(0) scale(1); }
-  50% { opacity: 1; transform: translateY(-20px) scale(1.4); }
-  100% { opacity: 0; transform: translateY(-40px) scale(0.8); }
+  50% { opacity: 1; transform: translateY(-30px) scale(1.4); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
 }
 
 /* ======================================================
@@ -420,12 +423,12 @@ html, body {
         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       </button>
 
-      <!-- RETRIBE CIRCULAR LOOP BUTTON -->
       <button class="retribe-btn" onclick="animateBounce(event)">
         <svg viewBox="0 0 24 24">
-          <path d="M12 2a10 10 0 1 1-7.07 17.07" fill="none" stroke="var(--action-color)" stroke-width="2"/>
-          <path d="M3.5 3.5l4 4" fill="none" stroke="var(--action-color)" stroke-width="2"/>
-          <path d="M17.5 16.5l4 4" fill="none" stroke="var(--action-color)" stroke-width="2"/>
+          <path d="M12 2v6h6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 22v-6H6" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="18,8 12,2 6,8" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="6,16 12,22 18,16" fill="none" stroke="var(--action-color)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
 
@@ -491,24 +494,18 @@ function toggleFollow(btn){
   }
 }
 
-/* LIKE ANIMATION */
+/* LIKE HEART ANIMATION */
 function animateHeart(e){
   const heart = document.createElement("div");
   heart.className = "heart-animation";
-  heart.style.left = e.clientX - 14 + "px";
-  heart.style.top = e.clientY - 14 + "px";
+  heart.style.left = e.clientX - 16 + "px";
+  heart.style.top = e.clientY - 16 + "px";
   document.body.appendChild(heart);
   setTimeout(()=>heart.remove(),1000);
 }
 
-/* BOUNCE FOR OTHER BUTTONS */
+/* BOUNCE FOR RETRIBE / SAVE / SHARE */
 function animateBounce(e){
   const bounce = document.createElement("div");
   bounce.className = "heart-animation";
-  bounce.style.left = e.clientX - 14 + "px";
-  bounce.style.top = e.clientY - 14 + "px";
-  document.body.appendChild(bounce);
-  bounce.animate([
-    { transform: 'scale(1)', opacity: 1 },
-    { transform: 'scale(1.4)', opacity: 0.8 },
-    { transform: 'scale
+  bounce.style.left = e.clientX - 16 + "px
