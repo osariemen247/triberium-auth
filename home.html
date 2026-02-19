@@ -92,6 +92,7 @@ html, body {
   align-items: flex-start;
   justify-content: center;
   flex: 1;
+  position: relative;
 }
 
 /* Animated Gradient Logo */
@@ -118,7 +119,7 @@ html, body {
   100% { background-position: 0% 50%; }
 }
 
-/* Wallet Balance */
+/* Wallet Balance + Mini Dropdown */
 
 .wallet-balance {
   font-size: 0.8rem;
@@ -128,9 +129,32 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  position: relative;
 }
 
-/* Search Bar Below Logo */
+/* Dropdown Menu */
+
+.wallet-dropdown {
+  display: none;
+  position: absolute;
+  top: 26px;
+  left: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  width: 140px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+  font-size: 0.8rem;
+  z-index: 1500;
+}
+
+.wallet-balance:hover .wallet-dropdown {
+  display: block;
+}
+
+/* SEARCH BAR BELOW LOGO */
 
 .header-search {
   margin-top: 6px;
@@ -247,7 +271,7 @@ html, body {
 .post-user {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .profile-placeholder {
@@ -256,11 +280,30 @@ html, body {
   border-radius: 50%;
   background: linear-gradient(135deg, #e9d5ff, #c084fc);
   border: 2px solid var(--primary);
+  position: relative;
 }
+
+/* Verified Badge */
+
+.verified-badge {
+  width: 16px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: -4px;
+  border: 2px solid var(--card);
+}
+
+/* Username + Verified */
 
 .username {
   font-weight: 600;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .follow-btn {
@@ -274,8 +317,12 @@ html, body {
   transition: 0.2s;
 }
 
-.follow-btn:hover {
+.follow-btn.following {
   background: var(--primary-dark);
+}
+
+.follow-btn:hover {
+  opacity: 0.85;
 }
 
 .post-content {
@@ -380,8 +427,13 @@ html, body {
     <!-- Logo + Wallet -->
     <div class="brand-container">
       <div class="logo">TRIBERIUM</div>
-      <div class="wallet-balance">
+      <div class="wallet-balance" onclick="toggleWalletDropdown()">
         TBM Balance: <span id="walletAmount">0.00</span>
+        <div class="wallet-dropdown" id="walletDropdown">
+          <div>Receive</div>
+          <div>Send</div>
+          <div>Stake</div>
+        </div>
       </div>
     </div>
 
@@ -416,10 +468,12 @@ html, body {
 
     <div class="post-header">
       <div class="post-user">
-        <div class="profile-placeholder"></div>
+        <div class="profile-placeholder">
+          <div class="verified-badge"></div>
+        </div>
         <div class="username">@TriberiumUser</div>
       </div>
-      <button class="follow-btn">Follow</button>
+      <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
     </div>
 
     <div class="post-content">
@@ -433,19 +487,19 @@ html, body {
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
       </button>
-      <!-- RETRIBE BUTTON 🔃 -->
+      <!-- RETRIBE 🔃 -->
       <button class="retribe-btn" onclick="animateBounce(event)">
         <svg viewBox="0 0 24 24">
           <text x="0" y="18" font-size="18" fill="var(--action-color)">🔃</text>
         </svg>
       </button>
-      <!-- SAVE BUTTON ☑️ -->
+      <!-- SAVE ☑️ -->
       <button class="save-btn" onclick="animateBounce(event)">
         <svg viewBox="0 0 24 24">
           <text x="0" y="18" font-size="18" fill="var(--action-color)">☑️</text>
         </svg>
       </button>
-      <!-- SHARE BUTTON 🔄 -->
+      <!-- SHARE 🔄 -->
       <button class="share-btn" onclick="animateBounce(event)">
         <svg viewBox="0 0 24 24">
           <text x="0" y="18" font-size="18" fill="var(--action-color)">🔄</text>
@@ -491,7 +545,7 @@ function animateHeart(e){
 ====================================================== */
 function animateBounce(e){
   const bounce = document.createElement("div");
-  bounce.className = "heart-animation"; // reuse heart animation for simplicity
+  bounce.className = "heart-animation"; // reuse heart animation
   bounce.style.left = e.clientX - 16 + "px";
   bounce.style.top = e.clientY - 16 + "px";
   document.body.appendChild(bounce);
@@ -513,7 +567,28 @@ function toggleTheme(){
   }
 }
 
+/* ======================================================
+   FOLLOW BUTTON TOGGLE
+====================================================== */
+function toggleFollow(btn){
+  if(btn.classList.contains("following")){
+    btn.classList.remove("following");
+    btn.innerText = "Follow";
+  } else {
+    btn.classList.add("following");
+    btn.innerText = "Following";
+  }
+}
+
+/* ======================================================
+   WALLET DROPDOWN
+====================================================== */
+function toggleWalletDropdown(){
+  const dropdown = document.getElementById("walletDropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
 </script>
 
 </body>
-   </html>
+           </html>
