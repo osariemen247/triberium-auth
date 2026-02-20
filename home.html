@@ -4,274 +4,120 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TRIBERIUM — SocialFi</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<style>
-/* ---------------- GLOBAL ---------------- */
-:root {
-  --primary: #7b2cbf;
-  --primary-dark: #5a189a;
-  --bg: #f6f2ff;
-  --card: #fff;
-  --text: #111;
-  --muted: #6b7280;
-  --border: rgba(123,44,191,0.15);
-  --action-color: #7b2cbf;
-}
-[data-theme="dark"]{
-  --bg: #0f0f14;
-  --card: #1a1a22;
-  --text: #f5f5f7;
-  --muted: #9ca3af;
-  --border: rgba(255,255,255,0.08);
-  --action-color: #a855f7;
-}
-* { box-sizing:border-box; }
-body, html { margin:0; padding:0; font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); transition:0.3s; overflow-x:hidden; }
-button { cursor:pointer; }
+<!-- Modular CSS -->
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/bottomnav.css">
+<link rel="stylesheet" href="css/post.css">
+<link rel="stylesheet" href="css/story.css">
 
-/* ---------------- HEADER ---------------- */
-.header{position:sticky;top:0;z-index:1000;backdrop-filter:blur(14px);background:rgba(255,255,255,0.9);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;flex-direction:column;gap:6px;}
-.header-top{display:flex;align-items:center;justify-content:space-between;}
-.menu-btn{width:36px;height:36px;border:none;background:none;font-size:1.3rem;color:var(--primary);}
-.brand-container{display:flex;flex-direction:column;align-items:flex-start;flex:1;}
-.logo{font-size:1.8rem;font-weight:800;background: linear-gradient(90deg, var(--primary), #a855f7, var(--primary-dark), var(--primary));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation: gradientFlow 5s ease infinite;}
-@keyframes gradientFlow {0% {background-position:0% 50%;}50% {background-position:100% 50%;}100% {background-position:0% 50%;}}
-.wallet-balance{font-size:0.8rem;font-weight:600;color:var(--primary);margin-top:4px;display:flex;align-items:center;gap:6px;}
-.header-search{margin-top:6px;width:100%;}
-.header-search input{width:100%;padding:8px 12px;border-radius:14px;border:1px solid var(--border);font-size:0.9rem;outline:none;color:var(--text);background:var(--card);}
-.header-search input:focus{border-color:var(--primary);box-shadow:0 0 8px rgba(123,44,191,0.25);}
-.theme-toggle{background:none;border:2px solid var(--primary);border-radius:50%;width:36px;height:36px;font-size:1.1rem;color:var(--primary);}
-
-/* ---------------- SIDEBAR ---------------- */
-.sidebar{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--card);border-left:1px solid var(--border);padding:30px 20px;display:flex;flex-direction:column;gap:18px;transition:right 0.4s;}
-.sidebar.active{right:0;}
-.sidebar button{background:none;border:none;font-weight:600;text-align:left;color:var(--primary);padding:10px 0;}
-.sidebar button:hover{color:var(--primary-dark);transform:translateX(6px);}
-
-/* ---------------- PAGE ---------------- */
-.page{padding:20px;min-height:calc(100vh - 160px);}
-
-/* ---------------- POST CARD ---------------- */
-.card{background:var(--card);padding:18px;border-radius:18px;box-shadow:0 12px 28px rgba(0,0,0,0.05);margin-bottom:20px;border:1px solid var(--border);}
-.post-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.post-user{display:flex;align-items:center;gap:12px;}
-.profile-placeholder{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#e9d5ff,#c084fc);border:2px solid var(--primary);background-size:cover;background-position:center;}
-.username{font-weight:600;font-size:0.95rem;}
-.follow-btn{background:var(--primary);border:none;color:white;padding:6px 14px;border-radius:18px;font-size:0.75rem;}
-.follow-btn:hover{background:var(--primary-dark);}
-.post-content{font-size:0.95rem;margin-bottom:14px;}
-.post-image{width:100%;margin-top:10px;border-radius:12px;}
-
-/* ---------------- POST ACTIONS ---------------- */
-.post-actions{display:flex;justify-content:flex-start;gap:12px;font-weight:600;font-size:0.9rem;color:var(--action-color);}
-.action-group{display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 12px;border-radius:999px;font-weight:600;font-size:0.9rem;}
-.action-group svg{width:20px;height:20px;stroke:var(--action-color);stroke-width:2;fill:none;transition:0.3s;}
-.action-group:hover{background: rgba(123,44,191,0.1);}
-.like-action.active svg{fill: var(--action-color);animation:heartPop 0.4s ease;}
-@keyframes heartPop{0%{transform:scale(1);}50%{transform:scale(1.35);}100%{transform:scale(1);}}
-.retribe-action.active svg{animation:rotateLoop 0.6s ease;}
-@keyframes rotateLoop{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-.comment-action.active svg{fill:var(--primary-dark);animation:commentPop 0.4s ease;}
-@keyframes commentPop{0%{transform:scale(1);}50%{transform:scale(1.25);}100%{transform:scale(1);}}
-.save-action.active rect{fill: var(--action-color);}
-.save-action.active path{stroke:white;}
-
-/* ---------------- BOTTOM NAV ---------------- */
-.nav{position:fixed;bottom:0;width:100%;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:12px 0;}
-.nav button{background:none;border:none;color:var(--muted);font-size:0.75rem;}
-.nav button.active{color:var(--primary);transform:scale(1.2);}
-
-/* ---------------- PROFILE EDIT ---------------- */
-#profileEdit{display:none;background:var(--card);padding:20px;border-radius:12px;position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:3000;width:260px;}
-#profileEdit h2{margin:0 0 12px 0;font-size:1.1rem;}
-#profileEdit input{width:100%;padding:6px 8px;margin-bottom:10px;border-radius:8px;border:1px solid var(--border);}
-#profileEdit button{background:var(--primary);border:none;color:white;padding:6px 10px;border-radius:10px;margin-right:6px;}
-#profileEdit button:hover{background:var(--primary-dark);}
-
-/* ---------------- NEW POST ---------------- */
-#newPost{background:var(--card);padding:18px;border-radius:18px;margin-bottom:20px;border:1px solid var(--border);}
-#newPost textarea{width:100%;border:1px solid var(--border);border-radius:12px;padding:8px;margin-bottom:10px;}
-#newPost input[type=file]{margin-bottom:10px;}
-#newPost button{background:var(--primary);border:none;color:white;padding:6px 12px;border-radius:12px;}
-#newPost button:hover{background:var(--primary-dark);}
-</style>
 </head>
-
 <body data-theme="light">
 
+<!-- ================= HEADER ================= -->
 <header class="header">
   <div class="header-top">
-    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <button class="menu-btn" id="menuBtn">☰</button>
+
     <div class="brand-container">
       <div class="logo">TRIBERIUM</div>
       <div class="wallet-balance">
         TBM Balance: <span id="walletAmount">0.00</span>
       </div>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+    <button class="theme-toggle" id="themeToggle">🌙</button>
   </div>
+
   <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
   </div>
 </header>
 
+<!-- ================= SIDEBAR ================= -->
 <div class="sidebar" id="sidebar">
-  <button onclick="openProfileEdit()">Profile</button>
-  <button onclick="showMetrics()">Metrics / Analytics</button>
-  <button onclick="showNews()">News</button>
-  <button onclick="accessZytherion()">Access Zytherion</button>
-  <button onclick="liveStream()">Live Stream</button>
-  <button onclick="showSavedPosts()">Saved Posts</button>
-  <button onclick="showWallet()">Wallet</button>
-  <button onclick="showSettings()">Settings</button>
-  <button onclick="logoutUser()">Logout</button>
+  <button id="btnProfile">Profile</button>
+  <button id="btnMetrics">Metrics / Analytics</button>
+  <button id="btnNews">News</button>
+  <button id="btnZytherion">Access Zytherion</button>
+  <button id="btnLive">Live Stream</button>
+  <button id="btnSaved">Saved Posts</button>
+  <button id="btnWallet">Wallet</button>
+  <button id="btnSettings">Settings</button>
+  <button id="btnLogout">Logout</button>
 </div>
 
-<div id="profileEdit">
-  <h2>Edit Profile</h2>
-  <label>Username:</label>
-  <input type="text" id="editUsername" placeholder="New username">
-  <label>Profile Picture:</label>
-  <input type="file" id="editProfilePic">
-  <div>
-    <button onclick="saveProfile()">Save</button>
-    <button onclick="closeProfileEdit()">Cancel</button>
-  </div>
-</div>
-
-<section class="page">
-  <!-- New Post UI -->
-  <div id="newPost">
-    <textarea id="postText" placeholder="What's happening?"></textarea>
-    <input type="file" id="postMedia">
-    <button onclick="createPost()">Post</button>
-  </div>
-  <!-- Posts container -->
-  <div id="postContainer"></div>
+<!-- ================= STORIES ================= -->
+<section class="stories" id="storiesContainer">
+  <!-- Dynamic story cards will be appended here -->
 </section>
 
+<!-- ================= MAIN FEED ================= -->
+<section class="page" id="feedContainer">
+  <!-- Post cards dynamically injected via JS -->
+</section>
+
+<!-- ================= BOTTOM NAV ================= -->
 <nav class="nav">
-  <button class="active">Home</button>
-  <button>Community</button>
-  <button>Chat</button>
-  <button>Notifications</button>
+  <button class="active" id="navHome">Home</button>
+  <button id="navTribe">Tribe</button>
+  <button id="navChat">Chat</button>
+  <button id="navNotifications">Notifications</button>
 </nav>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<!-- ================= FIREBASE SDK ================= -->
+<script type="module" src="js/firebase-config.js"></script>
+<script type="module" src="js/auth.js"></script>
+<script type="module" src="js/sidebar.js"></script>
+<script type="module" src="js/bottomnav.js"></script>
+<script type="module" src="js/header.js"></script>
+<script type="module" src="js/story.js"></script>
+<script type="module" src="js/post.js"></script>
 
-<script>
-// ---------------- FIREBASE ----------------
-const firebaseConfig = {
-  apiKey:"AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
-  authDomain:"triberium-mvp.firebaseapp.com",
-  projectId:"triberium-mvp",
-  storageBucket:"triberium-mvp.firebasestorage.app",
-  messagingSenderId:"519861052514",
-  appId:"1:519861052514:web:56348e80320066cd311d3b"
-};
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
+<script type="module">
+import { toggleSidebar } from './js/sidebar.js';
+import { toggleTheme } from './js/header.js';
+import { fetchStories, uploadStory } from './js/story.js';
+import { fetchPosts } from './js/post.js';
 
-// ---------------- USER ----------------
-function openProfileEdit(){ document.getElementById("profileEdit").style.display="block"; fetchUserData();}
-function closeProfileEdit(){ document.getElementById("profileEdit").style.display="none";}
-async function fetchUserData(){
-  const uid = auth.currentUser.uid;
-  const doc = await db.collection("users").doc(uid).get();
-  if(doc.exists) document.getElementById("editUsername").value = doc.data().username || "";
-}
-async function saveProfile(){
-  const uid = auth.currentUser.uid;
-  const username = document.getElementById("editUsername").value;
-  const file = document.getElementById("editProfilePic").files[0];
-  let photoURL;
-  if(file){
-    const ref = storage.ref(`profilePics/${uid}_${file.name}`);
-    await ref.put(file);
-    photoURL = await ref.getDownloadURL();
-    await db.collection("users").doc(uid).update({username, photoURL});
-  } else { await db.collection("users").doc(uid).update({username}); }
-  alert("Profile updated!");
-  closeProfileEdit();
-  fetchPosts();
-}
+// Sidebar toggle
+document.getElementById('menuBtn').addEventListener('click', toggleSidebar);
 
-// ---------------- POSTS ----------------
-async function createPost(){
-  const text = document.getElementById("postText").value;
-  const file = document.getElementById("postMedia").files[0];
-  if(!text && !file){ alert("Enter text or media"); return; }
-  const uid = auth.currentUser.uid;
-  const userDoc = await db.collection("users").doc(uid).get();
-  const username = userDoc.data().username;
-  const photoURL = userDoc.data().photoURL || '';
-  let mediaURL;
-  if(file){
-    const ref = storage.ref(`posts/${uid}_${file.name}`);
-    await ref.put(file);
-    mediaURL = await ref.getDownloadURL();
-  }
-  await db.collection("posts").add({
-    uid, username, photoURL, text, mediaURL,
-    likes:0, retribes:0, comments:0, saves:0,
-    timestamp:firebase.firestore.FieldValue.serverTimestamp()
-  });
-  document.getElementById("postText").value="";
-  document.getElementById("postMedia").value="";
-  fetchPosts();
-}
+// Theme toggle
+document.getElementById('themeToggle').addEventListener('click', toggleTheme);
 
-async function fetchPosts(){
-  const postsContainer = document.getElementById("postContainer");
-  postsContainer.innerHTML = "";
-  const snapshot = await db.collection("posts").orderBy("timestamp","desc").get();
-  snapshot.forEach(doc=>{
-    const data = doc.data();
-    const post = document.createElement("div");
-    post.className="card";
-    post.innerHTML=`
-      <div class="post-header">
-        <div class="post-user">
-          <div class="profile-placeholder" style="background-image:url(${data.photoURL || ''})"></div>
-          <div class="username">${data.username || '@TriberiumUser'}</div>
-        </div>
-        <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
-      </div>
-      <div class="post-content">${data.text || ''}</div>
-      ${data.mediaURL? `<img class="post-image" src="${data.mediaURL}">` : ''}
-      <div class="post-actions">
-        <div class="action-group like-action" onclick="toggleAction(this)"><svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.33-8.33C.68 9.3 2.8 6 6 6c2.04 0 3.17 1.2 4 2.09C10.83 7.2 11.96 6 14 6c3.2 0 5.32 3.3 3.33 6.67C18.7 16.65 12 21 12 21z"/></svg><span>${data.likes||0}</span></div>
-        <div class="action-group retribe-action" onclick="toggleAction(this)"><svg viewBox="0 0 24 24"><path d="M4 7h11l-3-3m8 13H9l3 3"/></svg><span>${data.retribes||0}</span></div>
-        <div class="action-group comment-action" onclick="handleComment(this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>${data.comments||0}</span></div>
-        <div class="action-group save-action" onclick="toggleAction(this)"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"></rect><path d="M8 12l3 3 5-6"></path></svg><span>${data.saves||0}</span></div>
-      </div>
+// Load stories
+async function loadStories() {
+  const container = document.getElementById('storiesContainer');
+  const stories = await fetchStories();
+  container.innerHTML = '';
+  stories.forEach(story => {
+    const storyEl = document.createElement('div');
+    storyEl.classList.add('story-card');
+    storyEl.innerHTML = `
+      <img src="${story.mediaUrl}" alt="Story" />
+      <div class="story-username">@${story.userId}</div>
     `;
-    postsContainer.appendChild(post);
+    container.appendChild(storyEl);
   });
 }
 
-// ---------------- ACTIONS ----------------
-function toggleAction(el){ el.classList.toggle("active"); }
-function toggleFollow(el){ el.innerText=el.innerText==="Follow"?"Following":"Follow"; el.classList.toggle("active"); }
-function handleComment(el){ el.classList.toggle("active"); alert("Open comments for this post."); }
-function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("active"); }
-function toggleTheme(){ const body=document.body; const toggle=document.querySelector(".theme-toggle"); if(body.getAttribute("data-theme")==="light"){body.setAttribute("data-theme","dark");toggle.innerText="☀️";} else{body.setAttribute("data-theme","light");toggle.innerText="🌙";}
+loadStories();
 
-// ---------------- SIDEBAR FUNCTIONALITY ----------------
-function showMetrics(){ alert("Show user metrics and analytics."); }
-function showNews(){ alert("Show latest news feed."); }
-function accessZytherion(){ alert("Access Zytherion (future integration)."); }
-function liveStream(){ alert("Start live streaming."); }
-function showSavedPosts(){ alert("Show saved posts of the user."); }
-function showWallet(){ alert("Connect wallet and show TBM balance."); }
-function showSettings(){ alert("Open TRIBERIUM settings."); }
-function logoutUser(){ auth.signOut(); alert("Logged out!"); location.reload(); }
+// Load posts
+fetchPosts('feedContainer');
 
-// ---------------- INITIAL ----------------
-auth.onAuthStateChanged(user=>{ if(user){ fetchPosts(); fetchWallet();
+// Optional: story upload example
+// const fileInput = document.createElement('input');
+// fileInput.type = 'file';
+// fileInput.accept = 'image/*,video/*';
+// fileInput.addEventListener('change', e => uploadStory(e.target.files[0]));
+// document.body.appendChild(fileInput);
+</script>
+
+</body>
+</html>
