@@ -13,7 +13,7 @@
   --border: #2f3336;
   --text: #e7e9ea;
   --muted: #71767b;
-  --accent: #1da1f2;
+  --accent: #9b59b6; /* changed from blue to purple */
 }
 
 * { box-sizing: border-box; }
@@ -45,9 +45,9 @@ h1 {
 }
 
 @keyframes logoPulse {
-  0% { transform: scale(1); color: #1da1f2; }
-  50% { transform: scale(1.1); color: #0d5ea8; }
-  100% { transform: scale(1); color: #1da1f2; }
+  0% { transform: scale(1); color: #9b59b6; }
+  50% { transform: scale(1.1); color: #6f3490; }
+  100% { transform: scale(1); color: #9b59b6; }
 }
 
 .subtitle {
@@ -176,7 +176,7 @@ button:hover {
     try {
       await createUserWithEmailAndPassword(auth, email.value, password.value);
       msg.textContent = "Account created successfully!";
-      msg.style.color = "#1da1f2";
+      msg.style.color = "#9b59b6"; /* changed from blue to purple */
       setTimeout(navigateHome, 800);
     } catch (e) {
       msg.textContent = e.message;
@@ -188,7 +188,7 @@ button:hover {
     try {
       await signInWithEmailAndPassword(auth, email.value, password.value);
       msg.textContent = "Logged in successfully!";
-      msg.style.color = "#1da1f2";
+      msg.style.color = "#9b59b6"; /* changed from blue to purple */
       setTimeout(navigateHome, 800);
     } catch (e) {
       msg.textContent = e.message;
