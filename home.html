@@ -8,8 +8,385 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ====================== YOUR EXISTING CSS ====================== */
-/* ... all your existing CSS stays unchanged ... */
+
+/* ======================================================
+   GLOBAL DESIGN SYSTEM
+====================================================== */
+
+:root {
+  --primary: #7b2cbf;
+  --primary-dark: #5a189a;
+  --bg: #f6f2ff;
+  --card: #ffffff;
+  --text: #111;
+  --muted: #6b7280;
+  --border: rgba(123,44,191,0.15);
+  --action-color: #7b2cbf; /* purple for all icons */
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f14;
+  --card: #1a1a22;
+  --text: #f5f5f7;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.08);
+  --action-color: #a855f7;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* ======================================================
+   HEADER SYSTEM
+====================================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.9);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* HEADER TOP ROW */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+/* Logo + Wallet Container */
+.brand-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(
+      90deg,
+      var(--primary),
+      #a855f7,
+      var(--primary-dark),
+      var(--primary)
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 5s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.wallet-balance {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-search {
+  margin-top: 6px;
+  width: 100%;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  outline: none;
+  color: var(--text);
+  background: var(--card);
+  transition: 0.3s;
+}
+
+.header-search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 8px rgba(123,44,191,0.25);
+}
+
+.theme-toggle {
+  background: none;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--primary);
+  transition: 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: var(--primary-dark);
+  color: var(--primary-dark);
+}
+
+/* ======================================================
+   SIDEBAR NAVIGATION
+====================================================== */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 280px;
+  height: 100vh;
+  background: var(--card);
+  border-left: 1px solid var(--border);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: right 0.4s ease;
+  z-index: 2000;
+}
+
+.sidebar.active { right: 0; }
+
+.sidebar button {
+  background: none;
+  border: none;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px 0;
+  color: var(--primary);
+  transition: 0.3s;
+}
+
+.sidebar button:hover {
+  transform: translateX(6px);
+  color: var(--primary-dark);
+}
+
+/* ======================================================
+   PAGE CONTAINER
+====================================================== */
+
+.page {
+  padding: 20px;
+  min-height: calc(100vh - 160px);
+}
+
+/* ======================================================
+   POST CARD SYSTEM
+====================================================== */
+
+.card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e9d5ff, #c084fc);
+  border: 2px solid var(--primary);
+}
+
+.username {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.follow-btn {
+  background: var(--primary);
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.follow-btn:hover {
+  background: var(--primary-dark);
+}
+
+.post-content {
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+/* ======================================================
+   LIKE / RETRIBE / COMMENT / SAVE / SHARE BUTTONS
+====================================================== */
+
+.post-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--action-color);
+}
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.action-group svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--action-color);
+  stroke-width: 2;
+  fill: none;
+  transition: 0.3s ease;
+}
+
+.action-group:hover {
+  background: rgba(123,44,191,0.1);
+}
+
+/* LIKE */
+.like-action.active svg {
+  fill: var(--action-color);
+  animation: heartPop 0.4s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* RETRIBE */
+.retribe-action.active svg {
+  animation: rotateLoop 0.6s ease;
+}
+
+@keyframes rotateLoop {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* COMMENT */
+.comment-action.active svg {
+  fill: var(--primary-dark);
+  animation: commentPop 0.4s ease;
+}
+
+@keyframes commentPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* SAVE */
+.save-action.active rect {
+  fill: var(--action-color);
+}
+
+.save-action.active path {
+  stroke: white;
+}
+
+/* SHARE */
+.share-action.active svg {
+  transform: scale(1.2);
+}
+
+/* ======================================================
+   BOTTOM NAVIGATION
+====================================================== */
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.nav button.active {
+  color: var(--primary);
+  transform: scale(1.2);
+}
+
 </style>
 </head>
 
@@ -17,6 +394,7 @@
 
 <!-- HEADER -->
 <header class="header">
+
   <div class="header-top">
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
 
@@ -33,6 +411,7 @@
   <div class="header-search">
     <input type="text" placeholder="Search TRIBERIUM...">
   </div>
+
 </header>
 
 <!-- SIDEBAR -->
@@ -81,6 +460,14 @@
         <span>8</span>
       </div>
 
+      <!-- COMMENT -->
+      <div class="action-group comment-action" onclick="handleComment(this)">
+        <svg viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>5</span>
+      </div>
+
       <!-- SAVE -->
       <div class="action-group save-action" onclick="toggleAction(this)">
         <svg viewBox="0 0 24 24">
@@ -121,6 +508,12 @@ function toggleAction(el){
   el.classList.toggle("active");
 }
 
+/* COMMENT BUTTON FUNCTION */
+function handleComment(el){
+  el.classList.toggle("active");
+  alert("Open comments for this post."); // placeholder for comment section
+}
+
 /* THEME TOGGLE */
 function toggleTheme(){
   const body = document.body;
@@ -135,37 +528,5 @@ function toggleTheme(){
 }
 </script>
 
-<!-- ====================== MODULED FIREBASE AUTH / FOLLOW ====================== -->
-<script type="module">
-import { monitorAuthState, toggleFollow } from './js/firebase/auth.js';
-
-monitorAuthState((user, userData) => {
-  if(user) {
-    console.log("User logged in:", userData?.username);
-    document.querySelectorAll(".follow-btn").forEach(btn => {
-      btn.disabled = false; // enable follow buttons
-    });
-  } else {
-    document.querySelectorAll(".follow-btn").forEach(btn => {
-      btn.disabled = true;
-    });
-  }
-});
-
-// Connect follow buttons dynamically
-document.querySelectorAll(".follow-btn").forEach(btn => {
-  btn.addEventListener("click", async () => {
-    // TODO: Replace this with the actual UID of the post owner from Firestore
-    const targetUserId = "TARGET_USER_UID";
-    try {
-      const isNowFollowing = await toggleFollow(targetUserId);
-      btn.innerText = isNowFollowing ? "Following" : "Follow";
-    } catch (err) {
-      console.error("Follow error:", err);
-    }
-  });
-});
-</script>
-
 </body>
-   </html>
+  </html>
