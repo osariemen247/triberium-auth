@@ -252,7 +252,7 @@ html,body{
 .post-content{margin-bottom:14px;}
 
 /* =========================================================
-   POST ACTIONS
+   POST ACTIONS WITH SVG DESIGN
 ========================================================= */
 .post-actions{
   display:flex;
@@ -262,43 +262,69 @@ html,body{
   gap:0;
 }
 
-.action{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex:1;
-  padding:10px 0;
-  border-radius:999px;
-  cursor:pointer;
-  font-weight:600;
-  font-size:0.85rem;
-  transition:0.3s;
-  color:var(--action);
-  text-align:center;
-}
+.action{  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  flex:1;  
+  padding:10px 0;  
+  border-radius:999px;  
+  cursor:pointer;  
+  font-weight:600;  
+  font-size:0.85rem;  
+  transition:all 0.25s ease;  
+  color:var(--action);  
+  text-align:center;  
+  gap:6px;  
+}  
 
-.action svg{
-  width:18px;
-  height:18px;
-  stroke:var(--action);
-  stroke-width:2;
-  fill:none;
-  transition:0.3s;
-}
+.action svg{  
+  width:20px;  
+  height:20px;  
+  stroke:var(--action);  
+  stroke-width:2;  
+  fill:none;  
+  transition:0.3s ease;  
+}  
 
-.action:hover{
-  background:rgba(123,44,191,0.1);
-  transform:scale(1.08);
-}
+.action:hover{  
+  background:rgba(123,44,191,0.1);  
+}  
 
-.action.active{
-  animation:pop 0.4s ease;
-}
-@keyframes pop{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.25);}
-  100%{transform:scale(1);}
-}
+/***** LIKE *****/  
+.like.active svg{  
+  fill:var(--action);  
+  animation:heartPop 0.4s ease;  
+}  
+@keyframes heartPop{  
+  0%{transform:scale(1);}  
+  50%{transform:scale(1.35);}  
+  100%{transform:scale(1);}  
+}  
+
+/***** RETRIBE *****/  
+.retribe.active svg{  
+  animation:rotateLoop 0.6s ease;  
+}  
+@keyframes rotateLoop{  
+  from{transform:rotate(0deg);}  
+  to{transform:rotate(360deg);}  
+}  
+
+/***** COMMENT *****/  
+.comment.active svg{  
+  fill:var(--primary-dark);  
+  animation:commentPop 0.4s ease;  
+}  
+@keyframes commentPop{  
+  0%{transform:scale(1);}  
+  50%{transform:scale(1.25);}  
+  100%{transform:scale(1);}  
+}  
+
+/***** SAVE *****/  
+.save.active rect{fill:var(--action);}  
+.save.active path{stroke:white;}
 
 /* =========================================================
    BOTTOM NAV
@@ -369,10 +395,6 @@ html,body{
 
 <script type="module">
 
-/* =========================================================
-   FIREBASE INITIALIZATION (PRODUCTION READY)
-========================================================= */
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -392,7 +414,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-/* Wallet Loader */
 async function loadWallet(uid){
   try{
     const snap = await getDoc(doc(db,"wallets",uid));
@@ -408,10 +429,6 @@ async function loadWallet(uid){
 onAuthStateChanged(auth,user=>{
   if(user) loadWallet(user.uid);
 });
-
-/* =========================================================
-   ORIGINAL UI LOGIC (UNCHANGED)
-========================================================= */
 
 const sidebar=document.getElementById("sidebar");
 document.querySelector(".menu-btn").addEventListener("click",()=>sidebar.classList.toggle("active"));
@@ -463,11 +480,21 @@ posts.forEach(p=>{
     </div>
     <div class="post-content">${p.content}</div>
     <div class="post-actions">
-      <div class="action like">Like</div>
-      <div class="action retribe">Retribe</div>
-      <div class="action save">Save</div>
-      <div class="action comment">Comment</div>
-      <div class="action share">Share</div>
+      <div class="action like">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-6-4.35-10-10C2 6 5 2 12 6c7-4 10 0 10 5s-6 10-10 10z"></path></svg> Like
+      </div>
+      <div class="action retribe">
+        <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"></path></svg> Retribe
+      </div>
+      <div class="action save">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 4l16 16"></path></svg> Save
+      </div>
+      <div class="action comment">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v12H5l-1 4V4z"></path></svg> Comment
+      </div>
+      <div class="action share">
+        <svg viewBox="0 0 24 24"><path d="M4 12h16M12 4l8 8-8 8"></path></svg> Share
+      </div>
     </div>
   `;
 
