@@ -1,490 +1,490 @@
-<!DOCTYPE html>    
-<html lang="en">    
-<head>    
-<meta charset="UTF-8">    
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">    
-<title>TRIBERIUM — SocialFi</title>    
-    
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">    
-    
-<style>    
+<!DOCTYPE html>      
+<html lang="en">      
+<head>      
+<meta charset="UTF-8">      
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">      
+<title>TRIBERIUM — SocialFi</title>      
 
-/* =========================================================    
-   DESIGN SYSTEM    
-========================================================= */    
-:root{    
-  --primary:#7b2cbf;    
-  --primary-dark:#5a189a;    
-  --bg:#f6f2ff;    
-  --card:#ffffff;    
-  --text:#111;    
-  --muted:#6b7280;    
-  --border:rgba(123,44,191,0.15);    
-  --action:#7b2cbf;    
-}    
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">      
 
-[data-theme="dark"]{    
-  --bg:#0f0f14;    
-  --card:#1a1a22;    
-  --text:#f5f5f7;    
-  --muted:#9ca3af;    
-  --border:rgba(255,255,255,0.08);    
-  --action:#a855f7;    
-}    
+<style>      
 
-*{box-sizing:border-box;}    
-html,body{    
-  margin:0;    
-  padding:0;    
-  font-family:'Inter',sans-serif;    
-  background:var(--bg);    
-  color:var(--text);    
-  transition:0.3s ease;    
-  overflow-x:hidden;    
-}    
+/* =========================================================
+   DESIGN SYSTEM
+========================================================= */
+:root{
+  --primary:#7b2cbf;
+  --primary-dark:#5a189a;
+  --bg:#f6f2ff;
+  --card:#ffffff;
+  --text:#111;
+  --muted:#6b7280;
+  --border:rgba(123,44,191,0.15);
+  --action:#7b2cbf;
+}
 
-/* =========================================================    
-   HEADER    
-========================================================= */    
-.header{    
-  position:sticky;    
-  top:0;    
-  z-index:1000;    
-  backdrop-filter:blur(16px);    
-  background:rgba(255,255,255,0.85);    
-  border-bottom:1px solid var(--border);    
-  padding:14px 16px;    
-  display:flex;    
-  flex-direction:column;    
-  gap:8px;    
-}    
+[data-theme="dark"]{
+  --bg:#0f0f14;
+  --card:#1a1a22;
+  --text:#f5f5f7;
+  --muted:#9ca3af;
+  --border:rgba(255,255,255,0.08);
+  --action:#a855f7;
+}
 
-.header-top{    
-  display:flex;    
-  justify-content:space-between;    
-  align-items:center;    
-}    
+*{box-sizing:border-box;}
+html,body{
+  margin:0;
+  padding:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  transition:0.3s ease;
+  overflow-x:hidden;
+}
 
-.menu-btn,.theme-toggle{    
-  width:36px;    
-  height:36px;    
-  border:none;    
-  background:none;    
-  cursor:pointer;    
-  font-size:1.3rem;    
-  color:var(--primary);    
-  display:flex;    
-  align-items:center;    
-  justify-content:center;    
-  transition:0.3s;    
-}    
+/* =========================================================
+   HEADER
+========================================================= */
+.header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  backdrop-filter:blur(16px);
+  background:rgba(255,255,255,0.85);
+  border-bottom:1px solid var(--border);
+  padding:14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
 
-.menu-btn:hover,    
-.theme-toggle:hover{    
-  transform:scale(1.1);    
-}    
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-.brand{    
-  display:flex;    
-  flex-direction:column;    
-  align-items:flex-start;    
-}    
+.menu-btn,.theme-toggle{
+  width:36px;
+  height:36px;
+  border:none;
+  background:none;
+  cursor:pointer;
+  font-size:1.3rem;
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.3s;
+}
 
-.logo{    
-  font-size:1.7rem;    
-  font-weight:800;    
-  background:linear-gradient(90deg,var(--primary),#a855f7,var(--primary-dark),var(--primary));    
-  background-size:300% 300%;    
-  -webkit-background-clip:text;    
-  -webkit-text-fill-color:transparent;    
-  animation:gradientFlow 6s ease infinite;    
-}    
+.menu-btn:hover,
+.theme-toggle:hover{
+  transform:scale(1.1);
+}
 
-@keyframes gradientFlow{    
-  0%{background-position:0% 50%}    
-  50%{background-position:100% 50%}    
-  100%{background-position:0% 50%}    
-}    
+.brand{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
 
-.wallet{    
-  font-size:0.8rem;    
-  font-weight:600;    
-  color:var(--primary);    
-  margin-top:4px;    
-}    
+.logo{
+  font-size:1.7rem;
+  font-weight:800;
+  background:linear-gradient(90deg,var(--primary),#a855f7,var(--primary-dark),var(--primary));
+  background-size:300% 300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:gradientFlow 6s ease infinite;
+}
 
-.search input{    
-  width:100%;    
-  padding:10px 14px;    
-  border-radius:14px;    
-  border:1px solid var(--border);    
-  background:var(--card);    
-  color:var(--text);    
-  outline:none;    
-  transition:0.3s;    
-}    
-.search input:focus{    
-  border-color:var(--primary);    
-  box-shadow:0 0 10px rgba(123,44,191,0.25);    
-}    
+@keyframes gradientFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
 
-/* =========================================================    
-   SIDEBAR    
-========================================================= */    
-.sidebar{    
-  position:fixed;    
-  top:0;    
-  right:-300px;    
-  width:280px;    
-  height:100vh;    
-  background:var(--card);    
-  border-left:1px solid var(--border);    
-  padding:30px 20px;    
-  display:flex;    
-  flex-direction:column;    
-  gap:18px;    
-  transition:0.4s ease;    
-  z-index:2000;    
-}    
-.sidebar.active{right:0;}    
+.wallet{
+  font-size:0.8rem;
+  font-weight:600;
+  color:var(--primary);
+  margin-top:4px;
+}
 
-.sidebar button{    
-  background:none;    
-  border:none;    
-  text-align:left;    
-  font-weight:600;    
-  cursor:pointer;    
-  color:var(--primary);    
-  transition:0.3s;    
-}    
-.sidebar button:hover{    
-  transform:translateX(6px);    
-  color:var(--primary-dark);    
-}    
+.search input{
+  width:100%;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  outline:none;
+  transition:0.3s;
+}
+.search input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 10px rgba(123,44,191,0.25);
+}
 
-/* =========================================================    
-   STORIES    
-========================================================= */    
-.stories{    
-  display:flex;    
-  overflow-x:auto;    
-  gap:14px;    
-  padding:14px 16px;    
-}    
+/* =========================================================
+   SIDEBAR
+========================================================= */
+.sidebar{
+  position:fixed;
+  top:0;
+  right:-300px;
+  width:280px;
+  height:100vh;
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:30px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  transition:0.4s ease;
+  z-index:2000;
+}
+.sidebar.active{right:0;}
 
-.story{    
-  flex:0 0 85px;    
-  height:145px;    
-  background:var(--card);    
-  border:1px solid var(--border);    
-  border-radius:14px;    
-  display:flex;    
-  flex-direction:column;    
-  align-items:center;    
-  padding:6px;    
-  cursor:pointer;    
-  transition:0.3s;    
-}    
-.story:hover{transform:translateY(-4px);}    
+.sidebar button{
+  background:none;
+  border:none;
+  text-align:left;
+  font-weight:600;
+  cursor:pointer;
+  color:var(--primary);
+  transition:0.3s;
+}
+.sidebar button:hover{
+  transform:translateX(6px);
+  color:var(--primary-dark);
+}
 
-.story img{    
-  width:72px;    
-  height:72px;    
-  border-radius:50%;    
-  object-fit:cover;    
-  border:2px solid var(--primary);    
-}    
-.story span{    
-  font-size:0.7rem;    
-  margin-top:6px;    
-}    
+/* =========================================================
+   STORIES
+========================================================= */
+.stories{
+  display:flex;
+  overflow-x:auto;
+  gap:14px;
+  padding:14px 16px;
+}
 
-/* =========================================================    
-   FEED    
-========================================================= */    
-.page{    
-  padding:20px;    
-  padding-bottom:100px;    
-}    
+.story{
+  flex:0 0 85px;
+  height:145px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:6px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.story:hover{transform:translateY(-4px);}
 
-.card{    
-  background:var(--card);    
-  border:1px solid var(--border);    
-  border-radius:18px;    
-  padding:18px;    
-  margin-bottom:20px;    
-  box-shadow:0 10px 25px rgba(0,0,0,0.04);    
-  overflow:hidden;    
-}    
+.story img{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--primary);
+}
+.story span{
+  font-size:0.7rem;
+  margin-top:6px;
+}
 
-.post-header{    
-  display:flex;    
-  justify-content:space-between;    
-  align-items:center;    
-  margin-bottom:12px;    
-}    
+/* =========================================================
+   FEED
+========================================================= */
+.page{
+  padding:20px;
+  padding-bottom:100px;
+}
 
-.post-user{    
-  display:flex;    
-  align-items:center;    
-  gap:12px;    
-}    
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.04);
+  overflow:hidden;
+}
 
-.avatar{    
-  width:42px;    
-  height:42px;    
-  border-radius:50%;    
-  background:linear-gradient(135deg,#e9d5ff,#c084fc);    
-  border:2px solid var(--primary);    
-}    
+.post-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
 
-.follow-btn{    
-  background:var(--primary);    
-  border:none;    
-  color:white;    
-  padding:6px 14px;    
-  border-radius:20px;    
-  cursor:pointer;    
-  transition:0.3s;    
-}    
-.follow-btn:hover{background:var(--primary-dark);}    
+.post-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-.post-content{margin-bottom:14px;}    
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#e9d5ff,#c084fc);
+  border:2px solid var(--primary);
+}
 
-/* =========================================================    
-   POST ACTIONS (UPDATED: INLINE FULL WIDTH)    
-========================================================= */    
-.post-actions{    
-  display:flex;    
-  justify-content:space-between;    
-  flex-wrap:nowrap;    
-  width:100%;    
-  margin-top:6px;    
-}    
+.follow-btn{
+  background:var(--primary);
+  border:none;
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.follow-btn:hover{background:var(--primary-dark);}
 
-.action{    
-  display:flex;    
-  align-items:center;    
-  justify-content:center;    
-  flex:1;    
-  gap:6px;    
-  padding:6px 0;    
-  border-radius:999px;    
-  cursor:pointer;    
-  font-weight:600;    
-  font-size:0.85rem;    
-  transition:0.3s;    
-  color:var(--action);    
-}    
+.post-content{margin-bottom:14px;}
 
-.action svg{    
-  width:18px;    
-  height:18px;    
-  stroke:var(--action);    
-  stroke-width:2;    
-  fill:none;    
-  transition:0.3s;    
-}    
+/* =========================================================
+   POST ACTIONS
+========================================================= */
+.post-actions{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:nowrap;
+  width:100%;
+  gap:0;
+}
 
-.action:hover{    
-  background:rgba(123,44,191,0.1);    
-  transform:scale(1.08);    
-}    
+.action{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:1;
+  padding:10px 0;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:0.85rem;
+  transition:0.3s;
+  color:var(--action);
+  text-align:center;
+}
 
-.action.active{    
-  animation:pop 0.4s ease;    
-}    
-@keyframes pop{    
-  0%{transform:scale(1);}    
-  50%{transform:scale(1.25);}    
-  100%{transform:scale(1);}    
-}    
+.action svg{
+  width:18px;
+  height:18px;
+  stroke:var(--action);
+  stroke-width:2;
+  fill:none;
+  transition:0.3s;
+}
 
-/* =========================================================    
-   BOTTOM NAV    
-========================================================= */    
-.nav{    
-  position:fixed;    
-  bottom:0;    
-  width:100%;    
-  background:var(--card);    
-  border-top:1px solid var(--border);    
-  display:flex;    
-  justify-content:space-around;    
-  padding:12px 0;    
-}    
-.nav button{    
-  background:none;    
-  border:none;    
-  color:var(--muted);    
-  cursor:pointer;    
-  font-size:0.75rem;    
-  transition:0.3s;    
-}    
-.nav button.active{    
-  color:var(--primary);    
-  transform:scale(1.2);    
-}    
+.action:hover{
+  background:rgba(123,44,191,0.1);
+  transform:scale(1.08);
+}
 
-</style>    
-</head>    
+.action.active{
+  animation:pop 0.4s ease;
+}
+@keyframes pop{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.25);}
+  100%{transform:scale(1);}
+}
 
-<body data-theme="light">    
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+.nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
+}
+.nav button{
+  background:none;
+  border:none;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:0.75rem;
+  transition:0.3s;
+}
+.nav button.active{
+  color:var(--primary);
+  transform:scale(1.2);
+}
 
-<header class="header">    
-  <div class="header-top">    
-    <button class="menu-btn">☰</button>    
-    <div class="brand">    
-      <div class="logo">TRIBERIUM</div>    
-      <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>    
-    </div>    
-    <button class="theme-toggle">🌙</button>    
-  </div>    
-  <div class="search">    
-    <input type="text" placeholder="Search TRIBERIUM...">    
-  </div>    
-</header>    
+</style>
+</head>
 
-<div class="sidebar" id="sidebar">    
-  <button>Profile</button>    
-  <button>Metrics</button>    
-  <button>News</button>    
-  <button>Access Zytherion</button>    
-  <button>Live Stream</button>    
-  <button>Saved Posts</button>    
-  <button>Wallet</button>    
-  <button>Settings</button>    
-  <button>Logout</button>    
-</div>    
+<body data-theme="light">
 
-<section class="stories" id="stories"></section>    
-<section class="page" id="feed"></section>    
+<header class="header">
+  <div class="header-top">
+    <button class="menu-btn">☰</button>
+    <div class="brand">
+      <div class="logo">TRIBERIUM</div>
+      <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>
+    </div>
+    <button class="theme-toggle">🌙</button>
+  </div>
+  <div class="search">
+    <input type="text" placeholder="Search TRIBERIUM...">
+  </div>
+</header>
 
-<nav class="nav">    
-  <button class="active">Home</button>    
-  <button>Tribe</button>    
-  <button>Chat</button>    
-  <button>Notifications</button>    
-</nav>    
+<div class="sidebar" id="sidebar">
+  <button>Profile</button>
+  <button>Metrics</button>
+  <button>News</button>
+  <button>Access Zytherion</button>
+  <button>Live Stream</button>
+  <button>Saved Posts</button>
+  <button>Wallet</button>
+  <button>Settings</button>
+  <button>Logout</button>
+</div>
 
-<script type="module">    
+<section class="stories" id="stories"></section>
+<section class="page" id="feed"></section>
 
-/* =========================================================    
-   FIREBASE INITIALIZATION (PRODUCTION READY)    
-========================================================= */    
+<nav class="nav">
+  <button class="active">Home</button>
+  <button>Tribe</button>
+  <button>Chat</button>
+  <button>Notifications</button>
+</nav>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";    
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";    
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";    
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";    
+<script type="module">
 
-const firebaseConfig = {    
-  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",    
-  authDomain: "triberium-mvp.firebaseapp.com",    
-  projectId: "triberium-mvp",    
-  storageBucket: "triberium-mvp.firebasestorage.app",    
-  messagingSenderId: "519861052514",    
-  appId: "1:519861052514:web:56348e80320066cd311d3b"    
-};    
+/* =========================================================
+   FIREBASE INITIALIZATION (PRODUCTION READY)
+========================================================= */
 
-const app = initializeApp(firebaseConfig);    
-const auth = getAuth(app);    
-const db = getFirestore(app);    
-const storage = getStorage(app);    
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-/* Wallet Loader */    
-async function loadWallet(uid){    
-  try{    
-    const snap = await getDoc(doc(db,"wallets",uid));    
-    if(snap.exists()){    
-      document.getElementById("walletAmount").textContent =    
-        snap.data().balance.toFixed(2);    
-    }    
-  }catch(e){    
-    console.error(e);    
-  }    
-}    
+const firebaseConfig = {
+  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
+  authDomain: "triberium-mvp.firebaseapp.com",
+  projectId: "triberium-mvp",
+  storageBucket: "triberium-mvp.firebasestorage.app",
+  messagingSenderId: "519861052514",
+  appId: "1:519861052514:web:56348e80320066cd311d3b"
+};
 
-onAuthStateChanged(auth,user=>{    
-  if(user) loadWallet(user.uid);    
-});    
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-/* =========================================================    
-   ORIGINAL UI LOGIC (UNCHANGED)    
-========================================================= */    
+/* Wallet Loader */
+async function loadWallet(uid){
+  try{
+    const snap = await getDoc(doc(db,"wallets",uid));
+    if(snap.exists()){
+      document.getElementById("walletAmount").textContent =
+        snap.data().balance.toFixed(2);
+    }
+  }catch(e){
+    console.error(e);
+  }
+}
 
-const sidebar=document.getElementById("sidebar");    
-document.querySelector(".menu-btn").addEventListener("click",()=>sidebar.classList.toggle("active"));    
+onAuthStateChanged(auth,user=>{
+  if(user) loadWallet(user.uid);
+});
 
-document.querySelector(".theme-toggle").addEventListener("click",()=>{    
-  const body=document.body;    
-  const toggle=document.querySelector(".theme-toggle");    
-  if(body.dataset.theme==="light"){    
-    body.dataset.theme="dark";    
-    toggle.textContent="☀️";    
-  }else{    
-    body.dataset.theme="light";    
-    toggle.textContent="🌙";    
-  }    
-});    
+/* =========================================================
+   ORIGINAL UI LOGIC (UNCHANGED)
+========================================================= */
 
-const storiesData=["Alice","Bob","Carol","Dave","Eve"];    
-const storiesContainer=document.getElementById("stories");    
+const sidebar=document.getElementById("sidebar");
+document.querySelector(".menu-btn").addEventListener("click",()=>sidebar.classList.toggle("active"));
 
-storiesData.forEach(user=>{    
-  const story=document.createElement("div");    
-  story.className="story";    
-  story.innerHTML=`    
-    <img src="https://picsum.photos/100?random=${Math.random()}" />    
-    <span>@${user}</span>    
-  `;    
-  story.addEventListener("click",()=>alert(`Viewing ${user}'s Story (24h lifespan)`));    
-  storiesContainer.appendChild(story);    
-});    
+document.querySelector(".theme-toggle").addEventListener("click",()=>{
+  const body=document.body;
+  const toggle=document.querySelector(".theme-toggle");
+  if(body.dataset.theme==="light"){
+    body.dataset.theme="dark";
+    toggle.textContent="☀️";
+  }else{
+    body.dataset.theme="light";
+    toggle.textContent="🌙";
+  }
+});
 
-const posts=[    
-  {user:"TriberiumUser",content:"Welcome to TRIBERIUM SocialFi evolution.",likes:24,comments:5,retribes:8,saves:12,shares:3},    
-  {user:"Alice",content:"Exploring new digital assets today!",likes:10,comments:1,retribes:2,saves:1,shares:1}    
-];    
+const storiesData=["Alice","Bob","Carol","Dave","Eve"];
+const storiesContainer=document.getElementById("stories");
 
-const feed=document.getElementById("feed");    
+storiesData.forEach(user=>{
+  const story=document.createElement("div");
+  story.className="story";
+  story.innerHTML=`
+    <img src="https://picsum.photos/100?random=${Math.random()}" />
+    <span>@${user}</span>
+  `;
+  story.addEventListener("click",()=>alert(`Viewing ${user}'s Story (24h lifespan)`));
+  storiesContainer.appendChild(story);
+});
 
-posts.forEach(p=>{    
-  const card=document.createElement("div");    
-  card.className="card";    
+const posts=[
+  {user:"TriberiumUser",content:"Welcome to TRIBERIUM SocialFi evolution."},
+  {user:"Alice",content:"Exploring new digital assets today!"}
+];
 
-  card.innerHTML=`    
-    <div class="post-header">    
-      <div class="post-user">    
-        <div class="avatar"></div>    
-        <div>@${p.user}</div>    
-      </div>    
-      <button class="follow-btn">Follow</button>    
-    </div>    
-    <div class="post-content">${p.content}</div>    
-    <div class="post-actions">    
-      <div class="action like">${p.likes}</div>    
-      <div class="action retribe">${p.retribes}</div>    
-      <div class="action save">${p.saves}</div>    
-      <div class="action comment">${p.comments}</div>    
-      <div class="action share">${p.shares}</div>    
-    </div>    
-  `;    
+const feed=document.getElementById("feed");
 
-  card.querySelectorAll(".action").forEach(btn=>{    
-    btn.addEventListener("click",()=>btn.classList.toggle("active"));    
-  });    
+posts.forEach(p=>{
+  const card=document.createElement("div");
+  card.className="card";
 
-  feed.appendChild(card);    
-});    
+  card.innerHTML=`
+    <div class="post-header">
+      <div class="post-user">
+        <div class="avatar"></div>
+        <div>@${p.user}</div>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+    <div class="post-content">${p.content}</div>
+    <div class="post-actions">
+      <div class="action like">Like</div>
+      <div class="action retribe">Retribe</div>
+      <div class="action save">Save</div>
+      <div class="action comment">Comment</div>
+      <div class="action share">Share</div>
+    </div>
+  `;
 
-document.querySelectorAll(".nav button").forEach(btn=>{    
-  btn.addEventListener("click",()=>{    
-    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));    
-    btn.classList.add("active");    
-  });    
-});    
+  card.querySelectorAll(".action").forEach(btn=>{
+    btn.addEventListener("click",()=>btn.classList.toggle("active"));
+  });
 
-</script>    
-</body>    
-                    </html>
+  feed.appendChild(card);
+});
+
+document.querySelectorAll(".nav button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+</script>
+</body>
+      </html>
