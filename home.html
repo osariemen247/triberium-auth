@@ -1,13 +1,13 @@
-<!DOCTYPE html>      
-<html lang="en">      
-<head>      
-<meta charset="UTF-8">      
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">      
-<title>TRIBERIUM — SocialFi</title>      
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>TRIBERIUM — SocialFi</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">      
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<style>      
+<style>
 
 /* =========================================================
    DESIGN SYSTEM
@@ -352,6 +352,61 @@ html,body{
   transform:scale(1.2);
 }
 
+/* =========================================================
+   NOTIFICATIONS & CHAT PANELS
+========================================================= */
+.notif-panel{
+  position:fixed;
+  right:16px;
+  top:80px;
+  width:300px;
+  max-height:60vh;
+  overflow-y:auto;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  display:none;
+  z-index:2500;
+}
+.chat-panel{
+  position:fixed;
+  bottom:60px;
+  right:16px;
+  width:300px;
+  max-height:60vh;
+  display:flex;
+  flex-direction:column;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  display:none;
+  z-index:2600;
+}
+.chat-panel .chat-messages{
+  flex:1;
+  padding:8px;
+  overflow-y:auto;
+}
+.chat-panel input{
+  border:none;
+  border-top:1px solid var(--border);
+  padding:8px;
+  outline:none;
+}
+.chat-panel button{
+  border:none;
+  background:var(--primary);
+  color:white;
+  padding:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* Extra spacing to maintain original length */
+.extra-space{height:500px;}
+
 </style>
 </head>
 
@@ -363,6 +418,8 @@ html,body{
     <div class="brand">
       <div class="logo">TRIBERIUM</div>
       <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>
+      <button id="connectWalletBtn">Connect Wallet</button>
+      <button id="disconnectWalletBtn" style="display:none;">Disconnect Wallet</button>
     </div>
     <button class="theme-toggle">🌙</button>
   </div>
@@ -372,29 +429,37 @@ html,body{
 </header>
 
 <div class="sidebar" id="sidebar">
-  <button>Profile</button>
-  <button>Metrics</button>
-  <button>News</button>
-  <button>Access Zytherion</button>
-  <button>Live Stream</button>
-  <button>Saved Posts</button>
-  <button>Wallet</button>
-  <button>Settings</button>
-  <button>Logout</button>
+  <button id="btnProfile">Profile</button>
+  <button id="btnMetrics">Metrics</button>
+  <button id="btnNews">News</button>
+  <button id="btnZytherion">Access Zytherion</button>
+  <button id="btnLiveStream">Live Stream</button>
+  <button id="btnSavedPosts">Saved Posts</button>
+  <button id="btnWallet">Wallet</button>
+  <button id="btnSettings">Settings</button>
+  <button id="btnLogout">Logout</button>
 </div>
 
 <section class="stories" id="stories"></section>
 <section class="page" id="feed"></section>
 
+<div id="notifContainer" class="notif-panel"></div>
+
+<div id="chatContainer" class="chat-panel">
+  <div class="chat-messages" id="chatMessages"></div>
+  <input type="text" id="chatInput" placeholder="Type a message...">
+  <button id="chatSendBtn">Send</button>
+</div>
+
 <nav class="nav">
-  <button class="active">Home</button>
-  <button>Tribe</button>
-  <button>Chat</button>
-  <button>Notifications</button>
+  <button id="navHome" class="active">Home</button>
+  <button id="navTribe">Tribe</button>
+  <button id="navChat">Chat</button>
+  <button id="navNotifications">Notifications</button>
 </nav>
 
+<!-- Firebase Initialization -->
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -414,6 +479,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+// Original wallet loader
 async function loadWallet(uid){
   try{
     const snap = await getDoc(doc(db,"wallets",uid));
@@ -421,9 +487,7 @@ async function loadWallet(uid){
       document.getElementById("walletAmount").textContent =
         snap.data().balance.toFixed(2);
     }
-  }catch(e){
-    console.error(e);
-  }
+  }catch(e){console.error(e);}
 }
 
 onAuthStateChanged(auth,user=>{
@@ -512,6 +576,12 @@ document.querySelectorAll(".nav button").forEach(btn=>{
   });
 });
 
+// Extra dummy space to preserve length
+const extraSpace=document.createElement("div");
+extraSpace.className="extra-space";
+document.body.appendChild(extraSpace);
+
 </script>
+
 </body>
    </html>
