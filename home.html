@@ -43,9 +43,285 @@ html,body{
   overflow-x:hidden;
 }
 
-/* ===== (ALL YOUR ORIGINAL CSS REMAINS 100% UNCHANGED) ===== */
-/* I am not trimming for brevity — assume everything below is preserved exactly as provided */
-/* [CSS CONTENT CONTINUES UNCHANGED...] */
+/* =========================================================
+   HEADER
+========================================================= */
+.header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  backdrop-filter:blur(16px);
+  background:rgba(255,255,255,0.85);
+  border-bottom:1px solid var(--border);
+  padding:14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.menu-btn,.theme-toggle{
+  width:36px;
+  height:36px;
+  border:none;
+  background:none;
+  cursor:pointer;
+  font-size:1.3rem;
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.3s;
+}
+
+.menu-btn:hover,
+.theme-toggle:hover{
+  transform:scale(1.1);
+}
+
+.brand{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+
+.logo{
+  font-size:1.7rem;
+  font-weight:800;
+  background:linear-gradient(90deg,var(--primary),#a855f7,var(--primary-dark),var(--primary));
+  background-size:300% 300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:gradientFlow 6s ease infinite;
+}
+
+@keyframes gradientFlow{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+.wallet{
+  font-size:0.8rem;
+  font-weight:600;
+  color:var(--primary);
+  margin-top:4px;
+}
+
+.search input{
+  width:100%;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  outline:none;
+  transition:0.3s;
+}
+.search input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 10px rgba(123,44,191,0.25);
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+.sidebar{
+  position:fixed;
+  top:0;
+  right:-300px;
+  width:280px;
+  height:100vh;
+  background:var(--card);
+  border-left:1px solid var(--border);
+  padding:30px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  transition:0.4s ease;
+  z-index:2000;
+}
+.sidebar.active{right:0;}
+
+.sidebar button{
+  background:none;
+  border:none;
+  text-align:left;
+  font-weight:600;
+  cursor:pointer;
+  color:var(--primary);
+  transition:0.3s;
+}
+.sidebar button:hover{
+  transform:translateX(6px);
+  color:var(--primary-dark);
+}
+
+/* =========================================================
+   STORIES
+========================================================= */
+.stories{
+  display:flex;
+  overflow-x:auto;
+  gap:14px;
+  padding:14px 16px;
+}
+
+.story{
+  flex:0 0 85px;
+  height:145px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:6px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.story:hover{transform:translateY(-4px);}
+
+.story img{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--primary);
+}
+.story span{
+  font-size:0.7rem;
+  margin-top:6px;
+}
+
+/* =========================================================
+   FEED
+========================================================= */
+.page{
+  padding:20px;
+  padding-bottom:100px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.04);
+  overflow:hidden;
+}
+
+.post-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.post-user{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#e9d5ff,#c084fc);
+  border:2px solid var(--primary);
+}
+
+.follow-btn{
+  background:var(--primary);
+  border:none;
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.follow-btn:hover{background:var(--primary-dark);}
+
+.post-content{margin-bottom:14px;}
+
+/* =========================================================
+   POST ACTIONS
+========================================================= */
+.post-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  max-width:100%;
+}
+
+.action{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+  font-size:0.85rem;
+  transition:0.3s;
+  color:var(--action);
+}
+
+.action svg{
+  width:18px;
+  height:18px;
+  stroke:var(--action);
+  stroke-width:2;
+  fill:none;
+  transition:0.3s;
+}
+
+.action:hover{
+  background:rgba(123,44,191,0.1);
+  transform:scale(1.08);
+}
+
+.action.active{
+  animation:pop 0.4s ease;
+}
+@keyframes pop{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.25);}
+  100%{transform:scale(1);}
+}
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+.nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
+}
+.nav button{
+  background:none;
+  border:none;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:0.75rem;
+  transition:0.3s;
+}
+.nav button.active{
+  color:var(--primary);
+  transform:scale(1.2);
+}
 
 </style>
 </head>
@@ -88,31 +364,16 @@ html,body{
   <button>Notifications</button>
 </nav>
 
-<!-- =========================================================
-     FIREBASE SDK (MODULAR v10 CDN — PRODUCTION SAFE)
-========================================================= -->
 <script type="module">
 
 /* =========================================================
-   FIREBASE CORE INITIALIZATION
-   Environment: Production
-   SDK: Modular (Tree-shakeable)
+   FIREBASE INITIALIZATION (PRODUCTION READY)
 ========================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { 
-  getFirestore, 
-  collection, 
-  getDocs,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-/* =========================================================
-   TRIBERIUM FIREBASE CONFIGURATION
-========================================================= */
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
@@ -123,50 +384,30 @@ const firebaseConfig = {
   appId: "1:519861052514:web:56348e80320066cd311d3b"
 };
 
-/* =========================================================
-   INITIALIZE SERVICES
-========================================================= */
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-/* =========================================================
-   AUTH STATE LISTENER (Production Ready Scaffold)
-========================================================= */
-
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    console.log("Authenticated:", user.uid);
-    await loadWallet(user.uid);
-  } else {
-    console.log("User not logged in");
-  }
-});
-
-/* =========================================================
-   WALLET LOADER (SCALABLE ARCHITECTURE)
-========================================================= */
-
-async function loadWallet(uid) {
-  try {
-    const walletRef = doc(db, "wallets", uid);
-    const walletSnap = await getDoc(walletRef);
-
-    if (walletSnap.exists()) {
+/* Wallet Loader */
+async function loadWallet(uid){
+  try{
+    const snap = await getDoc(doc(db,"wallets",uid));
+    if(snap.exists()){
       document.getElementById("walletAmount").textContent =
-        walletSnap.data().balance.toFixed(2);
-    } else {
-      document.getElementById("walletAmount").textContent = "0.00";
+        snap.data().balance.toFixed(2);
     }
-  } catch (error) {
-    console.error("Wallet Load Error:", error);
+  }catch(e){
+    console.error(e);
   }
 }
 
+onAuthStateChanged(auth,user=>{
+  if(user) loadWallet(user.uid);
+});
+
 /* =========================================================
-   CORE UI CONTROLS (UNCHANGED)
+   ORIGINAL UI LOGIC (UNCHANGED)
 ========================================================= */
 
 const sidebar=document.getElementById("sidebar");
@@ -184,10 +425,6 @@ document.querySelector(".theme-toggle").addEventListener("click",()=>{
   }
 });
 
-/* =========================================================
-   STORIES RENDER
-========================================================= */
-
 const storiesData=["Alice","Bob","Carol","Dave","Eve"];
 const storiesContainer=document.getElementById("stories");
 
@@ -201,10 +438,6 @@ storiesData.forEach(user=>{
   story.addEventListener("click",()=>alert(`Viewing ${user}'s Story (24h lifespan)`));
   storiesContainer.appendChild(story);
 });
-
-/* =========================================================
-   POSTS RENDER (SCALABLE DATA LAYER READY)
-========================================================= */
 
 const posts=[
   {user:"TriberiumUser",content:"Welcome to TRIBERIUM SocialFi evolution.",likes:24,comments:5,retribes:8,saves:12,shares:3},
@@ -242,10 +475,6 @@ posts.forEach(p=>{
   feed.appendChild(card);
 });
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
 document.querySelectorAll(".nav button").forEach(btn=>{
   btn.addEventListener("click",()=>{
     document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
@@ -255,4 +484,4 @@ document.querySelectorAll(".nav button").forEach(btn=>{
 
 </script>
 </body>
-</html>
+   </html>
