@@ -1,487 +1,490 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>TRIBERIUM — SocialFi</title>
+<!DOCTYPE html>    
+<html lang="en">    
+<head>    
+<meta charset="UTF-8">    
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">    
+<title>TRIBERIUM — SocialFi</title>    
+    
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">    
+    
+<style>    
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+/* =========================================================    
+   DESIGN SYSTEM    
+========================================================= */    
+:root{    
+  --primary:#7b2cbf;    
+  --primary-dark:#5a189a;    
+  --bg:#f6f2ff;    
+  --card:#ffffff;    
+  --text:#111;    
+  --muted:#6b7280;    
+  --border:rgba(123,44,191,0.15);    
+  --action:#7b2cbf;    
+}    
 
-<style>
+[data-theme="dark"]{    
+  --bg:#0f0f14;    
+  --card:#1a1a22;    
+  --text:#f5f5f7;    
+  --muted:#9ca3af;    
+  --border:rgba(255,255,255,0.08);    
+  --action:#a855f7;    
+}    
 
-/* =========================================================
-   DESIGN SYSTEM
-========================================================= */
-:root{
-  --primary:#7b2cbf;
-  --primary-dark:#5a189a;
-  --bg:#f6f2ff;
-  --card:#ffffff;
-  --text:#111;
-  --muted:#6b7280;
-  --border:rgba(123,44,191,0.15);
-  --action:#7b2cbf;
-}
+*{box-sizing:border-box;}    
+html,body{    
+  margin:0;    
+  padding:0;    
+  font-family:'Inter',sans-serif;    
+  background:var(--bg);    
+  color:var(--text);    
+  transition:0.3s ease;    
+  overflow-x:hidden;    
+}    
 
-[data-theme="dark"]{
-  --bg:#0f0f14;
-  --card:#1a1a22;
-  --text:#f5f5f7;
-  --muted:#9ca3af;
-  --border:rgba(255,255,255,0.08);
-  --action:#a855f7;
-}
+/* =========================================================    
+   HEADER    
+========================================================= */    
+.header{    
+  position:sticky;    
+  top:0;    
+  z-index:1000;    
+  backdrop-filter:blur(16px);    
+  background:rgba(255,255,255,0.85);    
+  border-bottom:1px solid var(--border);    
+  padding:14px 16px;    
+  display:flex;    
+  flex-direction:column;    
+  gap:8px;    
+}    
 
-*{box-sizing:border-box;}
-html,body{
-  margin:0;
-  padding:0;
-  font-family:'Inter',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  transition:0.3s ease;
-  overflow-x:hidden;
-}
+.header-top{    
+  display:flex;    
+  justify-content:space-between;    
+  align-items:center;    
+}    
 
-/* =========================================================
-   HEADER
-========================================================= */
-.header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  backdrop-filter:blur(16px);
-  background:rgba(255,255,255,0.85);
-  border-bottom:1px solid var(--border);
-  padding:14px 16px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
+.menu-btn,.theme-toggle{    
+  width:36px;    
+  height:36px;    
+  border:none;    
+  background:none;    
+  cursor:pointer;    
+  font-size:1.3rem;    
+  color:var(--primary);    
+  display:flex;    
+  align-items:center;    
+  justify-content:center;    
+  transition:0.3s;    
+}    
 
-.header-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+.menu-btn:hover,    
+.theme-toggle:hover{    
+  transform:scale(1.1);    
+}    
 
-.menu-btn,.theme-toggle{
-  width:36px;
-  height:36px;
-  border:none;
-  background:none;
-  cursor:pointer;
-  font-size:1.3rem;
-  color:var(--primary);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:0.3s;
-}
+.brand{    
+  display:flex;    
+  flex-direction:column;    
+  align-items:flex-start;    
+}    
 
-.menu-btn:hover,
-.theme-toggle:hover{
-  transform:scale(1.1);
-}
+.logo{    
+  font-size:1.7rem;    
+  font-weight:800;    
+  background:linear-gradient(90deg,var(--primary),#a855f7,var(--primary-dark),var(--primary));    
+  background-size:300% 300%;    
+  -webkit-background-clip:text;    
+  -webkit-text-fill-color:transparent;    
+  animation:gradientFlow 6s ease infinite;    
+}    
 
-.brand{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-}
+@keyframes gradientFlow{    
+  0%{background-position:0% 50%}    
+  50%{background-position:100% 50%}    
+  100%{background-position:0% 50%}    
+}    
 
-.logo{
-  font-size:1.7rem;
-  font-weight:800;
-  background:linear-gradient(90deg,var(--primary),#a855f7,var(--primary-dark),var(--primary));
-  background-size:300% 300%;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:gradientFlow 6s ease infinite;
-}
+.wallet{    
+  font-size:0.8rem;    
+  font-weight:600;    
+  color:var(--primary);    
+  margin-top:4px;    
+}    
 
-@keyframes gradientFlow{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
+.search input{    
+  width:100%;    
+  padding:10px 14px;    
+  border-radius:14px;    
+  border:1px solid var(--border);    
+  background:var(--card);    
+  color:var(--text);    
+  outline:none;    
+  transition:0.3s;    
+}    
+.search input:focus{    
+  border-color:var(--primary);    
+  box-shadow:0 0 10px rgba(123,44,191,0.25);    
+}    
 
-.wallet{
-  font-size:0.8rem;
-  font-weight:600;
-  color:var(--primary);
-  margin-top:4px;
-}
+/* =========================================================    
+   SIDEBAR    
+========================================================= */    
+.sidebar{    
+  position:fixed;    
+  top:0;    
+  right:-300px;    
+  width:280px;    
+  height:100vh;    
+  background:var(--card);    
+  border-left:1px solid var(--border);    
+  padding:30px 20px;    
+  display:flex;    
+  flex-direction:column;    
+  gap:18px;    
+  transition:0.4s ease;    
+  z-index:2000;    
+}    
+.sidebar.active{right:0;}    
 
-.search input{
-  width:100%;
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  outline:none;
-  transition:0.3s;
-}
-.search input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 10px rgba(123,44,191,0.25);
-}
+.sidebar button{    
+  background:none;    
+  border:none;    
+  text-align:left;    
+  font-weight:600;    
+  cursor:pointer;    
+  color:var(--primary);    
+  transition:0.3s;    
+}    
+.sidebar button:hover{    
+  transform:translateX(6px);    
+  color:var(--primary-dark);    
+}    
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
-.sidebar{
-  position:fixed;
-  top:0;
-  right:-300px;
-  width:280px;
-  height:100vh;
-  background:var(--card);
-  border-left:1px solid var(--border);
-  padding:30px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  transition:0.4s ease;
-  z-index:2000;
-}
-.sidebar.active{right:0;}
+/* =========================================================    
+   STORIES    
+========================================================= */    
+.stories{    
+  display:flex;    
+  overflow-x:auto;    
+  gap:14px;    
+  padding:14px 16px;    
+}    
 
-.sidebar button{
-  background:none;
-  border:none;
-  text-align:left;
-  font-weight:600;
-  cursor:pointer;
-  color:var(--primary);
-  transition:0.3s;
-}
-.sidebar button:hover{
-  transform:translateX(6px);
-  color:var(--primary-dark);
-}
+.story{    
+  flex:0 0 85px;    
+  height:145px;    
+  background:var(--card);    
+  border:1px solid var(--border);    
+  border-radius:14px;    
+  display:flex;    
+  flex-direction:column;    
+  align-items:center;    
+  padding:6px;    
+  cursor:pointer;    
+  transition:0.3s;    
+}    
+.story:hover{transform:translateY(-4px);}    
 
-/* =========================================================
-   STORIES
-========================================================= */
-.stories{
-  display:flex;
-  overflow-x:auto;
-  gap:14px;
-  padding:14px 16px;
-}
+.story img{    
+  width:72px;    
+  height:72px;    
+  border-radius:50%;    
+  object-fit:cover;    
+  border:2px solid var(--primary);    
+}    
+.story span{    
+  font-size:0.7rem;    
+  margin-top:6px;    
+}    
 
-.story{
-  flex:0 0 85px;
-  height:145px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:6px;
-  cursor:pointer;
-  transition:0.3s;
-}
-.story:hover{transform:translateY(-4px);}
+/* =========================================================    
+   FEED    
+========================================================= */    
+.page{    
+  padding:20px;    
+  padding-bottom:100px;    
+}    
 
-.story img{
-  width:72px;
-  height:72px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid var(--primary);
-}
-.story span{
-  font-size:0.7rem;
-  margin-top:6px;
-}
+.card{    
+  background:var(--card);    
+  border:1px solid var(--border);    
+  border-radius:18px;    
+  padding:18px;    
+  margin-bottom:20px;    
+  box-shadow:0 10px 25px rgba(0,0,0,0.04);    
+  overflow:hidden;    
+}    
 
-/* =========================================================
-   FEED
-========================================================= */
-.page{
-  padding:20px;
-  padding-bottom:100px;
-}
+.post-header{    
+  display:flex;    
+  justify-content:space-between;    
+  align-items:center;    
+  margin-bottom:12px;    
+}    
 
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.04);
-  overflow:hidden;
-}
+.post-user{    
+  display:flex;    
+  align-items:center;    
+  gap:12px;    
+}    
 
-.post-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
+.avatar{    
+  width:42px;    
+  height:42px;    
+  border-radius:50%;    
+  background:linear-gradient(135deg,#e9d5ff,#c084fc);    
+  border:2px solid var(--primary);    
+}    
 
-.post-user{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+.follow-btn{    
+  background:var(--primary);    
+  border:none;    
+  color:white;    
+  padding:6px 14px;    
+  border-radius:20px;    
+  cursor:pointer;    
+  transition:0.3s;    
+}    
+.follow-btn:hover{background:var(--primary-dark);}    
 
-.avatar{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#e9d5ff,#c084fc);
-  border:2px solid var(--primary);
-}
+.post-content{margin-bottom:14px;}    
 
-.follow-btn{
-  background:var(--primary);
-  border:none;
-  color:white;
-  padding:6px 14px;
-  border-radius:20px;
-  cursor:pointer;
-  transition:0.3s;
-}
-.follow-btn:hover{background:var(--primary-dark);}
+/* =========================================================    
+   POST ACTIONS (UPDATED: INLINE FULL WIDTH)    
+========================================================= */    
+.post-actions{    
+  display:flex;    
+  justify-content:space-between;    
+  flex-wrap:nowrap;    
+  width:100%;    
+  margin-top:6px;    
+}    
 
-.post-content{margin-bottom:14px;}
+.action{    
+  display:flex;    
+  align-items:center;    
+  justify-content:center;    
+  flex:1;    
+  gap:6px;    
+  padding:6px 0;    
+  border-radius:999px;    
+  cursor:pointer;    
+  font-weight:600;    
+  font-size:0.85rem;    
+  transition:0.3s;    
+  color:var(--action);    
+}    
 
-/* =========================================================
-   POST ACTIONS
-========================================================= */
-.post-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  max-width:100%;
-}
+.action svg{    
+  width:18px;    
+  height:18px;    
+  stroke:var(--action);    
+  stroke-width:2;    
+  fill:none;    
+  transition:0.3s;    
+}    
 
-.action{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 12px;
-  border-radius:999px;
-  cursor:pointer;
-  font-weight:600;
-  font-size:0.85rem;
-  transition:0.3s;
-  color:var(--action);
-}
+.action:hover{    
+  background:rgba(123,44,191,0.1);    
+  transform:scale(1.08);    
+}    
 
-.action svg{
-  width:18px;
-  height:18px;
-  stroke:var(--action);
-  stroke-width:2;
-  fill:none;
-  transition:0.3s;
-}
+.action.active{    
+  animation:pop 0.4s ease;    
+}    
+@keyframes pop{    
+  0%{transform:scale(1);}    
+  50%{transform:scale(1.25);}    
+  100%{transform:scale(1);}    
+}    
 
-.action:hover{
-  background:rgba(123,44,191,0.1);
-  transform:scale(1.08);
-}
+/* =========================================================    
+   BOTTOM NAV    
+========================================================= */    
+.nav{    
+  position:fixed;    
+  bottom:0;    
+  width:100%;    
+  background:var(--card);    
+  border-top:1px solid var(--border);    
+  display:flex;    
+  justify-content:space-around;    
+  padding:12px 0;    
+}    
+.nav button{    
+  background:none;    
+  border:none;    
+  color:var(--muted);    
+  cursor:pointer;    
+  font-size:0.75rem;    
+  transition:0.3s;    
+}    
+.nav button.active{    
+  color:var(--primary);    
+  transform:scale(1.2);    
+}    
 
-.action.active{
-  animation:pop 0.4s ease;
-}
-@keyframes pop{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.25);}
-  100%{transform:scale(1);}
-}
+</style>    
+</head>    
 
-/* =========================================================
-   BOTTOM NAV
-========================================================= */
-.nav{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  background:var(--card);
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:space-around;
-  padding:12px 0;
-}
-.nav button{
-  background:none;
-  border:none;
-  color:var(--muted);
-  cursor:pointer;
-  font-size:0.75rem;
-  transition:0.3s;
-}
-.nav button.active{
-  color:var(--primary);
-  transform:scale(1.2);
-}
+<body data-theme="light">    
 
-</style>
-</head>
+<header class="header">    
+  <div class="header-top">    
+    <button class="menu-btn">☰</button>    
+    <div class="brand">    
+      <div class="logo">TRIBERIUM</div>    
+      <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>    
+    </div>    
+    <button class="theme-toggle">🌙</button>    
+  </div>    
+  <div class="search">    
+    <input type="text" placeholder="Search TRIBERIUM...">    
+  </div>    
+</header>    
 
-<body data-theme="light">
+<div class="sidebar" id="sidebar">    
+  <button>Profile</button>    
+  <button>Metrics</button>    
+  <button>News</button>    
+  <button>Access Zytherion</button>    
+  <button>Live Stream</button>    
+  <button>Saved Posts</button>    
+  <button>Wallet</button>    
+  <button>Settings</button>    
+  <button>Logout</button>    
+</div>    
 
-<header class="header">
-  <div class="header-top">
-    <button class="menu-btn">☰</button>
-    <div class="brand">
-      <div class="logo">TRIBERIUM</div>
-      <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>
-    </div>
-    <button class="theme-toggle">🌙</button>
-  </div>
-  <div class="search">
-    <input type="text" placeholder="Search TRIBERIUM...">
-  </div>
-</header>
+<section class="stories" id="stories"></section>    
+<section class="page" id="feed"></section>    
 
-<div class="sidebar" id="sidebar">
-  <button>Profile</button>
-  <button>Metrics</button>
-  <button>News</button>
-  <button>Access Zytherion</button>
-  <button>Live Stream</button>
-  <button>Saved Posts</button>
-  <button>Wallet</button>
-  <button>Settings</button>
-  <button>Logout</button>
-</div>
+<nav class="nav">    
+  <button class="active">Home</button>    
+  <button>Tribe</button>    
+  <button>Chat</button>    
+  <button>Notifications</button>    
+</nav>    
 
-<section class="stories" id="stories"></section>
-<section class="page" id="feed"></section>
+<script type="module">    
 
-<nav class="nav">
-  <button class="active">Home</button>
-  <button>Tribe</button>
-  <button>Chat</button>
-  <button>Notifications</button>
-</nav>
+/* =========================================================    
+   FIREBASE INITIALIZATION (PRODUCTION READY)    
+========================================================= */    
 
-<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";    
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";    
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";    
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";    
 
-/* =========================================================
-   FIREBASE INITIALIZATION (PRODUCTION READY)
-========================================================= */
+const firebaseConfig = {    
+  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",    
+  authDomain: "triberium-mvp.firebaseapp.com",    
+  projectId: "triberium-mvp",    
+  storageBucket: "triberium-mvp.firebasestorage.app",    
+  messagingSenderId: "519861052514",    
+  appId: "1:519861052514:web:56348e80320066cd311d3b"    
+};    
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+const app = initializeApp(firebaseConfig);    
+const auth = getAuth(app);    
+const db = getFirestore(app);    
+const storage = getStorage(app);    
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
-  authDomain: "triberium-mvp.firebaseapp.com",
-  projectId: "triberium-mvp",
-  storageBucket: "triberium-mvp.firebasestorage.app",
-  messagingSenderId: "519861052514",
-  appId: "1:519861052514:web:56348e80320066cd311d3b"
-};
+/* Wallet Loader */    
+async function loadWallet(uid){    
+  try{    
+    const snap = await getDoc(doc(db,"wallets",uid));    
+    if(snap.exists()){    
+      document.getElementById("walletAmount").textContent =    
+        snap.data().balance.toFixed(2);    
+    }    
+  }catch(e){    
+    console.error(e);    
+  }    
+}    
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+onAuthStateChanged(auth,user=>{    
+  if(user) loadWallet(user.uid);    
+});    
 
-/* Wallet Loader */
-async function loadWallet(uid){
-  try{
-    const snap = await getDoc(doc(db,"wallets",uid));
-    if(snap.exists()){
-      document.getElementById("walletAmount").textContent =
-        snap.data().balance.toFixed(2);
-    }
-  }catch(e){
-    console.error(e);
-  }
-}
+/* =========================================================    
+   ORIGINAL UI LOGIC (UNCHANGED)    
+========================================================= */    
 
-onAuthStateChanged(auth,user=>{
-  if(user) loadWallet(user.uid);
-});
+const sidebar=document.getElementById("sidebar");    
+document.querySelector(".menu-btn").addEventListener("click",()=>sidebar.classList.toggle("active"));    
 
-/* =========================================================
-   ORIGINAL UI LOGIC (UNCHANGED)
-========================================================= */
+document.querySelector(".theme-toggle").addEventListener("click",()=>{    
+  const body=document.body;    
+  const toggle=document.querySelector(".theme-toggle");    
+  if(body.dataset.theme==="light"){    
+    body.dataset.theme="dark";    
+    toggle.textContent="☀️";    
+  }else{    
+    body.dataset.theme="light";    
+    toggle.textContent="🌙";    
+  }    
+});    
 
-const sidebar=document.getElementById("sidebar");
-document.querySelector(".menu-btn").addEventListener("click",()=>sidebar.classList.toggle("active"));
+const storiesData=["Alice","Bob","Carol","Dave","Eve"];    
+const storiesContainer=document.getElementById("stories");    
 
-document.querySelector(".theme-toggle").addEventListener("click",()=>{
-  const body=document.body;
-  const toggle=document.querySelector(".theme-toggle");
-  if(body.dataset.theme==="light"){
-    body.dataset.theme="dark";
-    toggle.textContent="☀️";
-  }else{
-    body.dataset.theme="light";
-    toggle.textContent="🌙";
-  }
-});
+storiesData.forEach(user=>{    
+  const story=document.createElement("div");    
+  story.className="story";    
+  story.innerHTML=`    
+    <img src="https://picsum.photos/100?random=${Math.random()}" />    
+    <span>@${user}</span>    
+  `;    
+  story.addEventListener("click",()=>alert(`Viewing ${user}'s Story (24h lifespan)`));    
+  storiesContainer.appendChild(story);    
+});    
 
-const storiesData=["Alice","Bob","Carol","Dave","Eve"];
-const storiesContainer=document.getElementById("stories");
+const posts=[    
+  {user:"TriberiumUser",content:"Welcome to TRIBERIUM SocialFi evolution.",likes:24,comments:5,retribes:8,saves:12,shares:3},    
+  {user:"Alice",content:"Exploring new digital assets today!",likes:10,comments:1,retribes:2,saves:1,shares:1}    
+];    
 
-storiesData.forEach(user=>{
-  const story=document.createElement("div");
-  story.className="story";
-  story.innerHTML=`
-    <img src="https://picsum.photos/100?random=${Math.random()}" />
-    <span>@${user}</span>
-  `;
-  story.addEventListener("click",()=>alert(`Viewing ${user}'s Story (24h lifespan)`));
-  storiesContainer.appendChild(story);
-});
+const feed=document.getElementById("feed");    
 
-const posts=[
-  {user:"TriberiumUser",content:"Welcome to TRIBERIUM SocialFi evolution.",likes:24,comments:5,retribes:8,saves:12,shares:3},
-  {user:"Alice",content:"Exploring new digital assets today!",likes:10,comments:1,retribes:2,saves:1,shares:1}
-];
+posts.forEach(p=>{    
+  const card=document.createElement("div");    
+  card.className="card";    
 
-const feed=document.getElementById("feed");
+  card.innerHTML=`    
+    <div class="post-header">    
+      <div class="post-user">    
+        <div class="avatar"></div>    
+        <div>@${p.user}</div>    
+      </div>    
+      <button class="follow-btn">Follow</button>    
+    </div>    
+    <div class="post-content">${p.content}</div>    
+    <div class="post-actions">    
+      <div class="action like">${p.likes}</div>    
+      <div class="action retribe">${p.retribes}</div>    
+      <div class="action save">${p.saves}</div>    
+      <div class="action comment">${p.comments}</div>    
+      <div class="action share">${p.shares}</div>    
+    </div>    
+  `;    
 
-posts.forEach(p=>{
-  const card=document.createElement("div");
-  card.className="card";
+  card.querySelectorAll(".action").forEach(btn=>{    
+    btn.addEventListener("click",()=>btn.classList.toggle("active"));    
+  });    
 
-  card.innerHTML=`
-    <div class="post-header">
-      <div class="post-user">
-        <div class="avatar"></div>
-        <div>@${p.user}</div>
-      </div>
-      <button class="follow-btn">Follow</button>
-    </div>
-    <div class="post-content">${p.content}</div>
-    <div class="post-actions">
-      <div class="action like">${p.likes}</div>
-      <div class="action retribe">${p.retribes}</div>
-      <div class="action save">${p.saves}</div>
-      <div class="action comment">${p.comments}</div>
-      <div class="action share">${p.shares}</div>
-    </div>
-  `;
+  feed.appendChild(card);    
+});    
 
-  card.querySelectorAll(".action").forEach(btn=>{
-    btn.addEventListener("click",()=>btn.classList.toggle("active"));
-  });
+document.querySelectorAll(".nav button").forEach(btn=>{    
+  btn.addEventListener("click",()=>{    
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));    
+    btn.classList.add("active");    
+  });    
+});    
 
-  feed.appendChild(card);
-});
-
-document.querySelectorAll(".nav button").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-  });
-});
-
-</script>
-</body>
-   </html>
+</script>    
+</body>    
+                    </html>
