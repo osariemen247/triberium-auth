@@ -1,141 +1,136 @@
 /* =========================================================
-   PROFILE & POST STYLES
-   Modular, production-ready, precise, feature-complete
+   PROFILE PAGE — profile.css
+   Fully modular, production-ready, long-form styling
+   Includes: Profile layout, stats, actions, posts, post-actions
 ========================================================= */
 
-/* =========================================================
-   PROFILE CARD
-========================================================= */
-.profile-card {
+/* ---------------------
+   PROFILE HEADER
+--------------------- */
+.profile-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  padding: 24px 20px;
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  max-width: 320px;
-  margin: 16px auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.profile-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 20px 20px;
+  transition: all 0.3s ease;
 }
 
 .profile-avatar {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  border: 3px solid var(--primary);
+  border: 4px solid var(--primary);
   object-fit: cover;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .profile-avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(123,44,191,0.2);
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(123,44,191,0.2);
 }
 
-.profile-username {
-  font-size: 1.2rem;
+/* ---------------------
+   PROFILE INFO
+--------------------- */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  margin-left: 20px;
+}
+
+.profile-info .username {
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--text);
-  text-align: center;
 }
 
-.profile-bio {
-  font-size: 0.85rem;
-  font-weight: 400;
+.profile-info .bio {
+  font-size: 0.95rem;
   color: var(--muted);
-  text-align: center;
-  line-height: 1.4rem;
-  word-break: break-word;
+  line-height: 1.4;
 }
 
+/* ---------------------
+   PROFILE STATS
+--------------------- */
 .profile-stats {
   display: flex;
-  justify-content: space-around;
-  width: 100%;
+  gap: 24px;
   margin-top: 12px;
 }
 
 .profile-stats div {
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.profile-stats div:hover {
-  transform: scale(1.05);
-}
-
-.profile-stats .stat-count {
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 600;
+  cursor: default;
 }
 
-.profile-stats .stat-label {
-  font-size: 0.75rem;
+.profile-stats div span {
+  font-size: 0.85rem;
   color: var(--muted);
 }
 
-/* =========================================================
-   FOLLOW BUTTON
-========================================================= */
-.follow-btn {
-  background: var(--primary);
-  border: none;
-  color: white;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.follow-btn.following {
-  background: var(--primary-dark);
-}
-.follow-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 18px rgba(123,44,191,0.3);
+/* ---------------------
+   PROFILE ACTION BUTTONS
+--------------------- */
+.profile-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
 }
 
-/* =========================================================
-   POST CARD
-========================================================= */
-.post-card {
+.profile-actions button {
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: white;
+}
+
+.profile-actions button:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+/* ---------------------
+   PROFILE POSTS
+--------------------- */
+.profile-post {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 18px;
   margin-bottom: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* POST HEADER */
-.post-header {
+.profile-post:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+}
+
+/* ---------------------
+   PROFILE POST HEADER
+--------------------- */
+.profile-post .post-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 12px;
 }
 
-.post-user {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.post-user .avatar {
+.profile-post .avatar {
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -143,184 +138,71 @@
   object-fit: cover;
 }
 
-.post-username {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text);
-}
-
-.post-time {
-  font-size: 0.7rem;
-  color: var(--muted);
-}
-
-/* POST CONTENT */
-.post-content {
-  font-size: 0.9rem;
-  color: var(--text);
-  line-height: 1.4rem;
-  margin-bottom: 14px;
-  word-wrap: break-word;
-}
-
-/* POST MEDIA (IMAGES / VIDEOS) */
-.post-media {
-  width: 100%;
-  border-radius: 14px;
-  margin-top: 10px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
-}
-.post-media img,
-.post-media video {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-.post-media:hover {
-  transform: scale(1.02);
-}
-
-/* =========================================================
-   POST ACTIONS
-========================================================= */
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: 6px;
-  margin-top: 14px;
-}
-
-.action-btn {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 0;
-  border-radius: 999px;
+.profile-post .follow-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--primary);
+  color: white;
+  border: none;
   cursor: pointer;
   font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.profile-post .follow-btn:hover {
+  background: var(--primary-dark);
+}
+
+/* ---------------------
+   PROFILE POST ACTIONS
+--------------------- */
+.profile-post .post-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 6px;
+}
+
+.profile-post .action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 0;
+  border-radius: 999px;
+  font-weight: 600;
   font-size: 0.85rem;
+  cursor: pointer;
   color: var(--action);
-  text-align: center;
   transition: all 0.25s ease;
 }
-.action-btn svg {
-  width: 20px;
-  height: 20px;
-  stroke: var(--action);
-  stroke-width: 2;
-  fill: none;
-  transition: 0.3s ease;
-}
-.action-btn:hover {
+
+.profile-post .action:hover {
   background: rgba(123,44,191,0.1);
 }
 
-/* LIKE */
-.like.active svg {
-  fill: var(--action);
-  animation: heartPop 0.4s ease;
-}
-@keyframes heartPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.35); }
-  100% { transform: scale(1); }
+.profile-post .action.active {
+  color: var(--primary-dark);
 }
 
-/* RETRIBE */
-.retribe.active svg {
-  animation: rotateLoop 0.6s linear infinite;
-}
-@keyframes rotateLoop {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* COMMENT */
-.comment.active svg {
-  fill: var(--primary-dark);
-  animation: commentPop 0.4s ease;
-}
-@keyframes commentPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-  100% { transform: scale(1); }
+/* ---------------------
+   RETRIBE BUTTON
+--------------------- */
+.profile-post .action.retribe {
+  color: var(--primary);
+  font-weight: 700;
+  transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
 }
 
-/* SAVE */
-.save.active rect { fill: var(--action); }
-.save.active path { stroke: white; }
-
-/* SHARE */
-.share.active svg { transform: scale(1.1); }
-
-/* =========================================================
-   COMMENT MODAL
-========================================================= */
-.comment-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 3000;
-}
-.comment-modal .modal-content {
-  background: var(--card);
-  padding: 20px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.comment-modal .modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  resize: none;
-}
-.comment-modal .modal-content button {
-  align-self: flex-end;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 12px;
-  background: var(--primary);
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.comment-modal .modal-content button:hover {
+.profile-post .action.retribe:hover {
+  background: rgba(123,44,191,0.15);
   transform: scale(1.05);
 }
 
-/* =========================================================
-   RESPONSIVE PROFILE & POSTS
-========================================================= */
-@media screen and (max-width:768px){
-  .profile-card { padding:16px; max-width: 280px; }
-  .profile-avatar { width:80px; height:80px; }
-  .post-card { padding:14px; }
-  .post-user .avatar { width:36px; height:36px; }
-  .post-content { font-size:0.85rem; }
-  .action-btn { font-size:0.8rem; padding:8px 0; }
-}
-
-@media screen and (max-width:480px){
-  .profile-card { padding:12px; max-width:240px; }
-  .profile-avatar { width:70px; height:70px; }
-  .post-card { padding:12px; }
-  .post-user .avatar { width:32px; height:32px; }
-  .post-content { font-size:0.8rem; }
-  .action-btn { font-size:0.75rem; padding:6px 0; }
-}
+.profile-post .action.retribe.active {
+  background: var(--primary-dark);
+  color: white;
+  box-shadow: 0 4px 12px rgba(123,44,191,0.25);
+  transform: scale(1.05);
+   }
