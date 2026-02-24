@@ -1,0 +1,434 @@
+/* =========================================================
+   TRIBERIUM — FULL FEED + ACTIONS + UI MODULE
+   Production-Ready, Modular, Fully Linked
+   Author: TRIBERIUM DevOps
+========================================================= */
+
+/* =========================================================
+   VARIABLES & DESIGN SYSTEM
+========================================================= */
+:root {
+  --primary: #7b2cbf;
+  --primary-dark: #5a189a;
+  --action: #7b2cbf;
+  --bg: #f6f2ff;
+  --card: #ffffff;
+  --text: #111;
+  --muted: #6b7280;
+  --border: rgba(123,44,191,0.15);
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f14;
+  --card: #1a1a22;
+  --text: #f5f5f7;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.08);
+  --action: #a855f7;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   HEADER + SEARCH
+========================================================= */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(16px);
+  background: rgba(255,255,255,0.85);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background 0.3s ease;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo {
+  font-size: 1.7rem;
+  font-weight: 800;
+  background: linear-gradient(90deg,var(--primary),#a855f7,var(--primary-dark),var(--primary));
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 6s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.wallet {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 4px;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  outline: none;
+  font-size: 0.85rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(123,44,191,0.25);
+}
+
+/* =========================================================
+   SIDEBAR BUTTONS
+========================================================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 280px;
+  height: 100vh;
+  background: var(--card);
+  border-left: 1px solid var(--border);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: right 0.4s ease;
+  z-index: 2000;
+}
+
+.sidebar.active { right: 0; }
+
+.sidebar button {
+  background: none;
+  border: none;
+  text-align: left;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--primary);
+  transition: transform 0.3s ease, color 0.3s ease;
+  font-size: 0.9rem;
+  padding: 8px 0;
+}
+
+.sidebar button:hover {
+  transform: translateX(6px);
+  color: var(--primary-dark);
+}
+
+/* =========================================================
+   STORIES CARDS
+========================================================= */
+.stories {
+  display: flex;
+  overflow-x: auto;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.story {
+  flex: 0 0 85px;
+  height: 145px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.story:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.story img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+}
+
+.story span {
+  font-size: 0.7rem;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* =========================================================
+   FEED CARD
+========================================================= */
+.page {
+  padding: 20px;
+  padding-bottom: 100px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+}
+
+/* -----------------------------
+   POST HEADER
+----------------------------- */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#e9d5ff,#c084fc);
+  border: 2px solid var(--primary);
+}
+
+/* =========================================================
+   FOLLOW BUTTON
+========================================================= */
+.follow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background-color: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.follow-btn:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+/* -----------------------------
+   POST CONTENT
+----------------------------- */
+.post-content {
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* =========================================================
+   POST ACTIONS
+========================================================= */
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 0;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--action);
+  text-align: center;
+  transition: all 0.25s ease;
+  user-select: none;
+  position: relative;
+}
+
+.action svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--action);
+  stroke-width: 2;
+  fill: none;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.action:hover {
+  background-color: rgba(123,44,191,0.1);
+  transform: scale(1.05);
+}
+
+/* -----------------------------
+   LIKE BUTTON
+----------------------------- */
+.like.active svg {
+  fill: var(--action);
+  animation: heartPop 0.4s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* -----------------------------
+   RETRIBE BUTTON
+----------------------------- */
+.retribe.active svg {
+  animation: rotateLoop 0.6s ease;
+}
+
+@keyframes rotateLoop {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* -----------------------------
+   COMMENT BUTTON
+----------------------------- */
+.comment.active svg {
+  fill: var(--primary-dark);
+  animation: commentPop 0.4s ease;
+}
+
+@keyframes commentPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* -----------------------------
+   SAVE BUTTON
+----------------------------- */
+.save.active rect {
+  fill: var(--action);
+}
+
+.save.active path {
+  stroke: #fff;
+}
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  z-index: 1000;
+}
+
+.nav button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.nav button.active {
+  color: var(--primary);
+  transform: scale(1.2);
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+.action,
+.follow-btn,
+.sidebar button,
+.nav button,
+.story {
+  outline: none;
+}
+
+.action:focus-visible,
+.follow-btn:focus-visible,
+.sidebar button:focus-visible,
+.nav button:focus-visible,
+.story:focus-visible {
+  box-shadow: 0 0 0 3px rgba(123,44,191,0.3);
+  border-radius: 20px;
+}
+
+/* =========================================================
+   RESPONSIVENESS
+========================================================= */
+@media (max-width: 768px) {
+  .card { padding: 14px; }
+  .post-actions { flex-wrap: wrap; gap: 4px; }
+  .story { flex: 0 0 70px; height: 120px; }
+  .story img { width: 60px; height: 60px; }
+  .follow-btn { padding: 5px 12px; font-size: 0.8rem; }
+}
