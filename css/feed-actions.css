@@ -1,146 +1,82 @@
 /* =========================================================
-   FEED CARDS
+   FEED ACTIONS
 ========================================================= */
-.page{padding:20px;padding-bottom:120px;}
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:20px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  transition:0.3s ease, box-shadow 0.3s ease;
-}
-.card:hover{
-  box-shadow:0 12px 24px rgba(0,0,0,0.08);
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 6px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
 }
 
-/* =========================================================
-   POST HEADER
-========================================================= */
-.post-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-.post-header div{display:flex;align-items:center;gap:10px;}
-.avatar{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid var(--primary);
+.action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 0;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--action);
+  transition: all 0.25s ease;
 }
 
-/* =========================================================
-   FOLLOW BUTTON
-========================================================= */
-.follow-btn{
-  background:var(--primary);
-  border:none;
-  color:white;
-  padding:6px 14px;
-  border-radius:20px;
-  cursor:pointer;
-  transition:0.3s ease;
-  font-weight:600;
-  font-size:0.85rem;
-}
-.follow-btn:hover{background:var(--primary-dark);}
-
-/* =========================================================
-   POST ACTIONS (LIKE, SAVE, COMMENT, RETRIBE, SHARE)
-========================================================= */
-.post-actions{
-  display:flex;
-  justify-content:space-between;
-  margin-top:14px;
-  gap:6px;
-}
-.action{
-  flex:1;
-  text-align:center;
-  cursor:pointer;
-  font-weight:600;
-  font-size:0.85rem;
-  color:var(--action);
-  padding:8px 0;
-  border-radius:10px;
-  transition:0.3s ease, transform 0.2s ease;
-}
-.action:hover{transform:scale(1.1);color:var(--primary-dark);}
-.action.active{color:var(--primary-dark);}
-
-/* =========================================================
-   MODALS (COMMENTS & LOGOUT)
-========================================================= */
-.comment-modal,
-.logout-modal{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:3000;
-  animation:fadeIn 0.3s ease;
-}
-.comment-modal .modal-content,
-.logout-modal .modal-content{
-  background:var(--card);
-  padding:20px;
-  border-radius:12px;
-  width:90%;
-  max-width:500px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.12);
-}
-.comment-modal .modal-content textarea{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  resize:none;
-  font-family:'Inter',sans-serif;
-}
-.comment-modal .modal-content button,
-.logout-modal .modal-content button{
-  align-self:flex-end;
-  padding:8px 16px;
-  border:none;
-  border-radius:12px;
-  background:var(--primary);
-  color:white;
-  cursor:pointer;
-  font-weight:600;
-  transition:0.3s ease, transform 0.2s ease;
-}
-.comment-modal .modal-content button:hover,
-.logout-modal .modal-content button:hover{
-  transform:scale(1.05);
-}
-.logout-modal .modal-actions{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-top:14px;
-}
-.logout-modal .modal-actions button.cancel{
-  background:var(--danger);
+.action svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--action);
+  fill: none;
+  transition: 0.3s ease;
 }
 
-/* =========================================================
-   ANIMATIONS
-========================================================= */
-@keyframes fadeIn{
-  from{opacity:0;}
-  to{opacity:1;}
-                  }
+.action:hover {
+  background: rgba(123,44,191,0.1);
+}
+
+.action.active {
+  color: var(--primary-dark);
+}
+
+.action.like.active svg {
+  fill: var(--danger);
+  animation: heartPop 0.4s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+.action.comment.active svg {
+  fill: var(--primary-dark);
+  animation: commentPop 0.4s ease;
+}
+
+@keyframes commentPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* RETRIBE BUTTON SPECIFIC */
+.action.retribe {
+  color: var(--primary);
+  font-weight: 700;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.action.retribe:hover {
+  background: rgba(123,44,191,0.15);
+  transform: scale(1.05);
+}
+
+.action.retribe.active {
+  background: var(--primary-dark);
+  color: white;
+  box-shadow: 0 4px 12px rgba(123,44,191,0.25);
+}
