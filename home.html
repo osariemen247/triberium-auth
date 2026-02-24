@@ -73,10 +73,12 @@ html,body{margin:0;padding:0;font-family:'Inter',sans-serif;background:var(--bg)
 .post-actions{display:flex;justify-content:space-between;margin-top:14px;}
 .action{flex:1;text-align:center;cursor:pointer;font-weight:600;font-size:0.85rem;color:var(--action);}
 .action.active{color:var(--primary-dark);}
-.comment-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:3000;}
-.comment-modal .modal-content{background:var(--card);padding:20px;border-radius:12px;width:90%;max-width:500px;display:flex;flex-direction:column;gap:12px;}
+.comment-modal,.logout-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:3000;}
+.comment-modal .modal-content,.logout-modal .modal-content{background:var(--card);padding:20px;border-radius:12px;width:90%;max-width:500px;display:flex;flex-direction:column;gap:12px;}
 .comment-modal .modal-content textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);resize:none;}
-.comment-modal .modal-content button{align-self:flex-end;padding:8px 16px;border:none;border-radius:12px;background:var(--primary);color:white;cursor:pointer;}
+.comment-modal .modal-content button,.logout-modal .modal-content button{align-self:flex-end;padding:8px 16px;border:none;border-radius:12px;background:var(--primary);color:white;cursor:pointer;transition:0.3s;}
+.logout-modal .modal-actions{display:flex;justify-content:space-between;gap:10px;margin-top:14px;}
+.logout-modal .modal-actions button.cancel{background:var(--danger);}
 
 /* =========================================================
    BOTTOM NAV
@@ -125,6 +127,16 @@ html,body{margin:0;padding:0;font-family:'Inter',sans-serif;background:var(--bg)
   </div>
 </div>
 
+<div class="logout-modal" id="logoutModal">
+  <div class="modal-content">
+    <div>Are you sure you want to logout?</div>
+    <div class="modal-actions">
+      <button id="confirmLogout">Yes, Logout</button>
+      <button class="cancel" id="cancelLogout">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <nav class="nav">
   <button class="active" data-route="home">Home</button>
   <button data-route="tribe">Tribe</button>
@@ -136,7 +148,7 @@ html,body{margin:0;padding:0;font-family:'Inter',sans-serif;background:var(--bg)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getFirestore, collection, doc, getDoc, onSnapshot, query, orderBy, setDoc, addDoc
+  getFirestore, collection, doc, onSnapshot, query, orderBy, setDoc, addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -154,7 +166,7 @@ const db = getFirestore(app);
 
 /* ===================== AUTH & WALLET ===================== */
 onAuthStateChanged(auth,user=>{
-  if(!user) window.location.href="login.html";
+  if(!user) window.location.href="index.html"; 
   loadWallet(user.uid);
   loadStories();
   loadFeed(user.uid);
@@ -181,7 +193,19 @@ document.getElementById("menuBtn").onclick=()=>sidebar.classList.toggle("active"
 sidebar.querySelectorAll("button[data-route]").forEach(btn=>{
   btn.onclick=()=>{sidebar.classList.remove("active");console.log("Route:",btn.dataset.route);}
 });
-document.getElementById("logoutBtn").onclick=()=>signOut(auth);
+
+/* ===================== LOGOUT WITH CONFIRMATION ===================== */
+const logoutBtn=document.getElementById("logoutBtn");
+const logoutModal=document.getElementById("logoutModal");
+const confirmLogout=document.getElementById("confirmLogout");
+const cancelLogout=document.getElementById("cancelLogout");
+
+logoutBtn.onclick=()=>logoutModal.style.display="flex";
+cancelLogout.onclick=()=>logoutModal.style.display="none";
+confirmLogout.onclick=async()=>{
+  await signOut(auth);
+  window.location.href="index.html";
+};
 
 /* ===================== STORIES ===================== */
 function loadStories(){
@@ -228,7 +252,6 @@ function loadFeed(uid){
         </div>
       `;
 
-      /* ================== ACTIONS ================== */
       const likeBtn=card.querySelector(".like");
       likeBtn.onclick=()=>setDoc(doc(db,"posts",postId,"likes",uid),{uid});
 
@@ -289,4 +312,4 @@ document.getElementById("searchInput").oninput=async(e)=>{
 };
 </script>
 </body>
-  </html>
+                                         </html>
