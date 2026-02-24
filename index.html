@@ -13,7 +13,7 @@
   --border: #2f3336;
   --text: #e7e9ea;
   --muted: #71767b;
-  --accent: #9b59b6; /* changed from blue to purple */
+  --accent: #9b59b6;
 }
 
 * { box-sizing: border-box; }
@@ -124,12 +124,28 @@ button:hover {
   font-size: 14px;
   text-align:center;
 }
+
+/* ===================== LOGGED IN PANEL ===================== */
+.logged-in-panel {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.logged-in-panel h2 {
+  color: var(--accent);
+}
+
+.logged-in-panel button {
+  width: 60%;
+}
 </style>
 </head>
 
 <body>
 
-<div class="auth">
+<div class="auth" id="authContainer">
   <h1 onclick="navigateHome()">TRIBERIUM</h1>
   <div class="subtitle">Connect, Create, Earn, Belong</div>
 
@@ -146,70 +162,94 @@ button:hover {
   <div id="authMessage"></div>
 </div>
 
+<div class="auth logged-in-panel" id="loggedInPanel">
+  <h2>Welcome back!</h2>
+  <button class="secondary" id="logoutBtn">Log out</button>
+  <button class="primary" id="goHomeBtn">Go to TRIBERIUM Home</button>
+</div>
+
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    GoogleAuthProvider,
-    signInWithPopup,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
-    authDomain: "triberium-mvp.firebaseapp.com",
-    projectId: "triberium-mvp",
-    appId: "1:519861052514:web:56348e80320066cd311d3b"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
+  authDomain: "triberium-mvp.firebaseapp.com",
+  projectId: "triberium-mvp",
+  appId: "1:519861052514:web:56348e80320066cd311d3b"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const msg = document.getElementById("authMessage");
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  function navigateHome(){
-    window.location.href = "home.html";
+const msg = document.getElementById("authMessage");
+const authContainer = document.getElementById("authContainer");
+const loggedInPanel = document.getElementById("loggedInPanel");
+
+function navigateHome(){
+  window.location.href = "home.html";
+}
+
+signup.onclick = async () => {
+  try {
+    await createUserWithEmailAndPassword(auth, email.value, password.value);
+    msg.textContent = "Account created successfully!";
+    msg.style.color = "#9b59b6";
+    setTimeout(navigateHome, 800);
+  } catch (e) {
+    msg.textContent = e.message;
+    msg.style.color = "#f4212e";
   }
+};
 
-  signup.onclick = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email.value, password.value);
-      msg.textContent = "Account created successfully!";
-      msg.style.color = "#9b59b6"; /* changed from blue to purple */
-      setTimeout(navigateHome, 800);
-    } catch (e) {
-      msg.textContent = e.message;
-      msg.style.color = "#f4212e";
-    }
-  };
+login.onclick = async () => {
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value);
+    msg.textContent = "Logged in successfully!";
+    msg.style.color = "#9b59b6";
+    setTimeout(navigateHome, 800);
+  } catch (e) {
+    msg.textContent = e.message;
+    msg.style.color = "#f4212e";
+  }
+};
 
-  login.onclick = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email.value, password.value);
-      msg.textContent = "Logged in successfully!";
-      msg.style.color = "#9b59b6"; /* changed from blue to purple */
-      setTimeout(navigateHome, 800);
-    } catch (e) {
-      msg.textContent = e.message;
-      msg.style.color = "#f4212e";
-    }
-  };
+google.onclick = async () => {
+  try {
+    await signInWithPopup(auth, new GoogleAuthProvider());
+  } catch (e) {
+    msg.textContent = e.message;
+    msg.style.color = "#f4212e";
+  }
+};
 
-  google.onclick = async () => {
-    try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
-    } catch (e) {
-      msg.textContent = e.message;
-      msg.style.color = "#f4212e";
-    }
-  };
+goHomeBtn.onclick = navigateHome;
 
-  onAuthStateChanged(auth, user => {
-    if(user){
-      navigateHome();
-    }
-  });
+logoutBtn.onclick = async () => {
+  await signOut(auth);
+  loggedInPanel.style.display = "none";
+  authContainer.style.display = "flex";
+  msg.textContent = "You have been logged out.";
+  msg.style.color = "#9b59b6";
+};
+
+onAuthStateChanged(auth, user => {
+  if(user){
+    authContainer.style.display = "none";
+    loggedInPanel.style.display = "flex";
+  } else {
+    authContainer.style.display = "flex";
+    loggedInPanel.style.display = "none";
+  }
+});
 </script>
 
 </body>
