@@ -1,121 +1,108 @@
 /* =========================================================
-   FEED ACTIONS — feed-actions.css
-   Fully modular, production-ready, long-form styling
-   Includes: Like, Comment, Save, Share, Retribe buttons
+   FEED & POST ACTIONS STYLING
 ========================================================= */
 
-/* ---------------------
-   POST ACTION CONTAINER
---------------------- */
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 14px;
-  gap: 6px;
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-  transition: all 0.3s ease;
+:root{
+  --primary:#7b2cbf;
+  --primary-dark:#5a189a;
+  --bg:#f6f2ff;
+  --card:#ffffff;
+  --text:#111;
+  --muted:#6b7280;
+  --border:rgba(123,44,191,0.15);
+  --action:#7b2cbf;
+  --danger:#dc2626;
 }
-
-/* ---------------------
-   GENERIC ACTION BUTTONS
---------------------- */
-.action {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 0;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  color: var(--action);
-  transition: all 0.25s ease;
-  user-select: none;
+[data-theme="dark"]{
+  --bg:#0f0f14;
+  --card:#1a1a22;
+  --text:#f5f5f7;
+  --muted:#9ca3af;
+  --border:rgba(255,255,255,0.08);
+  --action:#a855f7;
 }
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;transition:0.3s;}
+body{background:var(--bg);color:var(--text);overflow-x:hidden;}
 
-.action svg {
-  width: 20px;
-  height: 20px;
-  stroke: var(--action);
-  fill: none;
-  transition: all 0.3s ease;
+/* =========================================================
+   FEED PAGE
+========================================================= */
+.page{padding:20px;padding-bottom:120px;max-width:700px;margin:0 auto;}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
-
-/* Hover effect for all actions */
-.action:hover {
-  background: rgba(123,44,191,0.1);
-  transform: scale(1.02);
+.post-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
 }
-
-/* Active state for actions */
-.action.active {
-  color: var(--primary-dark);
+.avatar{
+  width:42px;height:42px;border-radius:50%;border:2px solid var(--primary);object-fit:cover;
 }
-
-/* ---------------------
-   LIKE BUTTON SPECIFIC
---------------------- */
-.action.like.active svg {
-  fill: var(--danger);
-  animation: heartPop 0.4s ease;
+.follow-btn{
+  background:var(--primary);border:none;color:#fff;
+  padding:6px 14px;border-radius:20px;
+  cursor:pointer;font-weight:600;transition:0.3s;
 }
-
-@keyframes heartPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.35); }
-  100% { transform: scale(1); }
+.follow-btn:hover{background:var(--primary-dark);}
+.post-actions{
+  display:flex;justify-content:space-between;margin-top:14px;
+  border-top:1px solid var(--border);padding-top:10px;
 }
-
-/* ---------------------
-   COMMENT BUTTON SPECIFIC
---------------------- */
-.action.comment.active svg {
-  fill: var(--primary-dark);
-  animation: commentPop 0.4s ease;
+.post-actions .action{
+  flex:1;text-align:center;cursor:pointer;
+  font-weight:600;font-size:0.85rem;color:var(--action);
+  transition:0.3s;
 }
+.post-actions .action:hover{transform:scale(1.1);}
+.post-actions .action.active{color:var(--primary-dark);}
 
-@keyframes commentPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-  100% { transform: scale(1); }
+/* =========================================================
+   MODALS
+========================================================= */
+.comment-modal{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.6);z-index:3000;
 }
-
-/* ---------------------
-   SAVE BUTTON SPECIFIC
---------------------- */
-.action.save.active svg {
-  fill: var(--primary-dark);
-  transform: scale(1.1);
+.comment-modal .modal-content{
+  background:var(--card);
+  border-radius:12px;
+  padding:20px;
+  width:90%;max-width:500px;
+  display:flex;flex-direction:column;gap:12px;
 }
-
-/* ---------------------
-   SHARE BUTTON SPECIFIC
---------------------- */
-.action.share.active svg {
-  fill: var(--primary-dark);
-  transform: scale(1.05);
+.comment-modal textarea{
+  width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);resize:none;
 }
+.comment-modal button{
+  align-self:flex-end;padding:8px 16px;
+  border:none;border-radius:12px;background:var(--primary);
+  color:white;cursor:pointer;transition:0.3s;
+}
+.comment-modal button:hover{background:var(--primary-dark);}
 
-/* ---------------------
+/* =========================================================
    RETRIBE BUTTON SPECIFIC
---------------------- */
-.action.retribe {
-  color: var(--primary);
-  font-weight: 700;
-  transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+========================================================= */
+.action.retribe{
+  color:#10b981;font-weight:700;
 }
+.action.retribe:hover{color:#059669;}
 
-.action.retribe:hover {
-  background: rgba(123,44,191,0.15);
-  transform: scale(1.05);
-}
-
-.action.retribe.active {
-  background: var(--primary-dark);
-  color: white;
-  box-shadow: 0 4px 12px rgba(123,44,191,0.25);
-  transform: scale(1.05);
-     }
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media screen and (max-width:768px){
+  .card{padding:14px;}
+  .avatar{width:36px;height:36px;}
+  .post-actions .action{font-size:0.8rem;}
+   }
