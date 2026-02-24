@@ -124,6 +124,54 @@ button:hover {
   font-size: 14px;
   text-align:center;
 }
+
+/* =======================================
+   Forgot Password Modal
+======================================= */
+#forgotModal {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: var(--panel);
+  padding: 28px;
+  border-radius: 12px;
+  max-width: 380px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-content h2 {
+  margin:0;
+  font-size:20px;
+  font-weight:600;
+  text-align:center;
+}
+
+.modal-content input {
+  margin-bottom:0;
+}
+
+.modal-content .modal-btns {
+  display:flex;
+  gap:12px;
+  margin-top:10px;
+}
+
+.modal-content .modal-btns button {
+  flex:1;
+}
 </style>
 </head>
 
@@ -143,7 +191,24 @@ button:hover {
 
   <button class="secondary" id="google">Continue with Google</button>
 
+  <div style="margin-top:10px; text-align:center;">
+    <button id="forgotPassword" class="secondary">Forgot Password?</button>
+  </div>
+
   <div id="authMessage"></div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div id="forgotModal">
+  <div class="modal-content">
+    <h2>Reset Password</h2>
+    <input id="resetEmail" type="email" placeholder="Enter your email">
+    <div class="modal-btns">
+      <button class="primary" id="sendReset">Send Link</button>
+      <button class="secondary" id="cancelReset">Cancel</button>
+    </div>
+    <div id="resetMsg" style="font-size:13px; text-align:center; margin-top:6px;"></div>
+  </div>
 </div>
 
 <script type="module">
@@ -154,6 +219,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -199,7 +265,7 @@ login.onclick = async () => {
 google.onclick = async () => {
   try {
     await signInWithPopup(auth, new GoogleAuthProvider());
-    navigateHome(); // redirect after Google login
+    navigateHome();
   } catch (e) {
     msg.textContent = e.message;
     msg.style.color = "#f4212e";
@@ -212,7 +278,42 @@ onAuthStateChanged(auth, user => {
     navigateHome();
   }
 });
+
+// Forgot Password Logic
+const forgotModal = document.getElementById("forgotModal");
+const forgotBtn = document.getElementById("forgotPassword");
+const cancelReset = document.getElementById("cancelReset");
+const sendReset = document.getElementById("sendReset");
+const resetEmail = document.getElementById("resetEmail");
+const resetMsg = document.getElementById("resetMsg");
+
+forgotBtn.onclick = () => {
+  resetEmail.value = "";
+  resetMsg.textContent = "";
+  forgotModal.style.display = "flex";
+};
+
+cancelReset.onclick = () => {
+  forgotModal.style.display = "none";
+};
+
+sendReset.onclick = async () => {
+  const emailVal = resetEmail.value.trim();
+  if(!emailVal){
+    resetMsg.textContent = "Enter a valid email";
+    resetMsg.style.color = "#f4212e";
+    return;
+  }
+  try {
+    await sendPasswordResetEmail(auth, emailVal);
+    resetMsg.textContent = "Reset link sent! Check your email.";
+    resetMsg.style.color = "#9b59b6";
+  } catch(e) {
+    resetMsg.textContent = e.message;
+    resetMsg.style.color = "#f4212e";
+  }
+};
 </script>
 
 </body>
-</html>
+                                                         </html>
