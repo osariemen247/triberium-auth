@@ -113,7 +113,7 @@ html,body{margin:0;padding:0;font-family:'Inter',sans-serif;background:var(--bg)
 </header>
 
 <div class="sidebar" id="sidebar">
-  <a href="profile.html" class="sidebar-link">Profile</a>
+  <button data-route="profile">Profile</button>
   <button data-route="metrics">Metrics</button>
   <button data-route="news">News</button>
   <button data-route="zytherion">Access Zytherion</button>
@@ -211,7 +211,7 @@ sidebar.querySelectorAll("button[data-route]").forEach(btn=>{
   btn.onclick=()=>{
     sidebar.classList.remove("active");
     console.log("Route:",btn.dataset.route);
-    if(btn.dataset.route==="profile") window.location.href="profile.html";
+    if(btn.dataset.route==="profile") window.location.href="profile.html"; // Profile button redirect
   };
 });
 
