@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIBERIUM — Feed</title>
+<link rel="stylesheet" href="css/feed-actions.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="light">
+
+<section class="page" id="feed">
+  <div class="post" data-post-id="post1">
+    <div class="post-header">
+      <img src="https://i.pravatar.cc/50" class="avatar">
+      <span>@john_doe</span>
+    </div>
+    <div class="post-content">This is a feed post content with all actions available and rich text formatting.</div>
+    <div class="post-actions">
+      <div class="action like">Like</div>
+      <div class="action save">Save</div>
+      <div class="action retribe">Retribe</div>
+      <div class="action comment">Comment</div>
+      <div class="action share">Share</div>
+    </div>
+  </div>
+</section>
+
+<!-- Comment Modal for Feed -->
+<div class="comment-modal" id="commentModal">
+  <div class="modal-content">
+    <textarea id="commentText" placeholder="Write a comment..."></textarea>
+    <button id="submitComment">Post Comment</button>
+  </div>
+</div>
+
+<script type="module" src="js/feed-actions.js"></script>
+</body>
+  </html>
