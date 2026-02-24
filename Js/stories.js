@@ -1,28 +1,35 @@
-/* ===================== STORIES JS ===================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const storyModal = document.getElementById("storyModal");
-  const storyImage = document.getElementById("storyImage");
-  const storyUsername = document.getElementById("storyUsername");
-  const closeStoryModal = document.getElementById("closeStoryModal");
+import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const stories = document.querySelectorAll(".story");
+const db = getFirestore();
 
-  stories.forEach(story => {
-    story.addEventListener("click", () => {
-      const img = story.querySelector("img").src;
-      const username = story.querySelector("span").textContent;
-      storyImage.src = img;
-      storyUsername.textContent = username;
-      storyModal.style.display = "flex";
+// ===================== LOAD STORIES =====================
+function loadStories(){
+  const storiesQuery = query(collection(db,"stories"),orderBy("createdAt","desc"));
+  onSnapshot(storiesQuery,snap=>{
+    const container = document.getElementById("stories");
+    container.innerHTML = "";
+    snap.forEach(docSnap => {
+      const story = docSnap.data();
+      const div = document.createElement("div");
+      div.className = "story";
+      div.innerHTML = `<img src="${story.imageURL}"><span>@${story.username}</span>`;
+      div.onclick = () => openStoryModal(story);
+      container.appendChild(div);
     });
   });
+}
 
-  closeStoryModal.addEventListener("click", () => {
-    storyModal.style.display = "none";
-  });
+// ===================== STORY MODAL =====================
+function openStoryModal(story){
+  const modal = document.getElementById("storyModal");
+  modal.style.display = "flex";
+  modal.querySelector("img").src = story.imageURL;
+  modal.querySelector("#storyUsername").textContent = `@${story.username}`;
+}
 
-  // Close modal when clicking outside
-  storyModal.addEventListener("click", e => {
-    if (e.target.id === "storyModal") storyModal.style.display = "none";
-  });
-});
+// ===================== CLOSE MODAL =====================
+document.getElementById("storyModal").onclick = e => {
+  if(e.target.id==="storyModal") e.target.style.display="none";
+};
+
+loadStories();
