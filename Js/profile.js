@@ -1,72 +1,110 @@
-/* ===================== PROFILE JS ===================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const editProfileBtn = document.getElementById("editProfileBtn");
-  const editProfileModal = document.getElementById("editProfileModal");
-  const closeEditProfile = document.getElementById("closeEditProfile");
-  const followBtn = document.getElementById("profileFollowBtn");
+import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  // ================= EDIT PROFILE MODAL =================
-  editProfileBtn?.addEventListener("click", () => {
-    editProfileModal.style.display = "flex";
-  });
+const auth = getAuth();
+const db = getFirestore();
 
-  closeEditProfile?.addEventListener("click", () => {
-    editProfileModal.style.display = "none";
-  });
+// ===================== AUTH =====================
+onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "index.html";
+  else {
+    loadProfile(user.uid);
+    loadProfilePosts(user.uid);
+  }
+});
 
-  // ================= FOLLOW / UNFOLLOW =================
-  followBtn?.addEventListener("click", () => {
-    if (followBtn.classList.contains("following")) {
-      followBtn.textContent = "Follow";
-      followBtn.classList.remove("following");
-    } else {
-      followBtn.textContent = "Following";
-      followBtn.classList.add("following");
+// ===================== PROFILE INFO =====================
+function loadProfile(uid){
+  onSnapshot(doc(db, "users", uid), snap => {
+    if(snap.exists()){
+      const data = snap.data();
+      document.querySelector(".profile-avatar").src = data.avatar || "default-avatar.png";
+      document.querySelector(".username").textContent = `@${data.username}`;
+      document.querySelector(".btn-follow").textContent = data.following?.includes(uid) ? "Following" : "Follow";
     }
-    // You can link this to Firestore for persistence
   });
+}
 
-  // ================= PROFILE POSTS ACTIONS =================
-  document.querySelectorAll(".profile-post .action").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const postId = btn.closest(".profile-post").dataset.postId;
-      const uid = "CURRENT_USER_UID"; // Replace with actual user id
-      if (btn.classList.contains("like")) {
-        btn.classList.toggle("active");
-        // Firestore update for likes
-      }
-      if (btn.classList.contains("save")) {
-        btn.classList.toggle("active");
-        // Firestore update for saves
-      }
-      if (btn.classList.contains("retribe")) {
-        btn.classList.toggle("active");
-        // Add post to user's profile / re-share logic
-      }
-      if (btn.classList.contains("comment")) {
-        const commentModal = document.getElementById("profileCommentModal");
-        commentModal.style.display = "flex";
+// ===================== FOLLOW BUTTON =====================
+document.querySelector(".btn-follow").onclick = async function(){
+  const uid = auth.currentUser.uid;
+  const followingRef = doc(db, "users", uid, "following", uid);
+  await setDoc(followingRef, {uid});
+  this.classList.toggle("following");
+  this.textContent = this.classList.contains("following") ? "Following" : "Follow";
+};
 
-        document.getElementById("submitProfileComment").onclick = async () => {
-          const text = document.getElementById("profileCommentText").value;
-          if (text.length > 0) {
-            // Firestore add comment logic
-            document.getElementById("profileCommentText").value = "";
-            commentModal.style.display = "none";
+// ===================== PROFILE POSTS =====================
+function loadProfilePosts(uid){
+  const postsQuery = query(collection(db,"posts"), orderBy("createdAt","desc"));
+  onSnapshot(postsQuery, snap => {
+    const container = document.querySelector(".profile-posts");
+    container.innerHTML = "";
+    snap.forEach(docSnap => {
+      const post = docSnap.data();
+      const postId = docSnap.id;
+
+      const card = document.createElement("div");
+      card.className = "profile-post";
+
+      card.innerHTML = `
+        <div class="post-header">
+          <img src="${post.authorAvatar}" class="avatar">
+          <div>@${post.authorUsername}</div>
+        </div>
+        <div class="post-content">${post.content}</div>
+        <div class="post-actions">
+          <div class="action like">${post.likes?.includes(uid) ? "❤️" : "Like"}</div>
+          <div class="action save">${post.savedBy?.includes(uid) ? "💾" : "Save"}</div>
+          <div class="action retribe">Retribe</div>
+          <div class="action comment">Comment</div>
+        </div>
+      `;
+
+      // ================= LIKE =================
+      card.querySelector(".like").onclick = async () => {
+        await setDoc(doc(db,"posts",postId,"likes",uid),{uid});
+      };
+
+      // ================= SAVE =================
+      card.querySelector(".save").onclick = async () => {
+        await setDoc(doc(db,"users",uid,"saved",postId),{postId});
+      };
+
+      // ================= RETRIBE =================
+      card.querySelector(".retribe").onclick = async () => {
+        const postCopy = {
+          authorAvatar: post.authorAvatar,
+          authorUsername: post.authorUsername,
+          content: post.content,
+          createdAt: new Date(),
+          retribedBy: uid
+        };
+        await addDoc(collection(db,"posts"), postCopy);
+        alert("Post retribed to your profile!");
+      };
+
+      // ================= COMMENT =================
+      const commentBtn = card.querySelector(".comment");
+      commentBtn.onclick = () => {
+        const modal = document.getElementById("commentModal");
+        modal.style.display = "flex";
+        document.getElementById("submitComment").onclick = async () => {
+          const text = document.getElementById("commentText").value;
+          if(text.length>0){
+            await addDoc(collection(db,"posts",postId,"comments"),{uid,text,createdAt:new Date()});
+            document.getElementById("commentText").value = "";
+            modal.style.display = "none";
           }
         };
-      }
-      if (btn.classList.contains("share")) {
-        // Share post logic
-        alert("Post shared successfully!");
-      }
-    });
-  });
+      };
 
-  // ================= MODAL CLOSE HANDLER =================
-  document.querySelectorAll(".profile-modal").forEach(modal => {
-    modal.addEventListener("click", e => {
-      if (e.target.classList.contains("profile-modal")) modal.style.display = "none";
+      container.appendChild(card);
     });
   });
-});
+}
+
+// ===================== COMMENT MODAL CLOSE =====================
+document.getElementById("commentModal").onclick = e => {
+  if(e.target.id==="commentModal") e.target.style.display = "none";
+};
