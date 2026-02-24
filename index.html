@@ -124,28 +124,12 @@ button:hover {
   font-size: 14px;
   text-align:center;
 }
-
-/* ===================== LOGGED IN PANEL ===================== */
-.logged-in-panel {
-  display: none;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
-}
-
-.logged-in-panel h2 {
-  color: var(--accent);
-}
-
-.logged-in-panel button {
-  width: 60%;
-}
 </style>
 </head>
 
 <body>
 
-<div class="auth" id="authContainer">
+<div class="auth">
   <h1 onclick="navigateHome()">TRIBERIUM</h1>
   <div class="subtitle">Connect, Create, Earn, Belong</div>
 
@@ -162,12 +146,6 @@ button:hover {
   <div id="authMessage"></div>
 </div>
 
-<div class="auth logged-in-panel" id="loggedInPanel">
-  <h2>Welcome back!</h2>
-  <button class="secondary" id="logoutBtn">Log out</button>
-  <button class="primary" id="goHomeBtn">Go to TRIBERIUM Home</button>
-</div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
@@ -176,8 +154,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged,
-  signOut
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -189,10 +166,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
 const msg = document.getElementById("authMessage");
-const authContainer = document.getElementById("authContainer");
-const loggedInPanel = document.getElementById("loggedInPanel");
 
 function navigateHome(){
   window.location.href = "home.html";
@@ -225,29 +199,17 @@ login.onclick = async () => {
 google.onclick = async () => {
   try {
     await signInWithPopup(auth, new GoogleAuthProvider());
+    navigateHome(); // redirect after Google login
   } catch (e) {
     msg.textContent = e.message;
     msg.style.color = "#f4212e";
   }
 };
 
-goHomeBtn.onclick = navigateHome;
-
-logoutBtn.onclick = async () => {
-  await signOut(auth);
-  loggedInPanel.style.display = "none";
-  authContainer.style.display = "flex";
-  msg.textContent = "You have been logged out.";
-  msg.style.color = "#9b59b6";
-};
-
+// Auto redirect if already logged in
 onAuthStateChanged(auth, user => {
   if(user){
-    authContainer.style.display = "none";
-    loggedInPanel.style.display = "flex";
-  } else {
-    authContainer.style.display = "flex";
-    loggedInPanel.style.display = "none";
+    navigateHome();
   }
 });
 </script>
