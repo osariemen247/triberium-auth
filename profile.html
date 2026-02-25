@@ -1,110 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>TRIBERIUM — Profile</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/profile.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRIBERIUM — Profile</title>
+  <link rel="stylesheet" href="css/profile.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-theme="light">
 
-<!-- ========================= HEADER ========================= -->
-<header class="header">
-  <div class="header-top">
-    <button class="menu-btn" id="menuBtn">☰</button>
-    <div>
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <div class="header-top">
       <div class="logo">TRIBERIUM</div>
       <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>
+      <button id="messagingBtn" class="btn-message">Messages</button>
     </div>
-    <button class="theme-toggle" id="themeToggle">🌙</button>
-  </div>
-</header>
+  </header>
 
-<!-- ========================= SIDEBAR ========================= -->
-<div class="sidebar" id="sidebar">
-  <a href="profile.html" class="sidebar-link">Profile</a>
-  <button data-route="metrics">Metrics</button>
-  <button data-route="news">News</button>
-  <button data-route="zytherion">Access Zytherion</button>
-  <button data-route="livestream">Live Stream</button>
-  <button data-route="saved">Saved Posts</button>
-  <button data-route="wallet">Wallet</button>
-  <button data-route="settings">Settings</button>
-  <button id="logoutBtn">Logout</button>
-</div>
+  <!-- ================= PROFILE INFO ================= -->
+  <section class="profile-info">
+    <div class="avatar-container">
+      <img id="profileAvatar" src="" alt="Profile Avatar" class="profile-avatar">
+      <button id="editProfileBtn" class="btn-edit">Edit Profile</button>
+    </div>
+    <div class="username" id="profileUsername">@username</div>
+    <div class="bio" id="profileBio"></div>
+    <div class="profile-stats">
+      <span>Posts: <span id="postCount">0</span></span>
+      <span>Followers: <span id="followerCount">0</span></span>
+      <span>Following: <span id="followingCount">0</span></span>
+    </div>
+  </section>
 
-<!-- ========================= STORIES ========================= -->
-<section class="stories" id="stories">
-  <input type="file" id="storyInput" accept="image/*,video/*" hidden>
-  <button id="uploadStoryBtn">Upload Story</button>
-  <div id="storyPreview" class="story-preview"></div>
-</section>
+  <!-- ================= CREATE POST ================= -->
+  <section class="create-post">
+    <textarea id="postText" placeholder="What's happening?"></textarea>
+    <input type="file" id="mediaInput" multiple accept="image/*,video/*">
+    <div id="mediaPreview" class="media-preview"></div>
+    <button id="publishPostBtn" class="btn-publish">Post</button>
+  </section>
 
-<!-- ========================= PROFILE INFO ========================= -->
-<section class="profile-info">
-  <div class="avatar-container">
-    <img src="" id="profileAvatar" class="profile-avatar" alt="Avatar">
-    <button id="editProfileBtn" class="btn-edit">Edit Profile</button>
-    <button id="messagingBtn" class="btn-message">Message</button>
-  </div>
-  <div id="profileUsername" class="username">@username</div>
-  <div id="profileBio" class="bio">Bio goes here</div>
-  <div class="profile-stats">
-    <span id="postCount">0 Posts</span>
-    <span id="followerCount">0 Followers</span>
-    <span id="followingCount">0 Following</span>
-  </div>
-</section>
+  <!-- ================= STORIES ================= -->
+  <section class="stories-section">
+    <h3>Stories</h3>
+    <div class="story-upload">
+      <input type="file" id="storyInput" multiple accept="image/*,video/*">
+      <div id="storyPreview" class="story-preview"></div>
+      <button id="uploadStoryBtn" class="btn-upload-story">Upload Story</button>
+    </div>
+    <div id="stories" class="stories-container"></div>
+  </section>
 
-<!-- ========================= NEW POST ========================= -->
-<section class="new-post">
-  <textarea id="postText" placeholder="What's on your mind?"></textarea>
-  <input type="file" id="mediaInput" accept="image/*,video/*">
-  <div id="mediaPreview" class="media-preview"></div>
-  <button id="publishPostBtn">Post</button>
-</section>
+  <!-- ================= PROFILE POSTS ================= -->
+  <section class="profile-posts" id="profilePosts">
+    <!-- Posts loaded dynamically -->
+  </section>
 
-<!-- ========================= PROFILE POSTS ========================= -->
-<section class="profile-posts" id="profilePosts">
-  <!-- Posts dynamically loaded here -->
-</section>
-
-<!-- ========================= EDIT PROFILE MODAL ========================= -->
-<div class="profile-modal hidden" id="editProfileModal">
-  <div class="modal-content">
-    <h3>Edit Profile</h3>
-    <input type="text" id="editUsername" placeholder="Username">
-    <input type="text" id="editBio" placeholder="Bio">
-    <input type="url" id="editAvatar" placeholder="Avatar URL">
-    <div class="modal-actions">
-      <button id="saveProfileBtn">Save</button>
-      <button id="closeEditProfile" class="cancel">Cancel</button>
+  <!-- ================= EDIT PROFILE MODAL ================= -->
+  <div class="profile-modal hidden" id="editProfileModal">
+    <div class="modal-content">
+      <h3>Edit Profile</h3>
+      <input type="text" id="editUsername" placeholder="Username">
+      <input type="text" id="editBio" placeholder="Bio">
+      <input type="url" id="editAvatar" placeholder="Avatar URL">
+      <div class="modal-actions">
+        <button id="saveProfileBtn" class="btn-save">Save</button>
+        <button id="closeEditProfile" class="btn-cancel">Cancel</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ========================= COMMENT MODAL ========================= -->
-<div class="profile-modal" id="profileCommentModal">
-  <div class="modal-content">
-    <textarea id="profileCommentText" placeholder="Write a comment..."></textarea>
-    <button id="submitProfileComment">Post Comment</button>
-  </div>
-</div>
+  <!-- ================= COMMENT MODAL (Dynamic) ================= -->
+  <!-- Will be handled via JS prompt/modal -->
 
-<!-- ========================= LOGOUT MODAL ========================= -->
-<div class="logout-modal" id="logoutModal">
-  <div class="modal-content">
-    <div>Are you sure you want to logout?</div>
-    <div class="modal-actions">
-      <button id="confirmLogout">Yes, Logout</button>
-      <button class="cancel" id="cancelLogout">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- ========================= EXTERNAL JS ========================= -->
-<script type="module" src="js/profile.js"></script>
-
+  <script type="module" src="js/profile.js"></script>
 </body>
-  </html>
+        </html>
