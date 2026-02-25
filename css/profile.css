@@ -1,0 +1,347 @@
+/* =========================================================
+   TRIBERIUM — PROFILE STYLES
+========================================================= */
+
+:root {
+  --primary: #7b2cbf;
+  --primary-dark: #5a189a;
+  --bg: #f6f2ff;
+  --card: #ffffff;
+  --text: #111;
+  --muted: #6b7280;
+  --border: rgba(123, 44, 191, 0.15);
+  --action: #7b2cbf;
+  --danger: #dc2626;
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f14;
+  --card: #1a1a22;
+  --text: #f5f5f7;
+  --muted: #9ca3af;
+  --border: rgba(255, 255, 255, 0.08);
+  --action: #a855f7;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ================= HEADER ================= */
+.header {
+  position: sticky;
+  top: 0;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--primary), #a855f7, var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.wallet {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.btn-message {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-message:hover {
+  background: var(--primary-dark);
+}
+
+/* ================= PROFILE INFO ================= */
+.profile-info {
+  padding: 20px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-container {
+  position: relative;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  object-fit: cover;
+}
+
+.btn-edit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: 0.3s;
+}
+
+.btn-edit:hover {
+  background: var(--primary-dark);
+}
+
+.username {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.bio {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ================= CREATE POST ================= */
+.create-post {
+  padding: 20px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#create-post textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  resize: none;
+  outline: none;
+}
+
+.media-preview {
+  max-height: 200px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.media-preview img,
+.media-preview video {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 12px;
+}
+
+.btn-publish {
+  align-self: flex-end;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-publish:hover {
+  background: var(--primary-dark);
+}
+
+/* ================= STORIES ================= */
+.stories-section {
+  padding: 20px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stories-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-top: 10px;
+}
+
+.stories-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.stories-container::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+/* ================= PROFILE POSTS ================= */
+.profile-posts {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.profile-post {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-header .avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  object-fit: cover;
+}
+
+.post-content {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.post-media {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.post-actions .action {
+  cursor: pointer;
+  color: var(--action);
+  transition: 0.2s;
+}
+
+.post-actions .action:hover {
+  color: var(--primary-dark);
+}
+
+.delete-btn {
+  background: var(--danger);
+  border: none;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.delete-btn:hover {
+  background: darkred;
+}
+
+/* ================= MODAL ================= */
+.profile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.profile-modal.hidden {
+  display: none;
+}
+
+.profile-modal .modal-content {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-save {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: var(--primary-dark);
+}
+
+.btn-cancel {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: darkred;
+   }
