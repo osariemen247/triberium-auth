@@ -1,7 +1,6 @@
 /* =========================================================
    TRIBERIUM — PROFILE MODULE V3
-   Fully production-ready, backend connected
-   Features: Posts, Retribes, Stories, Media, Comments, Wallet, Messaging
+   Fully production-ready: Posts, Stories, Wallet, Stats, Messaging
 ========================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -21,7 +20,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
   authDomain: "triberium-mvp.firebaseapp.com",
   projectId: "triberium-mvp",
-  storageBucket: "triberium-mvp.firebasestorage.app",
+  storageBucket: "triberium-mvp.appspot.com",
   messagingSenderId: "519861052514",
   appId: "1:519861052514:web:56348e80320066cd311d3b"
 };
@@ -62,9 +61,8 @@ const editAvatar = document.getElementById("editAvatar");
 
 const messagingBtn = document.getElementById("messagingBtn");
 
-/* ================= AUTH GUARD ================= */
+/* ================= AUTH & USER ================= */
 let currentUser;
-
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     window.location.href = "index.html";
@@ -73,25 +71,26 @@ onAuthStateChanged(auth, async (user) => {
   currentUser = user;
 
   loadWallet(user.uid);
+  await initializeUser(user.uid);
   loadProfile(user.uid);
   loadPosts(user.uid);
-  loadRetribes(user.uid);
   loadStories(user.uid);
 });
 
 /* ================= WALLET ================= */
 function loadWallet(uid) {
-  const walletDoc = doc(db, "wallets", uid);
-  onSnapshot(walletDoc, (snap) => {
-    if (snap.exists()) walletAmount.textContent = Number(snap.data().balance).toFixed(2);
+  const walletRef = doc(db, "wallets", uid);
+  onSnapshot(walletRef, (snap) => {
+    walletAmount.textContent = snap.exists() ? Number(snap.data().balance).toFixed(2) : "0.00";
   });
 }
 
-/* ================= PROFILE ================= */
-async function loadProfile(uid) {
-  const userDoc = await getDoc(doc(db, "users", uid));
-  if (!userDoc.exists()) {
-    await setDoc(doc(db, "users", uid), {
+/* ================= INITIALIZE USER ================= */
+async function initializeUser(uid) {
+  const userRef = doc(db, "users", uid);
+  const snap = await getDoc(userRef);
+  if (!snap.exists()) {
+    await setDoc(userRef, {
       username: currentUser.email.split("@")[0],
       bio: "",
       avatar: "",
@@ -100,25 +99,28 @@ async function loadProfile(uid) {
       createdAt: serverTimestamp()
     });
   }
+}
 
-  onSnapshot(doc(db, "users", uid), (snap) => {
+/* ================= LOAD PROFILE ================= */
+function loadProfile(uid) {
+  const userRef = doc(db, "users", uid);
+  onSnapshot(userRef, (snap) => {
     const data = snap.data();
-    profileUsername.textContent = "@" + data.username;
+    profileUsername.textContent = "@" + (data.username || "");
     profileBio.textContent = data.bio || "";
-    profileAvatar.src = data.avatar || "./img/default-avatar.png";
+    profileAvatar.src = data.avatar || "https://i.pravatar.cc/150";
     followerCount.textContent = data.followers || 0;
     followingCount.textContent = data.following || 0;
 
-    editUsername.value = data.username;
-    editBio.value = data.bio;
-    editAvatar.value = data.avatar;
+    editUsername.value = data.username || "";
+    editBio.value = data.bio || "";
+    editAvatar.value = data.avatar || "";
   });
 }
 
 /* ================= EDIT PROFILE ================= */
 editProfileBtn.onclick = () => editProfileModal.classList.remove("hidden");
 closeEditProfile.onclick = () => editProfileModal.classList.add("hidden");
-
 saveProfileBtn.onclick = async () => {
   await updateDoc(doc(db, "users", currentUser.uid), {
     username: editUsername.value.trim(),
@@ -128,7 +130,7 @@ saveProfileBtn.onclick = async () => {
   editProfileModal.classList.add("hidden");
 };
 
-/* ================= MEDIA PREVIEW ================= */
+/* ================= POST MEDIA PREVIEW ================= */
 mediaInput.onchange = (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -138,16 +140,7 @@ mediaInput.onchange = (e) => {
     : `<img src="${url}" class="preview-media">`;
 };
 
-storyInput.onchange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const url = URL.createObjectURL(file);
-  storyPreview.innerHTML = file.type.startsWith("video")
-    ? `<video src="${url}" controls class="preview-media"></video>`
-    : `<img src="${url}" class="preview-media">`;
-};
-
-/* ================= CREATE POST ================= */
+/* ================= PUBLISH POST ================= */
 publishPostBtn.onclick = async () => {
   if (!postText.value.trim() && !mediaInput.files[0]) return;
 
@@ -157,8 +150,7 @@ publishPostBtn.onclick = async () => {
   if (mediaInput.files[0]) {
     const file = mediaInput.files[0];
     mediaType = file.type.startsWith("video") ? "video" : "image";
-
-    const storageRef = ref(storage, `posts/${currentUser.uid}/${Date.now()}-${file.name}`);
+    const storageRef = ref(storage, `posts/${currentUser.uid}/${Date.now()}_${file.name}`);
     await uploadBytes(storageRef, file);
     mediaURL = await getDownloadURL(storageRef);
   }
@@ -185,20 +177,12 @@ function loadPosts(uid) {
   onSnapshot(q, (snap) => {
     profilePosts.innerHTML = "";
     postCount.textContent = snap.size;
-    snap.forEach(docSnap => renderPost(docSnap));
-  });
-}
-
-/* ================= LOAD RETRIBES ================= */
-function loadRetribes(uid) {
-  const q = query(collection(db, "posts"), where("retribedBy", "array-contains", uid), orderBy("createdAt", "desc"));
-  onSnapshot(q, (snap) => {
-    snap.forEach(docSnap => renderPost(docSnap, true)); // true = retribed
+    snap.forEach((docSnap) => renderPost(docSnap));
   });
 }
 
 /* ================= RENDER POST ================= */
-function renderPost(docSnap, isRetribe=false) {
+function renderPost(docSnap) {
   const post = docSnap.data();
   const postId = docSnap.id;
 
@@ -207,11 +191,9 @@ function renderPost(docSnap, isRetribe=false) {
 
   postEl.innerHTML = `
     <div class="post-header">
-      <div class="post-user">
-        <img src="${profileAvatar.src}" class="avatar">
-        <span>${profileUsername.textContent}${isRetribe ? ' (Retribe)' : ''}</span>
-      </div>
-      ${!isRetribe ? `<button class="delete-btn">Delete</button>` : ''}
+      <img src="${profileAvatar.src}" class="avatar">
+      <span>${profileUsername.textContent}</span>
+      <button class="delete-btn">🗑️</button>
     </div>
     <div class="post-content">${post.content}</div>
     ${post.mediaURL
@@ -220,10 +202,10 @@ function renderPost(docSnap, isRetribe=false) {
         : `<video src="${post.mediaURL}" controls class="post-media"></video>`
       : ""}
     <div class="post-actions">
-      <div class="action like">Like (${post.likes || 0})</div>
-      <div class="action save">Save (${post.saves || 0})</div>
-      <div class="action retribe">Retribe (${post.retribes || 0})</div>
-      <div class="action comment">Comment</div>
+      <div class="action like">👍 (${post.likes})</div>
+      <div class="action save">💾 (${post.saves})</div>
+      <div class="action retribe">🔄 (${post.retribes})</div>
+      <div class="action comment">💬 Comment</div>
     </div>
     <div class="comments"></div>
   `;
@@ -236,20 +218,17 @@ function renderPost(docSnap, isRetribe=false) {
   const deleteBtn = postEl.querySelector(".delete-btn");
   const commentBtn = postEl.querySelector(".comment");
 
-  if (likeBtn) likeBtn.onclick = () => updateDoc(doc(db, "posts", postId), { likes: increment(1) });
-  if (saveBtn) saveBtn.onclick = () => updateDoc(doc(db, "posts", postId), { saves: increment(1) });
-  if (retribeBtn) retribeBtn.onclick = async () => {
-    const postRef = doc(db, "posts", postId);
-    await updateDoc(postRef, { retribes: increment(1), retribedBy: arrayUnion(currentUser.uid) });
-  };
-  if (deleteBtn) deleteBtn.onclick = async () => {
+  likeBtn.onclick = () => updateDoc(doc(db, "posts", postId), { likes: increment(1) });
+  saveBtn.onclick = () => updateDoc(doc(db, "posts", postId), { saves: increment(1) });
+  retribeBtn.onclick = () => updateDoc(doc(db, "posts", postId), { retribes: increment(1) });
+  deleteBtn.onclick = async () => {
     if (post.mediaURL) {
       const storageRef = ref(storage, `posts/${currentUser.uid}/${postId}`);
       await deleteObject(storageRef).catch(()=>{});
     }
     await deleteDoc(doc(db, "posts", postId));
   };
-  if (commentBtn) commentBtn.onclick = () => openCommentModal(postId, postEl.querySelector(".comments"));
+  commentBtn.onclick = () => openCommentModal(postId, postEl.querySelector(".comments"));
 
   loadComments(postId, postEl.querySelector(".comments"));
 }
@@ -259,7 +238,7 @@ function loadComments(postId, container) {
   const q = query(collection(db, "posts", postId, "comments"), orderBy("createdAt", "asc"));
   onSnapshot(q, (snap) => {
     container.innerHTML = "";
-    snap.forEach(docSnap => {
+    snap.forEach((docSnap) => {
       const c = docSnap.data();
       const div = document.createElement("div");
       div.className = "comment";
@@ -270,16 +249,26 @@ function loadComments(postId, container) {
 }
 
 function openCommentModal(postId, container) {
-  const text = prompt("Write your comment:");
+  const text = prompt("Enter your comment:");
   if (!text) return;
   addDoc(collection(db, "posts", postId, "comments"), { uid: currentUser.uid, text, createdAt: serverTimestamp() });
 }
 
 /* ================= STORIES ================= */
+storyInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  storyPreview.innerHTML = file.type.startsWith("video")
+    ? `<video src="${url}" controls class="preview-media"></video>`
+    : `<img src="${url}" class="preview-media">`;
+};
+
 uploadStoryBtn.onclick = async () => {
   if (!storyInput.files[0]) return;
+
   const file = storyInput.files[0];
-  const storageRef = ref(storage, `stories/${currentUser.uid}/${Date.now()}-${file.name}`);
+  const storageRef = ref(storage, `stories/${currentUser.uid}/${Date.now()}_${file.name}`);
   await uploadBytes(storageRef, file);
   const mediaURL = await getDownloadURL(storageRef);
 
@@ -298,7 +287,7 @@ function loadStories(uid) {
   const q = query(collection(db, "stories"), orderBy("createdAt", "desc"));
   onSnapshot(q, (snap) => {
     storiesContainer.innerHTML = "";
-    snap.forEach(docSnap => {
+    snap.forEach((docSnap) => {
       const story = docSnap.data();
       const div = document.createElement("div");
       div.className = "story";
@@ -310,7 +299,14 @@ function loadStories(uid) {
   });
 }
 
-/* ================= MESSAGING ================= */
+/* ================= MESSAGING BUTTON ================= */
 messagingBtn.onclick = () => {
   window.location.href = "chat.html";
 };
+
+/* ================= BACK BUTTON (SVG) ================= */
+const backBtn = document.createElement("button");
+backBtn.className = "icon-btn";
+backBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"><path d="M15 18l-6-6 6-6"/></svg>`;
+backBtn.onclick = () => window.location.href = "home.html";
+document.querySelector(".header").prepend(backBtn);
