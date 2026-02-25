@@ -1,6 +1,6 @@
 /* =========================================================
-   TRIBERIUM — PROFILE MODULE V2
-   Features: Stories, Messaging, Media, Comments, Wallet, Posts
+   TRIBERIUM — PROFILE MODULE V3
+   Features: Multi-media posts, Stories, Messaging, Comments, Wallet, Instant UI
 ========================================================= */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -69,11 +69,9 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "index.html";
     return;
   }
-
   currentUser = user;
-
   loadWallet(user.uid);
-  loadProfile(user.uid);
+  await initializeProfile(user.uid);
   loadPosts(user.uid);
   loadStories(user.uid);
 });
@@ -86,7 +84,7 @@ function loadWallet(uid) {
 }
 
 /* ================= PROFILE ================= */
-async function loadProfile(uid) {
+async function initializeProfile(uid) {
   const userDoc = await getDoc(doc(db, "users", uid));
   if (!userDoc.exists()) {
     await setDoc(doc(db, "users", uid), {
@@ -118,44 +116,52 @@ editProfileBtn.onclick = () => editProfileModal.classList.remove("hidden");
 closeEditProfile.onclick = () => editProfileModal.classList.add("hidden");
 
 saveProfileBtn.onclick = async () => {
-  await updateDoc(doc(db, "users", currentUser.uid), {
-    username: editUsername.value.trim(),
-    bio: editBio.value.trim(),
-    avatar: editAvatar.value.trim()
+  try {
+    await updateDoc(doc(db, "users", currentUser.uid), {
+      username: editUsername.value.trim(),
+      bio: editBio.value.trim(),
+      avatar: editAvatar.value.trim()
+    });
+    editProfileModal.classList.add("hidden");
+  } catch (err) {
+    console.error("Profile update failed:", err);
+  }
+};
+
+/* ================= POST MEDIA PREVIEW ================= */
+mediaInput.onchange = () => {
+  mediaPreview.innerHTML = "";
+  const files = Array.from(mediaInput.files);
+  files.forEach(file => {
+    const url = URL.createObjectURL(file);
+    const element = file.type.startsWith("video")
+      ? `<video src="${url}" controls class="preview-media"></video>`
+      : `<img src="${url}" class="preview-media">`;
+    mediaPreview.innerHTML += element;
   });
-  editProfileModal.classList.add("hidden");
 };
 
-/* ================= CREATE POST ================= */
-mediaInput.onchange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const url = URL.createObjectURL(file);
-  mediaPreview.innerHTML = file.type.startsWith("video")
-    ? `<video src="${url}" controls class="preview-media"></video>`
-    : `<img src="${url}" class="preview-media">`;
-};
-
+/* ================= PUBLISH POST ================= */
 publishPostBtn.onclick = async () => {
-  if (!postText.value.trim() && !mediaInput.files[0]) return;
+  if (!postText.value.trim() && mediaInput.files.length === 0) return;
 
-  let mediaURL = "";
-  let mediaType = "";
+  const mediaFiles = Array.from(mediaInput.files);
+  const mediaData = [];
 
-  if (mediaInput.files[0]) {
-    const file = mediaInput.files[0];
-    mediaType = file.type.startsWith("video") ? "video" : "image";
-
-    const storageRef = ref(storage, `posts/${currentUser.uid}/${Date.now()}`);
+  for (const file of mediaFiles) {
+    const storageRef = ref(storage, `posts/${currentUser.uid}/${Date.now()}-${file.name}`);
     await uploadBytes(storageRef, file);
-    mediaURL = await getDownloadURL(storageRef);
+    const mediaURL = await getDownloadURL(storageRef);
+    mediaData.push({
+      mediaURL,
+      mediaType: file.type.startsWith("video") ? "video" : "image"
+    });
   }
 
   await addDoc(collection(db, "posts"), {
     uid: currentUser.uid,
     content: postText.value.trim(),
-    mediaURL,
-    mediaType,
+    media: mediaData,
     likes: 0,
     saves: 0,
     retribes: 0,
@@ -170,10 +176,10 @@ publishPostBtn.onclick = async () => {
 /* ================= LOAD POSTS ================= */
 function loadPosts(uid) {
   const q = query(collection(db, "posts"), where("uid", "==", uid), orderBy("createdAt", "desc"));
-  onSnapshot(q, (snap) => {
+  onSnapshot(q, snap => {
     profilePosts.innerHTML = "";
     postCount.textContent = snap.size;
-    snap.forEach((docSnap) => renderPost(docSnap));
+    snap.forEach(docSnap => renderPost(docSnap));
   });
 }
 
@@ -185,6 +191,16 @@ function renderPost(docSnap) {
   const postEl = document.createElement("div");
   postEl.className = "profile-post";
 
+  // Media rendering
+  let mediaHTML = "";
+  if (post.media && post.media.length > 0) {
+    post.media.forEach(m => {
+      mediaHTML += m.mediaType === "video"
+        ? `<video src="${m.mediaURL}" controls class="post-media"></video>`
+        : `<img src="${m.mediaURL}" class="post-media">`;
+    });
+  }
+
   postEl.innerHTML = `
     <div class="post-header">
       <img src="${profileAvatar.src}" class="avatar">
@@ -192,11 +208,7 @@ function renderPost(docSnap) {
       <button class="delete-btn">Delete</button>
     </div>
     <div class="post-content">${post.content}</div>
-    ${post.mediaURL
-      ? post.mediaType === "image"
-        ? `<img src="${post.mediaURL}" class="post-media">`
-        : `<video src="${post.mediaURL}" controls class="post-media"></video>`
-      : ""}
+    ${mediaHTML}
     <div class="post-actions">
       <div class="action like">Like (${post.likes})</div>
       <div class="action save">Save (${post.saves})</div>
@@ -208,22 +220,37 @@ function renderPost(docSnap) {
 
   profilePosts.appendChild(postEl);
 
+  // Buttons
   const likeBtn = postEl.querySelector(".like");
   const saveBtn = postEl.querySelector(".save");
   const retribeBtn = postEl.querySelector(".retribe");
   const deleteBtn = postEl.querySelector(".delete-btn");
   const commentBtn = postEl.querySelector(".comment");
 
-  likeBtn.onclick = () => updateDoc(doc(db, "posts", postId), { likes: increment(1) });
-  saveBtn.onclick = () => updateDoc(doc(db, "posts", postId), { saves: increment(1) });
-  retribeBtn.onclick = () => updateDoc(doc(db, "posts", postId), { retribes: increment(1) });
+  // Instant UI updates
+  likeBtn.onclick = async () => {
+    likeBtn.textContent = `Like (${post.likes + 1})`;
+    await updateDoc(doc(db, "posts", postId), { likes: increment(1) });
+  };
+  saveBtn.onclick = async () => {
+    saveBtn.textContent = `Save (${post.saves + 1})`;
+    await updateDoc(doc(db, "posts", postId), { saves: increment(1) });
+  };
+  retribeBtn.onclick = async () => {
+    retribeBtn.textContent = `Retribe (${post.retribes + 1})`;
+    await updateDoc(doc(db, "posts", postId), { retribes: increment(1) });
+  };
+
   deleteBtn.onclick = async () => {
-    if (post.mediaURL) {
-      const storageRef = ref(storage, `posts/${currentUser.uid}/${postId}`);
-      await deleteObject(storageRef).catch(()=>{});
+    if (post.media && post.media.length > 0) {
+      post.media.forEach(async (m) => {
+        const storageRef = ref(storage, m.mediaURL);
+        await deleteObject(storageRef).catch(() => {});
+      });
     }
     await deleteDoc(doc(db, "posts", postId));
   };
+
   commentBtn.onclick = () => openCommentModal(postId, postEl.querySelector(".comments"));
 
   loadComments(postId, postEl.querySelector(".comments"));
@@ -232,9 +259,9 @@ function renderPost(docSnap) {
 /* ================= COMMENTS ================= */
 function loadComments(postId, container) {
   const q = query(collection(db, "posts", postId, "comments"), orderBy("createdAt", "asc"));
-  onSnapshot(q, (snap) => {
+  onSnapshot(q, snap => {
     container.innerHTML = "";
-    snap.forEach((docSnap) => {
+    snap.forEach(docSnap => {
       const c = docSnap.data();
       const div = document.createElement("div");
       div.className = "comment";
@@ -251,39 +278,40 @@ function openCommentModal(postId, container) {
 }
 
 /* ================= STORIES ================= */
-storyInput.onchange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const url = URL.createObjectURL(file);
-  storyPreview.innerHTML = file.type.startsWith("video")
-    ? `<video src="${url}" controls class="preview-media"></video>`
-    : `<img src="${url}" class="preview-media">`;
+storyInput.onchange = () => {
+  storyPreview.innerHTML = "";
+  const files = Array.from(storyInput.files);
+  files.forEach(file => {
+    const url = URL.createObjectURL(file);
+    const element = file.type.startsWith("video")
+      ? `<video src="${url}" controls class="preview-media"></video>`
+      : `<img src="${url}" class="preview-media">`;
+    storyPreview.innerHTML += element;
+  });
 };
 
 uploadStoryBtn.onclick = async () => {
-  if (!storyInput.files[0]) return;
-
-  const file = storyInput.files[0];
-  const storageRef = ref(storage, `stories/${currentUser.uid}/${Date.now()}`);
-  await uploadBytes(storageRef, file);
-  const mediaURL = await getDownloadURL(storageRef);
-
-  await addDoc(collection(db, "stories"), {
-    uid: currentUser.uid,
-    mediaURL,
-    mediaType: file.type.startsWith("video") ? "video" : "image",
-    createdAt: serverTimestamp()
-  });
-
+  const files = Array.from(storyInput.files);
+  for (const file of files) {
+    const storageRef = ref(storage, `stories/${currentUser.uid}/${Date.now()}-${file.name}`);
+    await uploadBytes(storageRef, file);
+    const mediaURL = await getDownloadURL(storageRef);
+    await addDoc(collection(db, "stories"), {
+      uid: currentUser.uid,
+      mediaURL,
+      mediaType: file.type.startsWith("video") ? "video" : "image",
+      createdAt: serverTimestamp()
+    });
+  }
   storyInput.value = "";
   storyPreview.innerHTML = "";
 };
 
 function loadStories(uid) {
   const q = query(collection(db, "stories"), orderBy("createdAt", "desc"));
-  onSnapshot(q, (snap) => {
+  onSnapshot(q, snap => {
     storiesContainer.innerHTML = "";
-    snap.forEach((docSnap) => {
+    snap.forEach(docSnap => {
       const story = docSnap.data();
       const div = document.createElement("div");
       div.className = "story";
@@ -297,5 +325,5 @@ function loadStories(uid) {
 
 /* ================= MESSAGING BUTTON ================= */
 messagingBtn.onclick = () => {
-  window.location.href = "chat.html"; // Navigate to chat page
+  window.location.href = "chat.html";
 };
