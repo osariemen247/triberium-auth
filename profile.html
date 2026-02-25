@@ -9,7 +9,7 @@
 </head>
 <body data-theme="light">
 
-  <!-- ================= HEADER ================= -->
+  <!-- HEADER -->
   <header class="header">
     <div class="header-top">
       <div class="logo">TRIBERIUM</div>
@@ -18,46 +18,43 @@
     </div>
   </header>
 
-  <!-- ================= PROFILE INFO ================= -->
+  <!-- PROFILE INFO -->
   <section class="profile-info">
     <div class="avatar-container">
-      <img id="profileAvatar" src="" alt="Profile Avatar" class="profile-avatar">
+      <img src="" id="profileAvatar" class="profile-avatar" alt="Avatar">
       <button id="editProfileBtn" class="btn-edit">Edit Profile</button>
     </div>
-    <div class="username" id="profileUsername">@username</div>
-    <div class="bio" id="profileBio"></div>
+    <div id="profileUsername" class="username"></div>
+    <div id="profileBio" class="bio"></div>
     <div class="profile-stats">
-      <span>Posts: <span id="postCount">0</span></span>
-      <span>Followers: <span id="followerCount">0</span></span>
-      <span>Following: <span id="followingCount">0</span></span>
+      <span id="postCount">0</span> Posts
+      <span id="followerCount">0</span> Followers
+      <span id="followingCount">0</span> Following
     </div>
   </section>
 
-  <!-- ================= CREATE POST ================= -->
+  <!-- MEDIA POST CREATION -->
   <section class="create-post">
-    <textarea id="postText" placeholder="What's happening?"></textarea>
-    <input type="file" id="mediaInput" multiple accept="image/*,video/*">
+    <textarea id="postText" placeholder="What's on your mind?"></textarea>
+    <input type="file" id="mediaInput" accept="image/*,video/*">
     <div id="mediaPreview" class="media-preview"></div>
     <button id="publishPostBtn" class="btn-publish">Post</button>
   </section>
 
-  <!-- ================= STORIES ================= -->
+  <!-- STORIES UPLOAD -->
   <section class="stories-section">
-    <h3>Stories</h3>
-    <div class="story-upload">
-      <input type="file" id="storyInput" multiple accept="image/*,video/*">
-      <div id="storyPreview" class="story-preview"></div>
-      <button id="uploadStoryBtn" class="btn-upload-story">Upload Story</button>
-    </div>
+    <input type="file" id="storyInput" accept="image/*,video/*">
+    <div id="storyPreview" class="media-preview"></div>
+    <button id="uploadStoryBtn" class="btn-publish">Upload Story</button>
     <div id="stories" class="stories-container"></div>
   </section>
 
-  <!-- ================= PROFILE POSTS ================= -->
-  <section class="profile-posts" id="profilePosts">
-    <!-- Posts loaded dynamically -->
+  <!-- PROFILE FEED -->
+  <section id="profilePosts" class="profile-posts">
+    <!-- Posts (personal + retribed) dynamically rendered by JS -->
   </section>
 
-  <!-- ================= EDIT PROFILE MODAL ================= -->
+  <!-- EDIT PROFILE MODAL -->
   <div class="profile-modal hidden" id="editProfileModal">
     <div class="modal-content">
       <h3>Edit Profile</h3>
@@ -71,9 +68,8 @@
     </div>
   </div>
 
-  <!-- ================= COMMENT MODAL (Dynamic) ================= -->
-  <!-- Will be handled via JS prompt/modal -->
-
+  <!-- FIREBASE + PROFILE JS -->
   <script type="module" src="js/profile.js"></script>
+
 </body>
-        </html>
+  </html>
