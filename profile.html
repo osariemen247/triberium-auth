@@ -1,75 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TRIBERIUM — Profile</title>
-<link rel="stylesheet" href="css/profile.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triberium — Profile</title>
+
+  <!-- Global + Profile Styles -->
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/profile.css">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body data-theme="light">
 
+<!-- ========== HEADER ========== -->
 <header class="header">
-  <div class="header-top">
+  <div class="header-left">
     <div class="logo">TRIBERIUM</div>
-    <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>
+  </div>
+
+  <div class="header-right">
+    <div class="wallet">
+      TBM Balance: <span id="walletAmount">0.00</span>
+    </div>
   </div>
 </header>
 
-<section class="profile-info">
-  <div class="avatar-container">
-    <img src="https://i.pravatar.cc/150" class="profile-avatar" alt="Avatar">
-    <button id="editProfileBtn" class="btn-edit">Edit Profile</button>
-  </div>
-  <div class="username">@john_doe</div>
-  <button id="profileFollowBtn" class="btn-follow">Follow</button>
-  <div class="profile-stats">
-    <span>Posts: 120</span>
-    <span>Followers: 2.4k</span>
-    <span>Following: 180</span>
-  </div>
-</section>
+<!-- ========== LAYOUT WRAPPER ========== -->
+<div class="layout">
 
-<section class="profile-posts" id="profilePosts">
-  <!-- Posts dynamically loaded here -->
-  <div class="profile-post" data-post-id="post1">
-    <div class="post-header">
-      <img src="https://i.pravatar.cc/50" class="avatar">
-      <span>@john_doe</span>
-    </div>
-    <div class="post-content">This is a sample profile post content with full text and rich detail.</div>
-    <div class="post-actions">
-      <div class="action like">Like</div>
-      <div class="action save">Save</div>
-      <div class="action retribe">Retribe</div>
-      <div class="action comment">Comment</div>
-      <div class="action share">Share</div>
-    </div>
-  </div>
-</section>
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
 
-<!-- Edit Profile Modal -->
-<div class="profile-modal" id="editProfileModal">
+    <a href="home.html" class="sidebar-link">Home</a>
+    <a href="profile.html" class="sidebar-link active">Profile</a>
+    <a href="metrics.html" class="sidebar-link">Metrics</a>
+    <a href="news.html" class="sidebar-link">News</a>
+    <a href="settings.html" class="sidebar-link">Settings</a>
+
+  </aside>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main-content">
+
+    <!-- PROFILE HEADER -->
+    <section class="profile-header">
+
+      <div class="profile-avatar-wrapper">
+        <img id="profileAvatar" class="profile-avatar" alt="User Avatar">
+      </div>
+
+      <div class="profile-details">
+        <h2 id="profileUsername"></h2>
+        <p id="profileBio"></p>
+
+        <div class="profile-stats">
+          <span><strong id="postCount">0</strong> Posts</span>
+          <span><strong id="followerCount">0</strong> Followers</span>
+          <span><strong id="followingCount">0</strong> Following</span>
+        </div>
+
+        <button id="editProfileBtn" class="btn-primary">
+          Edit Profile
+        </button>
+      </div>
+
+    </section>
+
+    <!-- CREATE POST SECTION -->
+    <section class="create-post">
+
+      <textarea id="postText" placeholder="Share something with your tribe..."></textarea>
+
+      <div class="media-upload">
+        <input type="file" id="mediaInput" accept="image/*,video/*">
+      </div>
+
+      <button id="publishPostBtn" class="btn-primary">
+        Publish
+      </button>
+
+    </section>
+
+    <!-- USER POSTS -->
+    <section id="profilePosts" class="posts-container">
+      <!-- Posts dynamically inserted by profile.js -->
+    </section>
+
+  </main>
+
+</div>
+
+<!-- ========== EDIT PROFILE MODAL ========== -->
+<div class="modal hidden" id="editProfileModal">
+
   <div class="modal-content">
     <h3>Edit Profile</h3>
+
     <input type="text" id="editUsername" placeholder="Username">
     <input type="text" id="editBio" placeholder="Bio">
     <input type="url" id="editAvatar" placeholder="Avatar URL">
+
     <div class="modal-actions">
-      <button id="saveProfileBtn">Save</button>
-      <button id="closeEditProfile" class="cancel">Cancel</button>
+      <button id="saveProfileBtn" class="btn-primary">Save</button>
+      <button id="closeEditProfile" class="btn-secondary">Cancel</button>
     </div>
   </div>
+
 </div>
 
-<!-- Comment Modal for Profile Posts -->
-<div class="profile-modal" id="profileCommentModal">
-  <div class="modal-content">
-    <textarea id="profileCommentText" placeholder="Write a comment..."></textarea>
-    <button id="submitProfileComment">Post Comment</button>
-  </div>
-</div>
-
+<!-- ========== SCRIPTS ========== -->
 <script type="module" src="js/profile.js"></script>
+
 </body>
-      </html>
+  </html>
