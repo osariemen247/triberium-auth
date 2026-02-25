@@ -1,39 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRIBERIUM — Profile</title>
-  <link rel="stylesheet" href="css/profile.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIBERIUM — Profile</title>
+
+<!-- GOOGLE FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- CSS -->
+<link rel="stylesheet" href="css/profile.css">
+
 </head>
 <body data-theme="light">
 
   <!-- HEADER -->
   <header class="header">
     <div class="header-top">
+      <!-- Back Button SVG -->
+      <button id="backHomeBtn" class="icon-btn" title="Back to Home">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+          <path d="M15 18l-6-6 6-6"></path>
+        </svg>
+      </button>
+
       <div class="logo">TRIBERIUM</div>
-      <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>
-      <button id="messagingBtn" class="btn-message">Messages</button>
+
+      <div class="header-right">
+        <!-- Wallet -->
+        <div class="wallet">TBM Balance: <span id="walletAmount">0.00</span></div>
+
+        <!-- Messaging Button SVG -->
+        <button id="messagingBtn" class="icon-btn" title="Messages">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- PROFILE INFO -->
   <section class="profile-info">
     <div class="avatar-container">
-      <img src="" id="profileAvatar" class="profile-avatar" alt="Avatar">
-      <button id="editProfileBtn" class="btn-edit">Edit Profile</button>
+      <img src="" id="profileAvatar" class="profile-avatar" alt="Profile Avatar">
+      <!-- Edit Profile SVG -->
+      <button id="editProfileBtn" class="icon-btn purple-btn" title="Edit Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="20" height="20">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+      </button>
     </div>
+
     <div id="profileUsername" class="username"></div>
     <div id="profileBio" class="bio"></div>
+
+    <!-- Stats -->
     <div class="profile-stats">
-      <span id="postCount">0</span> Posts
-      <span id="followerCount">0</span> Followers
-      <span id="followingCount">0</span> Following
+      <span><strong id="postCount">0</strong> Posts</span>
+      <span><strong id="followerCount">0</strong> Followers</span>
+      <span><strong id="followingCount">0</strong> Following</span>
     </div>
   </section>
 
-  <!-- MEDIA POST CREATION -->
+  <!-- POST CREATION -->
   <section class="create-post">
     <textarea id="postText" placeholder="What's on your mind?"></textarea>
     <input type="file" id="mediaInput" accept="image/*,video/*">
@@ -49,9 +80,9 @@
     <div id="stories" class="stories-container"></div>
   </section>
 
-  <!-- PROFILE FEED -->
+  <!-- PROFILE POSTS FEED -->
   <section id="profilePosts" class="profile-posts">
-    <!-- Posts (personal + retribed) dynamically rendered by JS -->
+    <!-- Posts dynamically loaded -->
   </section>
 
   <!-- EDIT PROFILE MODAL -->
@@ -68,7 +99,7 @@
     </div>
   </div>
 
-  <!-- FIREBASE + PROFILE JS -->
+  <!-- JS -->
   <script type="module" src="js/profile.js"></script>
 
 </body>
