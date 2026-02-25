@@ -1,110 +1,301 @@
-import { getFirestore, collection, doc, onSnapshot, setDoc, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+/* =========================================================
+   TRIBERIUM — PROFILE MODULE V2
+   Features: Stories, Messaging, Media, Comments, Wallet, Posts
+========================================================= */
 
-const auth = getAuth();
-const db = getFirestore();
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc,
+  collection, query, where, orderBy, onSnapshot, serverTimestamp, increment
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getStorage, ref, uploadBytes, getDownloadURL, deleteObject
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ===================== AUTH =====================
-onAuthStateChanged(auth, user => {
-  if (!user) window.location.href = "index.html";
-  else {
-    loadProfile(user.uid);
-    loadProfilePosts(user.uid);
+/* ================= FIREBASE CONFIG ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyAjX9SLUbKPjldZELBvtQg0K0A-UEDLRIs",
+  authDomain: "triberium-mvp.firebaseapp.com",
+  projectId: "triberium-mvp",
+  storageBucket: "triberium-mvp.firebasestorage.app",
+  messagingSenderId: "519861052514",
+  appId: "1:519861052514:web:56348e80320066cd311d3b"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+/* ================= DOM ELEMENTS ================= */
+const walletAmount = document.getElementById("walletAmount");
+const profileAvatar = document.getElementById("profileAvatar");
+const profileUsername = document.getElementById("profileUsername");
+const profileBio = document.getElementById("profileBio");
+const postCount = document.getElementById("postCount");
+const followerCount = document.getElementById("followerCount");
+const followingCount = document.getElementById("followingCount");
+
+const postText = document.getElementById("postText");
+const mediaInput = document.getElementById("mediaInput");
+const mediaPreview = document.getElementById("mediaPreview");
+const publishPostBtn = document.getElementById("publishPostBtn");
+const profilePosts = document.getElementById("profilePosts");
+
+const storyInput = document.getElementById("storyInput");
+const storyPreview = document.getElementById("storyPreview");
+const uploadStoryBtn = document.getElementById("uploadStoryBtn");
+const storiesContainer = document.getElementById("stories");
+
+const editProfileBtn = document.getElementById("editProfileBtn");
+const editProfileModal = document.getElementById("editProfileModal");
+const saveProfileBtn = document.getElementById("saveProfileBtn");
+const closeEditProfile = document.getElementById("closeEditProfile");
+
+const editUsername = document.getElementById("editUsername");
+const editBio = document.getElementById("editBio");
+const editAvatar = document.getElementById("editAvatar");
+
+const messagingBtn = document.getElementById("messagingBtn");
+
+/* ================= AUTH GUARD ================= */
+let currentUser;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "index.html";
+    return;
   }
+
+  currentUser = user;
+
+  loadWallet(user.uid);
+  loadProfile(user.uid);
+  loadPosts(user.uid);
+  loadStories(user.uid);
 });
 
-// ===================== PROFILE INFO =====================
-function loadProfile(uid){
-  onSnapshot(doc(db, "users", uid), snap => {
-    if(snap.exists()){
-      const data = snap.data();
-      document.querySelector(".profile-avatar").src = data.avatar || "default-avatar.png";
-      document.querySelector(".username").textContent = `@${data.username}`;
-      document.querySelector(".btn-follow").textContent = data.following?.includes(uid) ? "Following" : "Follow";
-    }
+/* ================= WALLET ================= */
+function loadWallet(uid) {
+  onSnapshot(doc(db, "wallets", uid), (snap) => {
+    if (snap.exists()) walletAmount.textContent = Number(snap.data().balance).toFixed(2);
   });
 }
 
-// ===================== FOLLOW BUTTON =====================
-document.querySelector(".btn-follow").onclick = async function(){
-  const uid = auth.currentUser.uid;
-  const followingRef = doc(db, "users", uid, "following", uid);
-  await setDoc(followingRef, {uid});
-  this.classList.toggle("following");
-  this.textContent = this.classList.contains("following") ? "Following" : "Follow";
+/* ================= PROFILE ================= */
+async function loadProfile(uid) {
+  const userDoc = await getDoc(doc(db, "users", uid));
+  if (!userDoc.exists()) {
+    await setDoc(doc(db, "users", uid), {
+      username: currentUser.email.split("@")[0],
+      bio: "",
+      avatar: "",
+      followers: 0,
+      following: 0,
+      createdAt: serverTimestamp()
+    });
+  }
+
+  onSnapshot(doc(db, "users", uid), (snap) => {
+    const data = snap.data();
+    profileUsername.textContent = "@" + data.username;
+    profileBio.textContent = data.bio || "";
+    profileAvatar.src = data.avatar || "";
+    followerCount.textContent = data.followers || 0;
+    followingCount.textContent = data.following || 0;
+
+    editUsername.value = data.username;
+    editBio.value = data.bio;
+    editAvatar.value = data.avatar;
+  });
+}
+
+/* ================= EDIT PROFILE ================= */
+editProfileBtn.onclick = () => editProfileModal.classList.remove("hidden");
+closeEditProfile.onclick = () => editProfileModal.classList.add("hidden");
+
+saveProfileBtn.onclick = async () => {
+  await updateDoc(doc(db, "users", currentUser.uid), {
+    username: editUsername.value.trim(),
+    bio: editBio.value.trim(),
+    avatar: editAvatar.value.trim()
+  });
+  editProfileModal.classList.add("hidden");
 };
 
-// ===================== PROFILE POSTS =====================
-function loadProfilePosts(uid){
-  const postsQuery = query(collection(db,"posts"), orderBy("createdAt","desc"));
-  onSnapshot(postsQuery, snap => {
-    const container = document.querySelector(".profile-posts");
+/* ================= CREATE POST ================= */
+mediaInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  mediaPreview.innerHTML = file.type.startsWith("video")
+    ? `<video src="${url}" controls class="preview-media"></video>`
+    : `<img src="${url}" class="preview-media">`;
+};
+
+publishPostBtn.onclick = async () => {
+  if (!postText.value.trim() && !mediaInput.files[0]) return;
+
+  let mediaURL = "";
+  let mediaType = "";
+
+  if (mediaInput.files[0]) {
+    const file = mediaInput.files[0];
+    mediaType = file.type.startsWith("video") ? "video" : "image";
+
+    const storageRef = ref(storage, `posts/${currentUser.uid}/${Date.now()}`);
+    await uploadBytes(storageRef, file);
+    mediaURL = await getDownloadURL(storageRef);
+  }
+
+  await addDoc(collection(db, "posts"), {
+    uid: currentUser.uid,
+    content: postText.value.trim(),
+    mediaURL,
+    mediaType,
+    likes: 0,
+    saves: 0,
+    retribes: 0,
+    createdAt: serverTimestamp()
+  });
+
+  postText.value = "";
+  mediaInput.value = "";
+  mediaPreview.innerHTML = "";
+};
+
+/* ================= LOAD POSTS ================= */
+function loadPosts(uid) {
+  const q = query(collection(db, "posts"), where("uid", "==", uid), orderBy("createdAt", "desc"));
+  onSnapshot(q, (snap) => {
+    profilePosts.innerHTML = "";
+    postCount.textContent = snap.size;
+    snap.forEach((docSnap) => renderPost(docSnap));
+  });
+}
+
+/* ================= RENDER POST ================= */
+function renderPost(docSnap) {
+  const post = docSnap.data();
+  const postId = docSnap.id;
+
+  const postEl = document.createElement("div");
+  postEl.className = "profile-post";
+
+  postEl.innerHTML = `
+    <div class="post-header">
+      <img src="${profileAvatar.src}" class="avatar">
+      <span>${profileUsername.textContent}</span>
+      <button class="delete-btn">Delete</button>
+    </div>
+    <div class="post-content">${post.content}</div>
+    ${post.mediaURL
+      ? post.mediaType === "image"
+        ? `<img src="${post.mediaURL}" class="post-media">`
+        : `<video src="${post.mediaURL}" controls class="post-media"></video>`
+      : ""}
+    <div class="post-actions">
+      <div class="action like">Like (${post.likes})</div>
+      <div class="action save">Save (${post.saves})</div>
+      <div class="action retribe">Retribe (${post.retribes})</div>
+      <div class="action comment">Comment</div>
+    </div>
+    <div class="comments"></div>
+  `;
+
+  profilePosts.appendChild(postEl);
+
+  const likeBtn = postEl.querySelector(".like");
+  const saveBtn = postEl.querySelector(".save");
+  const retribeBtn = postEl.querySelector(".retribe");
+  const deleteBtn = postEl.querySelector(".delete-btn");
+  const commentBtn = postEl.querySelector(".comment");
+
+  likeBtn.onclick = () => updateDoc(doc(db, "posts", postId), { likes: increment(1) });
+  saveBtn.onclick = () => updateDoc(doc(db, "posts", postId), { saves: increment(1) });
+  retribeBtn.onclick = () => updateDoc(doc(db, "posts", postId), { retribes: increment(1) });
+  deleteBtn.onclick = async () => {
+    if (post.mediaURL) {
+      const storageRef = ref(storage, `posts/${currentUser.uid}/${postId}`);
+      await deleteObject(storageRef).catch(()=>{});
+    }
+    await deleteDoc(doc(db, "posts", postId));
+  };
+  commentBtn.onclick = () => openCommentModal(postId, postEl.querySelector(".comments"));
+
+  loadComments(postId, postEl.querySelector(".comments"));
+}
+
+/* ================= COMMENTS ================= */
+function loadComments(postId, container) {
+  const q = query(collection(db, "posts", postId, "comments"), orderBy("createdAt", "asc"));
+  onSnapshot(q, (snap) => {
     container.innerHTML = "";
-    snap.forEach(docSnap => {
-      const post = docSnap.data();
-      const postId = docSnap.id;
-
-      const card = document.createElement("div");
-      card.className = "profile-post";
-
-      card.innerHTML = `
-        <div class="post-header">
-          <img src="${post.authorAvatar}" class="avatar">
-          <div>@${post.authorUsername}</div>
-        </div>
-        <div class="post-content">${post.content}</div>
-        <div class="post-actions">
-          <div class="action like">${post.likes?.includes(uid) ? "❤️" : "Like"}</div>
-          <div class="action save">${post.savedBy?.includes(uid) ? "💾" : "Save"}</div>
-          <div class="action retribe">Retribe</div>
-          <div class="action comment">Comment</div>
-        </div>
-      `;
-
-      // ================= LIKE =================
-      card.querySelector(".like").onclick = async () => {
-        await setDoc(doc(db,"posts",postId,"likes",uid),{uid});
-      };
-
-      // ================= SAVE =================
-      card.querySelector(".save").onclick = async () => {
-        await setDoc(doc(db,"users",uid,"saved",postId),{postId});
-      };
-
-      // ================= RETRIBE =================
-      card.querySelector(".retribe").onclick = async () => {
-        const postCopy = {
-          authorAvatar: post.authorAvatar,
-          authorUsername: post.authorUsername,
-          content: post.content,
-          createdAt: new Date(),
-          retribedBy: uid
-        };
-        await addDoc(collection(db,"posts"), postCopy);
-        alert("Post retribed to your profile!");
-      };
-
-      // ================= COMMENT =================
-      const commentBtn = card.querySelector(".comment");
-      commentBtn.onclick = () => {
-        const modal = document.getElementById("commentModal");
-        modal.style.display = "flex";
-        document.getElementById("submitComment").onclick = async () => {
-          const text = document.getElementById("commentText").value;
-          if(text.length>0){
-            await addDoc(collection(db,"posts",postId,"comments"),{uid,text,createdAt:new Date()});
-            document.getElementById("commentText").value = "";
-            modal.style.display = "none";
-          }
-        };
-      };
-
-      container.appendChild(card);
+    snap.forEach((docSnap) => {
+      const c = docSnap.data();
+      const div = document.createElement("div");
+      div.className = "comment";
+      div.textContent = c.text;
+      container.appendChild(div);
     });
   });
 }
 
-// ===================== COMMENT MODAL CLOSE =====================
-document.getElementById("commentModal").onclick = e => {
-  if(e.target.id==="commentModal") e.target.style.display = "none";
+function openCommentModal(postId, container) {
+  const text = prompt("Enter your comment:");
+  if (!text) return;
+  addDoc(collection(db, "posts", postId, "comments"), { uid: currentUser.uid, text, createdAt: serverTimestamp() });
+}
+
+/* ================= STORIES ================= */
+storyInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  storyPreview.innerHTML = file.type.startsWith("video")
+    ? `<video src="${url}" controls class="preview-media"></video>`
+    : `<img src="${url}" class="preview-media">`;
+};
+
+uploadStoryBtn.onclick = async () => {
+  if (!storyInput.files[0]) return;
+
+  const file = storyInput.files[0];
+  const storageRef = ref(storage, `stories/${currentUser.uid}/${Date.now()}`);
+  await uploadBytes(storageRef, file);
+  const mediaURL = await getDownloadURL(storageRef);
+
+  await addDoc(collection(db, "stories"), {
+    uid: currentUser.uid,
+    mediaURL,
+    mediaType: file.type.startsWith("video") ? "video" : "image",
+    createdAt: serverTimestamp()
+  });
+
+  storyInput.value = "";
+  storyPreview.innerHTML = "";
+};
+
+function loadStories(uid) {
+  const q = query(collection(db, "stories"), orderBy("createdAt", "desc"));
+  onSnapshot(q, (snap) => {
+    storiesContainer.innerHTML = "";
+    snap.forEach((docSnap) => {
+      const story = docSnap.data();
+      const div = document.createElement("div");
+      div.className = "story";
+      div.innerHTML = story.mediaType === "image"
+        ? `<img src="${story.mediaURL}" class="story-media">`
+        : `<video src="${story.mediaURL}" class="story-media" controls></video>`;
+      storiesContainer.appendChild(div);
+    });
+  });
+}
+
+/* ================= MESSAGING BUTTON ================= */
+messagingBtn.onclick = () => {
+  window.location.href = "chat.html"; // Navigate to chat page
 };
